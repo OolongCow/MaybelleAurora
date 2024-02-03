@@ -18,6 +18,11 @@
 	unbreakable = 1 //It's already broken.
 	drops_debris = FALSE
 	drop_sound = 'sound/effects/glass_step.ogg'
+	surgerysound = 'sound/items/surgery/scalpel.ogg'
+
+/obj/item/material/shard/Destroy()
+	. = ..()
+	GC_TEMPORARY_HARDDEL
 
 /obj/item/material/shard/set_material(var/new_material)
 	..(new_material)
@@ -25,6 +30,7 @@
 		return
 
 	icon_state = "[material.shard_icon][pick("large", "medium", "small")]"
+
 	randpixel_xy()
 	update_icon()
 

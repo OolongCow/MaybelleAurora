@@ -3,6 +3,7 @@ var/global/list/datum/stack_recipe/rod_recipes = list(
 	new /datum/stack_recipe("floor-mounted catwalk", /obj/structure/lattice/catwalk/indoor, 4, time = 10, one_per_turf = TRUE, on_floor = TRUE),
 	new /datum/stack_recipe("grate, dark", /obj/structure/lattice/catwalk/indoor/grate, 1, time = 10, one_per_turf = TRUE, on_floor = TRUE),
 	new /datum/stack_recipe("grate, light", /obj/structure/lattice/catwalk/indoor/grate/light, 1, time = 10, one_per_turf = TRUE, on_floor = TRUE),
+	new /datum/stack_recipe("table frame", /obj/structure/table, 2, time = 10, one_per_turf = 1, on_floor = 1),
 	new /datum/stack_recipe("mine track", /obj/structure/track, 3, time = 10, one_per_turf = TRUE, on_floor = TRUE),
 	new /datum/stack_recipe("cane", /obj/item/cane, 1, time = 6),
 	new /datum/stack_recipe("crowbar", /obj/item/crowbar, 1, time = 6),
@@ -21,7 +22,7 @@ var/global/list/datum/stack_recipe/rod_recipes = list(
 	Clicking on a floor without any tiles will reinforce the floor.  You can make reinforced glass by combining rods and normal glass sheets."
 	singular_name = "metal rod"
 	icon_state = "rods"
-	flags = CONDUCT
+	obj_flags = OBJ_FLAG_CONDUCTABLE
 	w_class = ITEMSIZE_NORMAL
 	force = 9.0
 	throwforce = 15.0
@@ -36,6 +37,10 @@ var/global/list/datum/stack_recipe/rod_recipes = list(
 	lock_picking_level = 3
 	stacktype = /obj/item/stack/rods
 	icon_has_variants = TRUE
+
+/obj/item/stack/rods/Destroy()
+	. = ..()
+	GC_TEMPORARY_HARDDEL
 
 /obj/item/stack/rods/full/Initialize()
 	. = ..()
@@ -135,12 +140,12 @@ var/global/list/datum/stack_recipe/rod_recipes = list(
 	user.visible_message(SPAN_NOTICE("[user] starts assembling a liquidbag barricade."),
 	SPAN_NOTICE("You start assembling a liquidbag barricade."))
 
-	if(!do_after(user, 3 SECONDS))
+	if(!do_after(user, 3 SECONDS, do_flags = DO_REPAIR_CONSTRUCT))
 		return
 
 	for(var/obj/O in user.loc) //Objects, we don't care about mobs. Turfs are checked elsewhere
 		if(O.density)
-			if(!(O.flags & ON_BORDER) || O.dir == user.dir)
+			if(!(O.atom_flags & ATOM_FLAG_CHECKS_BORDER) || O.dir == user.dir)
 				return
 
 	var/build_stack = amount

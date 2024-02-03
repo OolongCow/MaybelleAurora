@@ -4,7 +4,7 @@
 	icon = 'icons/obj/ammo.dmi'
 	icon_state = "s-casing"
 	randpixel = 10
-	flags = CONDUCT
+	obj_flags = OBJ_FLAG_CONDUCTABLE
 	slot_flags = SLOT_BELT | SLOT_EARS
 	throwforce = 1
 	w_class = ITEMSIZE_TINY
@@ -29,11 +29,15 @@
 	randpixel_xy()
 	transform = turn(transform,rand(0,360))
 
+/obj/item/ammo_casing/Destroy()
+	QDEL_NULL(BB)
+	. = ..()
+
 //removes the projectile from the ammo casing
 /obj/item/ammo_casing/proc/expend()
 	. = BB
 	BB = null
-	set_dir(pick(alldirs)) //spin spent casings
+	set_dir(pick(GLOB.alldirs)) //spin spent casings
 	update_icon()
 
 /obj/item/ammo_casing/attackby(obj/item/W as obj, mob/user as mob)
@@ -75,7 +79,7 @@
 		icon_state = spent_icon
 
 /obj/item/ammo_casing/examine(mob/user)
-	..()
+	. = ..()
 	if (!BB)
 		to_chat(user, "This one is spent.")
 
@@ -90,7 +94,7 @@
 	desc = "A magazine for some kind of gun."
 	icon_state = "357"
 	icon = 'icons/obj/ammo.dmi'
-	flags = CONDUCT
+	obj_flags = OBJ_FLAG_CONDUCTABLE
 	slot_flags = SLOT_BELT
 	item_state = "box"
 	matter = list(DEFAULT_WALL_MATERIAL = 500)
@@ -128,6 +132,10 @@
 			stored_ammo += new ammo_type(src)
 	update_icon()
 
+/obj/item/ammo_magazine/Destroy()
+	QDEL_LIST(stored_ammo)
+	. = ..()
+
 /obj/item/ammo_magazine/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/ammo_casing))
 		var/obj/item/ammo_casing/C = W
@@ -154,7 +162,7 @@
 	for(var/obj/item/ammo_casing/C in stored_ammo)
 		C.forceMove(user.loc)
 		playsound(C, /singleton/sound_category/casing_drop_sound, 50, FALSE)
-		C.set_dir(pick(alldirs))
+		C.set_dir(pick(GLOB.alldirs))
 	stored_ammo.Cut()
 	update_icon()
 
@@ -174,7 +182,7 @@
 		recyclable = FALSE
 
 /obj/item/ammo_magazine/examine(mob/user)
-	..()
+	. = ..()
 	to_chat(user, "There [(stored_ammo.len == 1)? "is" : "are"] [stored_ammo.len] round\s left!")
 
 //magazine icon state caching (caching lists are in SSicon_cache)

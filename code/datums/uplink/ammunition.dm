@@ -31,15 +31,37 @@
 	path = /obj/item/ammo_magazine/submachinemag
 	desc = "Contains twenty rounds of .45 bullets, for use with the vintage submachine gun."
 
+/datum/uplink_item/item/ammo/submachinegunmag/assassin
+	name = "Submachine Gun Magazine (6mm)"
+	path = /obj/item/ammo_magazine/submachinemag/assassin
+	desc = "Contains thirty rounds of 6mm caseless ammo. Used by the integrally suppressed machine pistol."
+
 /datum/uplink_item/item/ammo/a357
 	name = ".357 Speedloader"
 	path = /obj/item/ammo_magazine/a357
 	desc = "Contains eight rounds of .357 bullets."
 
+/datum/uplink_item/item/ammo/c38
+	name = ".38 Speedloader"
+	path = /obj/item/ammo_magazine/c38
+	desc = "Contains six rounds of .38 bullets."
+
+/datum/uplink_item/item/ammo/c38/haywire
+	name = ".38 Speedloader (Haywire)"
+	telecrystal_cost = 2
+	path = /obj/item/ammo_magazine/c38/emp
+	desc = "Contains six rounds of .38 haywire bullets."
+
 /datum/uplink_item/item/ammo/shotgun_shells
 	name = "Box of Shells"
 	path = /obj/item/storage/box/shotgunshells
 	desc = "Contains eight shotgun buckshot shells."
+
+/datum/uplink_item/item/ammo/government
+	name = "Box of .45-70 Govt. ammo"
+	telecrystal_cost = 2
+	path = /obj/item/storage/box/governmentammo
+	desc = "Contains eight .45-70 Govt. bullets."
 
 /datum/uplink_item/item/ammo/plasma_mag
 	name = "Plasma Shotgun Magazine"
@@ -117,10 +139,10 @@
 	desc = "A magazine for an assault rifle."
 
 /datum/uplink_item/item/ammo/sniper_ammo
-	name = "7.62 Sniper Magazine"
+	name = "7.62 Marksman Magazine"
 	telecrystal_cost = 4
 	path = /obj/item/ammo_magazine/d762
-	desc = "A magazine for a 7.62 sniper rifle."
+	desc = "A magazine for a 7.62 marksman rifle."
 
 /datum/uplink_item/item/ammo/bullpup_magazine
 	name = "5.56 Rifle Magazine"

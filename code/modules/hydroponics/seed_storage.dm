@@ -18,7 +18,7 @@
 	return FALSE
 
 /obj/machinery/seed_storage
-	name = "Seed storage"
+	name = "seed storage"
 	desc = "It stores, sorts, and dispenses seeds."
 	icon = 'icons/obj/vending.dmi'
 	icon_state = SEED_NOUN_SEEDS
@@ -34,12 +34,12 @@
 	var/list/scanner = list() // What properties we can view
 
 /obj/machinery/seed_storage/random // This is mostly for testing, but I guess admins could spawn it
-	name = "Random seed storage"
+	name = "random seed storage"
 	scanner = list("stats", "produce", "soil", "temperature", "light")
 	starting_seeds = list(/obj/item/seeds/random = 50)
 
 /obj/machinery/seed_storage/garden
-	name = "Garden seed storage"
+	name = "garden seed storage"
 	scanner = list("stats")
 	starting_seeds = list(
 		/obj/item/seeds/aghrasshseed = 3,
@@ -72,6 +72,7 @@
 		/obj/item/seeds/grassseed = 3,
 		/obj/item/seeds/guamiseed = 2,
 		/obj/item/seeds/gukheseed = 3,
+		/obj/item/seeds/jaekseol = 3,
 		/obj/item/seeds/lemonseed = 3,
 		/obj/item/seeds/limeseed = 3,
 		/obj/item/seeds/mossseed = 2,
@@ -80,6 +81,7 @@
 		/obj/item/seeds/mollusc = 15,
 		/obj/item/seeds/nifberries = 2,
 		/obj/item/seeds/onionseed = 3,
+		/obj/item/seeds/oracleseed = 3,
 		/obj/item/seeds/orangeseed = 3,
 		/obj/item/seeds/peanutseed = 3,
 		/obj/item/seeds/peppercornseed = 3,
@@ -97,6 +99,7 @@
 		/obj/item/seeds/richcoffeeseed = 3,
 		/obj/item/seeds/sarezhiseed = 3,
 		/obj/item/seeds/seaweed = 3,
+		/obj/item/seeds/ = 3,
 		/obj/item/seeds/serkiflowerseed = 1,
 		/obj/item/seeds/shandseed = 2,
 		/obj/item/seeds/soyaseed = 3,
@@ -106,6 +109,7 @@
 		/obj/item/seeds/sugartree = 2,
 		/obj/item/seeds/sunflowerseed = 3,
 		/obj/item/seeds/teaseed = 3,
+		/obj/item/seeds/tieguanyin = 3,
 		/obj/item/seeds/tobaccoseed = 3,
 		/obj/item/seeds/tomatoseed = 3,
 		/obj/item/seeds/towermycelium = 3,
@@ -137,6 +141,8 @@
 		/obj/item/seeds/chantermycelium = 3,
 		/obj/item/seeds/cherryseed = 3,
 		/obj/item/seeds/chiliseed = 3,
+		/obj/item/seeds/chickpeas = 3,
+		/obj/item/seeds/cocaseed = 3,
 		/obj/item/seeds/cocoapodseed = 3,
 		/obj/item/seeds/coffeeseed = 3,
 		/obj/item/seeds/cornseed = 3,
@@ -144,21 +150,25 @@
 		/obj/item/seeds/replicapod = 3,
 		/obj/item/seeds/earthenroot = 2,
 		/obj/item/seeds/eggplantseed = 3,
+		/obj/item/seeds/eki = 3,
 		/obj/item/seeds/fjylozyn = 3,
 		/obj/item/seeds/garlicseed = 3,
 		/obj/item/seeds/glowshroom = 2,
 		/obj/item/seeds/grapeseed = 3,
 		/obj/item/seeds/grassseed = 3,
+		/obj/item/seeds/guamiseed = 2,
 		/obj/item/seeds/gukheseed = 3,
 		/obj/item/seeds/koisspore = 3,
 		/obj/item/seeds/lemonseed = 3,
 		/obj/item/seeds/libertymycelium = 2,
 		/obj/item/seeds/limeseed = 3,
+		/obj/item/seeds/mossseed = 2,
 		/obj/item/seeds/mtearseed = 2,
 		/obj/item/seeds/mintseed = 3,
 		/obj/item/seeds/nettleseed = 2,
 		/obj/item/seeds/nifberries = 2,
 		/obj/item/seeds/onionseed = 3,
+		/obj/item/seeds/oracleseed = 3,
 		/obj/item/seeds/orangeseed = 3,
 		/obj/item/seeds/peanutseed = 3,
 		/obj/item/seeds/peppercornseed = 3,
@@ -167,11 +177,13 @@
 		/obj/item/seeds/poppyseed = 3,
 		/obj/item/seeds/potatoseed = 3,
 		/obj/item/seeds/pumpkinseed = 3,
+		/obj/item/seeds/qlortseed = 2,
 		/obj/item/seeds/raspberryseed = 3,
 		/obj/item/seeds/reishimycelium = 2,
 		/obj/item/seeds/riceseed = 3,
 		/obj/item/seeds/richcoffeeseed = 3,
 		/obj/item/seeds/sarezhiseed = 3,
+		/obj/item/seeds/seaweed = 3,
 		/obj/item/seeds/serkiflowerseed,
 		/obj/item/seeds/soyaseed = 3,
 		/obj/item/seeds/sthberryseed = 3,
@@ -189,7 +201,8 @@
 		/obj/item/seeds/wheatseed = 3,
 		/obj/item/seeds/whitebeetseed = 3,
 		/obj/item/seeds/wulumunushaseed = 3,
-		/obj/item/seeds/xuiziseed = 3
+		/obj/item/seeds/xuiziseed = 3,
+		/obj/item/seeds/ylpha = 2
 	)
 	screen_x = 1000
 	screen_y = 700

@@ -50,8 +50,6 @@
 		coinvalues["[cointype]"] = get_value(cointype)
 
 /obj/machinery/computer/slot_machine/Destroy()
-	if(balance)
-		give_payout(balance)
 	return ..()
 
 /obj/machinery/computer/slot_machine/process(delta_time)
@@ -178,12 +176,16 @@
 
 /obj/machinery/computer/slot_machine/emp_act(severity)
 	. = ..()
+
 	if(stat & (NOPOWER|BROKEN))
 		return
+
 	if(prob(15 * severity))
 		return
+
 	if(prob(1)) // :^)
 		emagged = TRUE
+
 	var/severity_ascending = 4 - severity
 	money = max(rand(money - (200 * severity_ascending), money + (200 * severity_ascending)), 0)
 	balance = max(rand(balance - (50 * severity_ascending), balance + (50 * severity_ascending)), 0)
@@ -244,12 +246,15 @@
 		return FALSE
 	return TRUE
 
-/obj/machinery/computer/slot_machine/proc/toggle_reel_spin(value, delay = 0) //value is 1 or 0 aka on or off
+/obj/machinery/computer/slot_machine/proc/toggle_reel_spin(value) //value is 1 or 0 aka on or off
 	for(var/list/reel in reels)
 		reels[reel] = value
 
-		if(delay)
-			sleep(delay)
+/obj/machinery/computer/slot_machine/proc/toggle_reel_spin_delay(value, delay = 0) //value is 1 or 0 aka on or off
+	toggle_reel_spin(value)
+
+	if(delay)
+		sleep(delay)
 
 /obj/machinery/computer/slot_machine/proc/randomize_reels()
 	for(var/reel in reels)
@@ -263,7 +268,7 @@
 
 	if(reels[1][2] + reels[2][2] + reels[3][2] + reels[4][2] + reels[5][2] == "[SEVEN][SEVEN][SEVEN][SEVEN][SEVEN]")
 		visible_message("<b>[src]</b> says, 'JACKPOT! You win [money] credits!'")
-		global_announcer.autosay("Congratulations to [user ? user.real_name : usrname] for winning the jackpot at the slot machine in [get_area(src)]!", "Automated Announcement System")
+		GLOB.global_announcer.autosay("Congratulations to [user ? user.real_name : usrname] for winning the jackpot at the slot machine in [get_area(src)]!", "Automated Announcement System")
 		playsound(loc, 'sound/arcade/sloto_jackpot.ogg', 20, 1, required_asfx_toggles = ASFX_ARCADE) // ham it up
 		jackpots += 1
 		balance += money - give_payout(JACKPOT)

@@ -4,8 +4,8 @@
 	program_icon_state = "comm"
 	program_key_icon_state = "lightblue_key"
 	extended_desc = "Used to command and control the station. Can relay long-range communications."
-	required_access_run = access_heads
-	required_access_download = access_heads
+	required_access_run = ACCESS_HEADS
+	required_access_download = ACCESS_HEADS
 	requires_ntnet = TRUE
 	size = 12
 	usage_flags = PROGRAM_CONSOLE | PROGRAM_LAPTOP
@@ -101,7 +101,7 @@
 	var/datum/comm_message_listener/l = obtain_message_listener()
 	switch(action)
 		if("emergencymaint")
-			if(is_authenticated(user) && !issilicon(user))
+			if(is_authenticated(user) && (isAI(user) || !issilicon(user)))
 				if(maint_all_access)
 					revoke_maint_all_access()
 					feedback_inc("alert_comms_maintRevoke",1)
@@ -120,7 +120,7 @@
 				if(announcement_cooldown)
 					to_chat(usr, "Please allow at least one minute to pass between announcements")
 					return
-				var/input = input(usr, "Please write a message to announce to the station crew.", "Priority Announcement") as null|message
+				var/input = tgui_input_text(usr, "Please write a message to announce to the station crew.", "Priority Announcement", multiline = TRUE)
 				if(!input || computer.use_check_and_message(usr))
 					return FALSE
 				var/was_hearing = HAS_TRAIT(computer, TRAIT_HEARING_SENSITIVE)
@@ -189,7 +189,7 @@
 			if(is_authenticated(user) && (!issilicon(usr) || isAI(usr)) && ntn_cont && ntn_comm)
 				var/current_level = text2num(params["target"])
 				var/confirm = alert("Are you sure you want to change alert level to [num2seclevel(current_level)]?", filedesc, "No", "Yes")
-				if(confirm == "Yes" && !computer.use_check_and_message(usr))
+				if(confirm == "Yes" && !computer.use_check_and_message(usr, (isAI(usr) ? USE_ALLOW_NON_ADJACENT : FALSE)))
 					var/old_level = security_level
 					if(!current_level)
 						current_level = SEC_LEVEL_GREEN
@@ -324,7 +324,7 @@ Command action procs
 	if((!(ROUND_IS_STARTED) || !evacuation_controller))
 		return FALSE
 
-	if(!universe.OnShuttleCall(usr))
+	if(!GLOB.universe.OnShuttleCall(usr))
 		to_chat(user, SPAN_WARNING("A bluespace connection cannot be established! Please check the user manual for more information."))
 		return FALSE
 
@@ -332,8 +332,8 @@ Command action procs
 		to_chat(user, SPAN_WARNING("An evacuation cannot be sent at this time. Please try again later."))
 		return FALSE
 
-	if(world.time < config.time_to_call_emergency_shuttle)
-		to_chat(user, SPAN_WARNING("An evacuation cannot be sent at this time. Please wait another [round((config.time_to_call_emergency_shuttle-world.time)/600)] minute\s before trying again."))
+	if(world.time < GLOB.config.time_to_call_emergency_shuttle)
+		to_chat(user, SPAN_WARNING("An evacuation cannot be sent at this time. Please wait another [round((GLOB.config.time_to_call_emergency_shuttle-world.time)/600)] minute\s before trying again."))
 		return FALSE
 
 	if(evacuation_controller.is_on_cooldown()) // Ten minute grace period to let the game get going without lolmetagaming. -- TLE

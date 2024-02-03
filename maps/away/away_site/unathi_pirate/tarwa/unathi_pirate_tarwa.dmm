@@ -21,6 +21,9 @@
 	d2 = 8;
 	icon_state = "4-8"
 	},
+/obj/machinery/atmospherics/pipe/simple/hidden{
+	dir = 9
+	},
 /turf/simulated/floor/diona,
 /area/tarwa_ship/oldhangar)
 "ao" = (
@@ -55,6 +58,10 @@
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/eva)
+"av" = (
+/obj/structure/ship_weapon_dummy,
+/turf/simulated/floor/diona/airless,
+/area/space)
 "ax" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
@@ -67,6 +74,7 @@
 	d2 = 8;
 	icon_state = "4-8"
 	},
+/obj/effect/floor_decal/corner/dark_green/diagonal,
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/canteen)
 "aA" = (
@@ -136,7 +144,8 @@
 	},
 /obj/machinery/door/airlock/highsecurity{
 	name = "Armory & Ammo Storage";
-	req_access = list(210)
+	req_access = list(210);
+	dir = 1
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/armory)
@@ -145,22 +154,16 @@
 /turf/simulated/floor/lino,
 /area/tarwa_ship/canteen)
 "bI" = (
-/obj/machinery/atmospherics/pipe/simple/hidden/supply{
-	dir = 4
+/obj/machinery/light{
+	dir = 1
 	},
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
-	dir = 4
-	},
-/obj/structure/cable/green{
-	d1 = 4;
-	d2 = 8;
-	icon_state = "4-8"
-	},
-/obj/machinery/atmospherics/pipe/simple/hidden/fuel{
-	dir = 4
-	},
-/turf/simulated/floor/plating,
-/area/tarwa_ship/engineering2)
+/obj/structure/table/rack,
+/obj/item/clothing/suit/space/void/unathi_pirate/tarwa,
+/obj/item/clothing/head/helmet/space/void/unathi_pirate/tarwa,
+/obj/item/clothing/shoes/magboots,
+/obj/item/clothing/mask/breath,
+/turf/simulated/floor/tiled,
+/area/tarwa_ship/eva)
 "bN" = (
 /obj/machinery/atmospherics/unary/vent_scrubber/on,
 /turf/simulated/floor/plating,
@@ -170,6 +173,7 @@
 	dir = 1
 	},
 /obj/structure/table/steel,
+/obj/effect/floor_decal/corner/dark_green/diagonal,
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/canteen)
 "bV" = (
@@ -194,6 +198,12 @@
 	},
 /turf/simulated/floor/plating,
 /area/tarwa_ship/engineering1)
+"ci" = (
+/obj/machinery/light{
+	dir = 4
+	},
+/turf/simulated/floor/plating,
+/area/tarwa_ship/engineering2)
 "cl" = (
 /obj/structure/ship_weapon_dummy/barrel,
 /obj/effect/landmark/entry_point/fore{
@@ -215,7 +225,8 @@
 	},
 /obj/machinery/door/airlock/glass_mining{
 	req_access = list(210);
-	name = "Ruined Hangar"
+	name = "Ruined Hangar";
+	dir = 4
 	},
 /turf/simulated/floor/plating,
 /area/tarwa_ship/oldhangar)
@@ -239,6 +250,10 @@
 "cy" = (
 /turf/simulated/wall/diona,
 /area/tarwa_ship/gun)
+"cG" = (
+/obj/machinery/atmospherics/pipe/simple/hidden,
+/turf/simulated/floor/diona,
+/area/tarwa_ship/oldhangar)
 "cI" = (
 /obj/machinery/light,
 /obj/structure/cable/green{
@@ -256,7 +271,8 @@
 	},
 /obj/machinery/door/airlock/highsecurity{
 	name = "Reactor";
-	req_access = list(210)
+	req_access = list(210);
+	dir = 1
 	},
 /turf/simulated/floor/reinforced,
 /area/tarwa_ship/engineering1)
@@ -286,7 +302,8 @@
 /area/tarwa_ship/hangar)
 "dd" = (
 /obj/structure/sign/flag/tarwa{
-	pixel_y = 25
+	pixel_y = 25;
+	stand_icon = "banner"
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/eva)
@@ -313,7 +330,6 @@
 /area/tarwa_ship/crew)
 "du" = (
 /obj/structure/table/rack,
-/obj/item/gun/projectile/colt,
 /obj/item/clothing/suit/armor/unathi,
 /obj/random/civgun/rifle,
 /obj/random/civgun/rifle,
@@ -333,9 +349,7 @@
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 1
 	},
-/obj/machinery/alarm{
-	dir = 4;
-	pixel_x = -28;
+/obj/machinery/alarm/west{
 	req_one_access = list(210)
 	},
 /turf/simulated/floor/diona,
@@ -392,41 +406,55 @@
 "fe" = (
 /turf/simulated/floor/lino,
 /area/tarwa_ship/canteen)
-"fw" = (
-/obj/machinery/atmospherics/pipe/simple/hidden/supply{
-	dir = 4
-	},
-/obj/machinery/light{
-	dir = 1
+"fm" = (
+/obj/structure/sign/flag/tarwa{
+	pixel_y = 25;
+	stand_icon = "banner"
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/bridge)
+"fw" = (
+/obj/machinery/door/airlock/external,
+/obj/machinery/atmospherics/pipe/manifold/hidden{
+	dir = 8
+	},
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_aft";
+	name = "airlock_tarwa_aft";
+	frequency = 1993
+	},
+/obj/effect/map_effect/marker_helper/airlock/interior,
+/turf/simulated/floor/plating,
+/area/tarwa_ship)
 "fy" = (
-/turf/simulated/floor/foamedmetal,
-/area/tarwa_ship/oldhangar)
+/obj/structure/ship_weapon_dummy,
+/obj/structure/ship_weapon_dummy,
+/turf/simulated/floor/diona/airless,
+/area/space)
 "fC" = (
 /obj/structure/viewport/unathi,
 /turf/simulated/floor/plating,
 /area/tarwa_ship/gun)
 "fF" = (
-/obj/machinery/embedded_controller/radio/airlock/docking_port_multi{
-	frequency = 1411;
-	id_tag = "tarwa_shuttle";
-	layer = 3.3;
-	master_tag = "tarwa_shuttle";
-	cycle_to_external_air = 1;
-	pixel_x = 28;
-	tag_airpump = "tarwa_shuttle_in";
-	tag_exterior_door = "tarwa_shuttle_external";
-	tag_interior_door = "tarwa_shuttle_internal";
-	tag_chamber_sensor = "tarwa_shuttle_sensor_chamber";
-	tag_exterior_sensor = "tarwa_shuttle_sensor_exterior";
-	tag_interior_sensor = "tarwa_shuttle_sensor_interior"
-	},
-/obj/machinery/atmospherics/unary/vent_pump/on{
+/obj/machinery/embedded_controller/radio/airlock/docking_port{
 	dir = 8;
-	level = 2;
-	id_tag = "tarwa_shuttle_in"
+	pixel_x = 20;
+	pixel_y = 6
+	},
+/obj/machinery/airlock_sensor{
+	dir = 8;
+	pixel_x = 20;
+	pixel_y = -6
+	},
+/obj/effect/map_effect/marker/airlock/shuttle{
+	cycle_to_external_air = 1;
+	master_tag = "airlock_tarwa_shuttle";
+	name = "airlock_tarwa_shuttle";
+	req_one_access = list(210);
+	shuttle_tag = "Tarwa Conglomerate Shuttle"
+	},
+/obj/machinery/atmospherics/unary/vent_pump/high_volume{
+	dir = 8
 	},
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
@@ -444,7 +472,8 @@
 	},
 /obj/machinery/door/airlock/glass_mining{
 	req_access = list(210);
-	name = "EVA Storage"
+	name = "EVA Storage";
+	dir = 4
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/eva)
@@ -452,9 +481,14 @@
 /turf/simulated/wall/diona,
 /area/tarwa_ship/bridge)
 "gg" = (
-/obj/machinery/atmospherics/binary/pump/high_power,
-/turf/simulated/floor/diona,
-/area/shuttle/tarwa)
+/obj/machinery/ship_weapon/francisca{
+	pixel_x = -64;
+	pixel_y = -162;
+	weapon_id = "Tarwa Francisca Rotary Gun"
+	},
+/obj/structure/ship_weapon_dummy,
+/turf/simulated/floor/diona/airless,
+/area/tarwa_ship/oldhangar)
 "gi" = (
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 4;
@@ -542,20 +576,15 @@
 /obj/effect/landmark/entry_point/fore{
 	name = "starboard"
 	},
-/obj/machinery/door/airlock/diona/external{
-	id_tag = "tarwa_shuttle_external";
-	frequency = 1411
+/obj/machinery/door/airlock/diona/external,
+/obj/effect/map_effect/marker/airlock/shuttle{
+	cycle_to_external_air = 1;
+	master_tag = "airlock_tarwa_shuttle";
+	name = "airlock_tarwa_shuttle";
+	req_one_access = list(210);
+	shuttle_tag = "Tarwa Conglomerate Shuttle"
 	},
-/obj/machinery/access_button{
-	command = "cycle_exterior";
-	frequency = 1411;
-	master_tag = "tarwa_shuttle";
-	name = "exterior access button";
-	pixel_x = -25;
-	pixel_y = -10;
-	req_one_access = list(31,48,67);
-	dir = 1
-	},
+/obj/effect/map_effect/marker_helper/airlock/exterior,
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
 "hx" = (
@@ -582,6 +611,22 @@
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/armory)
 "hR" = (
+/obj/machinery/atmospherics/unary/vent_pump/high_volume,
+/obj/machinery/airlock_sensor{
+	dir = 8;
+	pixel_x = 20;
+	pixel_y = -6
+	},
+/obj/machinery/embedded_controller/radio/airlock/airlock_controller{
+	dir = 8;
+	pixel_x = 20;
+	pixel_y = 6
+	},
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_aft";
+	name = "airlock_tarwa_aft";
+	frequency = 1993
+	},
 /turf/simulated/floor/plating,
 /area/tarwa_ship)
 "ia" = (
@@ -596,22 +641,35 @@
 	dir = 1
 	},
 /obj/structure/sign/flag/tarwa{
-	pixel_y = 25
+	pixel_y = 25;
+	stand_icon = "banner"
 	},
 /turf/simulated/floor/diona,
 /area/tarwa_ship/cic)
 "iv" = (
-/obj/machinery/atmospherics/unary/vent_pump/on{
-	dir = 4;
-	id_tag = "tarwa_shuttle_out"
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/machinery/atmospherics/pipe/simple/hidden/supply,
+/obj/structure/cable/green{
+	d1 = 1;
+	d2 = 2;
+	icon_state = "1-2"
 	},
-/turf/simulated/floor/tiled,
-/area/tarwa_ship/bridge)
+/obj/structure/diona/bulb,
+/turf/simulated/floor/diona,
+/area/tarwa_ship/oldhangar)
 "iI" = (
-/obj/machinery/door/airlock/diona/external{
-	id_tag = "tarwa_shuttle_external";
-	frequency = 1411
+/obj/machinery/door/airlock/diona/external,
+/obj/machinery/access_button{
+	pixel_x = 28
 	},
+/obj/effect/map_effect/marker/airlock/shuttle{
+	cycle_to_external_air = 1;
+	master_tag = "airlock_tarwa_shuttle";
+	name = "airlock_tarwa_shuttle";
+	req_one_access = list(210);
+	shuttle_tag = "Tarwa Conglomerate Shuttle"
+	},
+/obj/effect/map_effect/marker_helper/airlock/exterior,
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
 "jc" = (
@@ -623,6 +681,7 @@
 	dir = 10
 	},
 /obj/structure/table/steel,
+/obj/effect/floor_decal/corner/dark_green/diagonal,
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/canteen)
 "jf" = (
@@ -636,13 +695,12 @@
 	dir = 8
 	},
 /obj/structure/diona/bulb,
-/obj/machinery/airlock_sensor{
-	frequency = 1411;
-	id_tag = "tarwa_shuttle_sensor_chamber";
-	pixel_x = -24;
-	pixel_y = -6;
-	dir = 4;
-	master_tag = "tarwa_shuttle"
+/obj/effect/map_effect/marker/airlock/shuttle{
+	cycle_to_external_air = 1;
+	master_tag = "airlock_tarwa_shuttle";
+	name = "airlock_tarwa_shuttle";
+	req_one_access = list(210);
+	shuttle_tag = "Tarwa Conglomerate Shuttle"
 	},
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
@@ -696,6 +754,7 @@
 /area/tarwa_ship)
 "jD" = (
 /obj/structure/table/steel,
+/obj/effect/floor_decal/corner/dark_green/diagonal,
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/canteen)
 "jE" = (
@@ -741,7 +800,8 @@
 	},
 /obj/machinery/door/airlock/command{
 	req_access = list(210);
-	name = "Captain's Quarters"
+	name = "Captain's Quarters";
+	dir = 4
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/captain)
@@ -781,6 +841,15 @@
 	},
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
+"kI" = (
+/obj/machinery/portable_atmospherics/canister/air/airlock,
+/obj/structure/window/reinforced{
+	dir = 8;
+	maxhealth = 140
+	},
+/obj/machinery/atmospherics/portables_connector,
+/turf/simulated/floor/plating,
+/area/tarwa_ship/engineering2)
 "kR" = (
 /obj/structure/railing/mapped,
 /obj/machinery/computer/ship/helm,
@@ -865,22 +934,11 @@
 /turf/simulated/floor/diona,
 /area/tarwa_ship/oldhangar)
 "lY" = (
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
-	dir = 4
+/obj/machinery/ammunition_loader/francisca{
+	weapon_id = "Tarwa Francisca Rotary Gun"
 	},
-/obj/structure/cable/green{
-	d1 = 4;
-	d2 = 8;
-	icon_state = "4-8"
-	},
-/obj/machinery/light{
-	dir = 1
-	},
-/obj/structure/sign/flag/tarwa{
-	pixel_y = 25
-	},
-/turf/simulated/floor/tiled,
-/area/tarwa_ship/bridge)
+/turf/simulated/floor/plating,
+/area/tarwa_ship/oldhangar)
 "mc" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
@@ -894,6 +952,7 @@
 	icon_state = "1-8"
 	},
 /obj/structure/table/steel,
+/obj/effect/floor_decal/corner/dark_green/diagonal,
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/canteen)
 "mj" = (
@@ -933,19 +992,16 @@
 /turf/simulated/floor/diona,
 /area/tarwa_ship/engineering1)
 "nd" = (
-/obj/machinery/embedded_controller/radio/docking_port_multi{
-	child_names_txt = "West Airlock;Cargo Airlock";
-	child_tags_txt = "intrepid_shuttle_west;intrepid_shuttle_cargo";
-	frequency = 1411;
-	id_tag = "tarwa_shuttle";
-	pixel_y = -28
+/obj/structure/bed/stool/chair/shuttle{
+	dir = 1
 	},
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
 "ns" = (
 /obj/structure/closet,
 /obj/structure/sign/flag/tarwa{
-	pixel_y = 25
+	pixel_y = 25;
+	stand_icon = "banner"
 	},
 /turf/simulated/floor/diona,
 /area/tarwa_ship/diona)
@@ -983,7 +1039,8 @@
 	},
 /obj/machinery/door/airlock/engineering{
 	name = "Engineering";
-	req_access = list(210)
+	req_access = list(210);
+	dir = 4
 	},
 /turf/simulated/floor/plating,
 /area/tarwa_ship/engineering2)
@@ -999,9 +1056,7 @@
 /turf/simulated/floor/plating,
 /area/tarwa_ship/engineering1)
 "nX" = (
-/obj/machinery/alarm{
-	dir = 1;
-	pixel_y = -25;
+/obj/machinery/alarm/south{
 	req_one_access = list(210)
 	},
 /turf/simulated/floor/tiled,
@@ -1034,7 +1089,8 @@
 	name = "waste canister"
 	},
 /obj/structure/sign/flag/tarwa{
-	pixel_y = 25
+	pixel_y = 25;
+	stand_icon = "banner"
 	},
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
@@ -1115,15 +1171,18 @@
 	},
 /obj/machinery/door/airlock/engineering{
 	name = "Engineering";
-	req_access = list(210)
+	req_access = list(210);
+	dir = 4
 	},
 /turf/simulated/floor/plating,
 /area/tarwa_ship/engineering1)
 "pV" = (
 /obj/structure/bed/stool/padded/green,
 /obj/structure/sign/flag/tarwa{
-	pixel_y = 25
+	pixel_y = 25;
+	stand_icon = "banner"
 	},
+/obj/effect/floor_decal/corner/dark_green/diagonal,
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/canteen)
 "pZ" = (
@@ -1161,8 +1220,10 @@
 	dir = 1
 	},
 /obj/structure/table/rack,
-/obj/item/clothing/suit/space/void/unathi_pirate,
-/obj/item/clothing/head/helmet/space/void/unathi_pirate,
+/obj/item/clothing/suit/space/void/unathi_pirate/tarwa,
+/obj/item/clothing/head/helmet/space/void/unathi_pirate/tarwa,
+/obj/item/clothing/shoes/magboots,
+/obj/item/clothing/mask/breath,
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/eva)
 "qK" = (
@@ -1241,10 +1302,7 @@
 /obj/structure/cable/green{
 	icon_state = "0-4"
 	},
-/obj/machinery/power/apc{
-	dir = 8;
-	name = "west bump";
-	pixel_x = -24;
+/obj/machinery/power/apc/west{
 	req_access = list(210)
 	},
 /turf/simulated/floor/diona,
@@ -1285,10 +1343,8 @@
 /area/tarwa_ship/bridge)
 "sz" = (
 /obj/structure/cable/green,
-/obj/machinery/power/apc{
+/obj/machinery/power/apc/south{
 	is_critical = 1;
-	name = "south bump";
-	pixel_y = -24;
 	req_access = list(210)
 	},
 /turf/simulated/floor/diona,
@@ -1321,16 +1377,15 @@
 	},
 /obj/item/clothing/suit/unathi/robe/robe_coat/blue,
 /obj/structure/sign/flag/tarwa{
-	pixel_y = 25
+	pixel_y = 25;
+	stand_icon = "banner"
 	},
 /turf/simulated/floor/carpet/orange,
 /area/tarwa_ship/captain)
 "tK" = (
 /obj/structure/cable/green,
-/obj/machinery/power/apc{
+/obj/machinery/power/apc/south{
 	is_critical = 1;
-	name = "south bump";
-	pixel_y = -24;
 	req_access = list(210)
 	},
 /turf/simulated/floor/carpet/orange,
@@ -1351,24 +1406,20 @@
 /turf/simulated/floor/carpet/orange,
 /area/tarwa_ship/captain)
 "uo" = (
-/obj/machinery/airlock_sensor/airlock_interior{
-	frequency = 1411;
-	id_tag = "tarwa_shuttle_sensor_interior";
-	master_tag = "tarwa_shuttle";
-	pixel_x = 25;
-	pixel_y = -25
-	},
+/obj/machinery/door/airlock/external,
 /obj/machinery/access_button{
-	command = "cycle_interior";
-	frequency = 1411;
-	master_tag = "tarwa_shuttle";
-	name = "interior access button";
-	pixel_x = 37;
-	pixel_y = -24;
-	req_access = list(13)
+	dir = 1;
+	pixel_x = -28;
+	pixel_y = 12
 	},
-/turf/simulated/floor/diona,
-/area/shuttle/tarwa)
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_aft";
+	name = "airlock_tarwa_aft";
+	frequency = 1993
+	},
+/obj/effect/map_effect/marker_helper/airlock/exterior,
+/turf/simulated/floor/plating,
+/area/tarwa_ship)
 "uu" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
@@ -1398,11 +1449,16 @@
 /turf/template_noop,
 /area/space)
 "uJ" = (
-/obj/machinery/atmospherics/pipe/simple/visible/yellow{
-	dir = 9
+/obj/machinery/light{
+	dir = 8
 	},
-/turf/simulated/floor/diona,
-/area/shuttle/tarwa)
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_aft";
+	name = "airlock_tarwa_aft";
+	frequency = 1993
+	},
+/turf/simulated/floor/plating,
+/area/tarwa_ship)
 "uS" = (
 /turf/simulated/wall/shuttle/raider,
 /area/tarwa_ship/crew)
@@ -1413,18 +1469,15 @@
 /turf/simulated/floor/tiled/white,
 /area/tarwa_ship/medical)
 "vn" = (
-/obj/machinery/alarm{
-	pixel_x = 28;
-	dir = 8;
+/obj/machinery/alarm/east{
 	req_one_access = list(210)
 	},
 /obj/structure/table/rack,
-/obj/item/ship_ammunition/bruiser/flechette,
-/obj/item/ship_ammunition/bruiser/flechette,
-/obj/item/ship_ammunition/bruiser/flechette,
-/obj/item/ship_ammunition/bruiser/flechette,
-/obj/item/ship_ammunition/bruiser/flechette,
-/obj/item/ship_ammunition/bruiser/flechette,
+/obj/item/ship_ammunition/francisca{
+	pixel_y = 8
+	},
+/obj/item/ship_ammunition/francisca,
+/obj/item/ship_ammunition/francisca/frag,
 /turf/simulated/floor/diona,
 /area/tarwa_ship/armory)
 "vo" = (
@@ -1487,6 +1540,21 @@
 	},
 /turf/simulated/floor/tiled/white,
 /area/tarwa_ship/medical)
+"wH" = (
+/obj/machinery/atmospherics/pipe/simple/hidden{
+	dir = 10
+	},
+/turf/simulated/floor/diona,
+/area/tarwa_ship/oldhangar)
+"wI" = (
+/obj/structure/diona/bulb,
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_stbd";
+	name = "airlock_tarwa_stbd";
+	frequency = 1451
+	},
+/turf/simulated/floor/diona,
+/area/tarwa_ship/oldhangar)
 "wJ" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/fuel{
 	dir = 1
@@ -1553,17 +1621,15 @@
 /turf/simulated/floor/plating,
 /area/tarwa_ship/engineering1)
 "xl" = (
-/obj/machinery/power/apc{
-	dir = 1;
-	name = "north bump";
-	pixel_x = 0;
-	pixel_y = 24;
-	req_access = list(113)
-	},
 /obj/structure/cable/green{
 	d2 = 8;
 	icon_state = "0-8"
 	},
+/obj/machinery/power/apc/north{
+	pixel_x = 0;
+	req_access = list(210)
+	},
+/obj/structure/bed/stool/chair/shuttle,
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
 "xA" = (
@@ -1595,8 +1661,19 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/crew)
+"yi" = (
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_aft";
+	name = "airlock_tarwa_aft";
+	frequency = 1993
+	},
+/turf/simulated/floor/plating,
+/area/tarwa_ship)
 "yk" = (
 /obj/structure/table/stone/marble,
+/obj/effect/floor_decal/spline/plain/black{
+	dir = 8
+	},
 /turf/simulated/floor/lino,
 /area/tarwa_ship/canteen)
 "ys" = (
@@ -1653,6 +1730,9 @@
 	pixel_x = 6;
 	pixel_y = -1
 	},
+/obj/item/clothing/gloves/latex/nitrile/unathi,
+/obj/item/clothing/gloves/latex/nitrile/unathi,
+/obj/item/clothing/gloves/latex/nitrile,
 /turf/simulated/floor/tiled/white,
 /area/tarwa_ship/medical)
 "zl" = (
@@ -1691,10 +1771,8 @@
 /turf/simulated/floor/plating,
 /area/tarwa_ship/engineering2)
 "zw" = (
-/obj/effect/landmark/entry_point/starboard{
-	name = "starboard, fuel bay"
-	},
-/turf/simulated/wall/diona,
+/obj/structure/table/reinforced/steel,
+/turf/simulated/floor/plating,
 /area/tarwa_ship/oldhangar)
 "zy" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/fuel{
@@ -1739,9 +1817,16 @@
 /turf/template_noop,
 /area/space)
 "Ay" = (
-/obj/machinery/atmospherics/unary/vent_pump/on{
-	dir = 4;
-	id_tag = "tarwa_shuttle_out_internal"
+/obj/effect/map_effect/marker/airlock/shuttle{
+	cycle_to_external_air = 1;
+	master_tag = "airlock_tarwa_shuttle";
+	name = "airlock_tarwa_shuttle";
+	req_one_access = list(210);
+	shuttle_tag = "Tarwa Conglomerate Shuttle"
+	},
+/obj/effect/map_effect/marker_helper/airlock/out,
+/obj/machinery/atmospherics/unary/vent_pump/high_volume{
+	dir = 4
 	},
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
@@ -1769,9 +1854,7 @@
 /turf/simulated/floor/plating,
 /area/tarwa_ship/engineering1)
 "Ba" = (
-/obj/machinery/alarm{
-	dir = 1;
-	pixel_y = -25;
+/obj/machinery/alarm/south{
 	req_one_access = list(210)
 	},
 /obj/machinery/iv_drip,
@@ -1792,7 +1875,8 @@
 	},
 /obj/machinery/door/airlock/diona{
 	req_access = list(210);
-	name = "Diona Quarters"
+	name = "Diona Quarters";
+	dir = 4
 	},
 /turf/simulated/floor/diona,
 /area/tarwa_ship/diona)
@@ -1805,8 +1889,13 @@
 /obj/item/ship_ammunition/bruiser,
 /obj/item/ship_ammunition/bruiser,
 /obj/structure/sign/flag/tarwa{
-	pixel_y = 25
+	pixel_y = 25;
+	stand_icon = "banner"
 	},
+/obj/item/ship_ammunition/bruiser/he,
+/obj/item/ship_ammunition/bruiser/flechette,
+/obj/item/ship_ammunition/bruiser/flechette,
+/obj/item/ship_ammunition/bruiser/flechette,
 /turf/simulated/floor/diona,
 /area/tarwa_ship/armory)
 "BC" = (
@@ -1825,6 +1914,13 @@
 /obj/effect/landmark/entry_point/aft{
 	name = "aft, airlock"
 	},
+/obj/machinery/door/airlock/external,
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_aft";
+	name = "airlock_tarwa_aft";
+	frequency = 1993
+	},
+/obj/effect/map_effect/marker_helper/airlock/exterior,
 /turf/simulated/floor/plating,
 /area/tarwa_ship)
 "BJ" = (
@@ -1834,6 +1930,10 @@
 	},
 /turf/simulated/floor/plating,
 /area/tarwa_ship/engineering2)
+"BL" = (
+/obj/structure/bed/stool/chair/office/bridge/pilot,
+/turf/simulated/floor/plating,
+/area/tarwa_ship/oldhangar)
 "BX" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
@@ -1853,7 +1953,8 @@
 	},
 /obj/machinery/door/airlock/glass_service{
 	req_access = list(210);
-	name = "Crew Quarters"
+	name = "Crew Quarters";
+	dir = 4
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/crew)
@@ -1918,8 +2019,13 @@
 /area/tarwa_ship/cic)
 "De" = (
 /obj/structure/table/rack,
-/turf/simulated/wall/shuttle/raider,
-/area/tarwa_ship/captain)
+/obj/item/tank/jetpack/carbondioxide,
+/obj/item/tank/jetpack/carbondioxide{
+	pixel_x = 2;
+	pixel_y = 4
+	},
+/turf/simulated/floor/tiled,
+/area/tarwa_ship/eva)
 "Di" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 1
@@ -1931,9 +2037,7 @@
 /turf/simulated/floor/plating,
 /area/tarwa_ship/engineering1)
 "Dk" = (
-/obj/machinery/alarm{
-	dir = 4;
-	pixel_x = -28;
+/obj/machinery/alarm/west{
 	req_one_access = list(210)
 	},
 /turf/simulated/floor/diona,
@@ -1949,13 +2053,17 @@
 /turf/simulated/floor/carpet/orange,
 /area/tarwa_ship/captain)
 "Dw" = (
-/obj/structure/bed/stool/chair/shuttle{
-	dir = 4
+/obj/machinery/atmospherics/binary/pump/high_power{
+	dir = 1;
+	name = "Fuel to Thrusters"
 	},
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
 "Dy" = (
 /obj/machinery/vending/dinnerware,
+/obj/effect/floor_decal/spline/plain/black{
+	dir = 8
+	},
 /turf/simulated/floor/lino,
 /area/tarwa_ship/canteen)
 "DC" = (
@@ -1972,9 +2080,10 @@
 /area/tarwa_ship)
 "DH" = (
 /obj/machinery/embedded_controller/radio/simple_docking_controller{
-	frequency = 1411;
+	frequency = 1380;
 	id_tag = "tarwa_shuttle_dock";
-	pixel_x = -28
+	dir = 4;
+	pixel_x = -20
 	},
 /turf/simulated/floor/plating,
 /area/tarwa_ship/hangar)
@@ -1982,13 +2091,22 @@
 /obj/machinery/light,
 /turf/simulated/floor/tiled/white,
 /area/tarwa_ship/medical)
+"DV" = (
+/obj/machinery/alarm/north{
+	req_one_access = list(210)
+	},
+/turf/simulated/floor/tiled,
+/area/tarwa_ship/bridge)
 "Eb" = (
 /obj/machinery/atmospherics/unary/vent_scrubber/on{
 	dir = 8
 	},
-/obj/machinery/alarm{
-	pixel_y = 25;
-	req_one_access = list(210)
+/obj/structure/cable/green{
+	icon_state = "0-8"
+	},
+/obj/machinery/power/apc/north{
+	pixel_x = 0;
+	req_access = list(210)
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/bridge)
@@ -2008,8 +2126,7 @@
 /area/tarwa_ship/bridge)
 "Ei" = (
 /obj/machinery/atmospherics/unary/vent_scrubber/on,
-/obj/machinery/alarm{
-	pixel_y = 25;
+/obj/machinery/alarm/north{
 	req_one_access = list(210)
 	},
 /turf/simulated/floor/tiled,
@@ -2019,11 +2136,8 @@
 	d2 = 2;
 	icon_state = "0-2"
 	},
-/obj/machinery/power/apc{
-	dir = 1;
-	name = "north bump";
+/obj/machinery/power/apc/north{
 	pixel_x = 0;
-	pixel_y = 24;
 	req_access = list(210)
 	},
 /turf/simulated/floor/diona,
@@ -2033,11 +2147,8 @@
 	d2 = 8;
 	icon_state = "0-8"
 	},
-/obj/machinery/power/apc{
-	dir = 4;
+/obj/machinery/power/apc/east{
 	is_critical = 1;
-	name = "east bump";
-	pixel_x = 24;
 	req_access = list(210)
 	},
 /turf/simulated/floor/plating,
@@ -2085,7 +2196,8 @@
 	color = "#ba650b"
 	},
 /obj/structure/sign/flag/tarwa{
-	pixel_y = 25
+	pixel_y = 25;
+	stand_icon = "banner"
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/crew)
@@ -2096,6 +2208,13 @@
 	},
 /turf/simulated/floor/plating,
 /area/tarwa_ship/bridge)
+"Fb" = (
+/obj/machinery/atmospherics/portables_connector{
+	dir = 1
+	},
+/obj/machinery/portable_atmospherics/canister/carbon_dioxide,
+/turf/simulated/floor/diona,
+/area/shuttle/tarwa)
 "Fc" = (
 /obj/machinery/atmospherics/unary/vent_pump/siphon/on/atmos{
 	dir = 4;
@@ -2128,7 +2247,8 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
 /obj/machinery/door/airlock/highsecurity{
 	name = "Auxiliary CIC";
-	req_access = list(210)
+	req_access = list(210);
+	dir = 1
 	},
 /turf/simulated/floor/diona,
 /area/tarwa_ship/cic)
@@ -2146,15 +2266,20 @@
 /obj/structure/cable/green{
 	icon_state = "0-4"
 	},
-/obj/machinery/power/apc{
-	dir = 1;
-	name = "north bump";
+/obj/machinery/power/apc/north{
 	pixel_x = 0;
-	pixel_y = 24;
-	req_access = list(113)
+	req_access = list(210)
 	},
 /turf/simulated/floor/diona,
 /area/tarwa_ship/gun)
+"Fw" = (
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_stbd";
+	name = "airlock_tarwa_stbd";
+	frequency = 1451
+	},
+/turf/simulated/floor/diona,
+/area/tarwa_ship/oldhangar)
 "Fx" = (
 /obj/machinery/atmospherics/unary/engine{
 	dir = 4
@@ -2176,6 +2301,20 @@
 	},
 /turf/simulated/floor/plating,
 /area/tarwa_ship/engineering2)
+"FT" = (
+/obj/machinery/embedded_controller/radio/airlock/airlock_controller{
+	pixel_y = 25
+	},
+/obj/machinery/atmospherics/unary/vent_pump/high_volume{
+	dir = 4
+	},
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_stbd";
+	name = "airlock_tarwa_stbd";
+	frequency = 1451
+	},
+/turf/simulated/floor/diona,
+/area/tarwa_ship/oldhangar)
 "FW" = (
 /obj/machinery/light{
 	dir = 1
@@ -2216,22 +2355,15 @@
 "GO" = (
 /obj/machinery/portable_atmospherics/canister/air/airlock,
 /obj/machinery/atmospherics/portables_connector,
-/obj/machinery/door/window,
-/obj/structure/window/reinforced{
-	dir = 8;
-	maxhealth = 140
-	},
 /obj/structure/window/reinforced{
 	dir = 4
 	},
-/obj/structure/window/reinforced{
-	dir = 1
-	},
-/obj/machinery/light{
-	dir = 1
-	},
 /turf/simulated/floor/plating,
 /area/tarwa_ship/engineering2)
+"GV" = (
+/obj/machinery/atmospherics/pipe/simple/visible/yellow,
+/turf/simulated/floor/diona,
+/area/shuttle/tarwa)
 "Hc" = (
 /obj/machinery/atmospherics/pipe/manifold/hidden/supply{
 	dir = 8
@@ -2252,12 +2384,14 @@
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship)
+"Ht" = (
+/obj/machinery/computer/ship/navigation,
+/turf/simulated/floor/plating,
+/area/tarwa_ship/oldhangar)
 "Hy" = (
 /obj/structure/cable/green,
-/obj/machinery/power/apc{
+/obj/machinery/power/apc/south{
 	is_critical = 1;
-	name = "south bump";
-	pixel_y = -24;
 	req_access = list(210)
 	},
 /turf/simulated/floor/tiled/white,
@@ -2286,7 +2420,10 @@
 "HL" = (
 /obj/structure/diona/bulb,
 /obj/structure/table/rack,
-/obj/item/ship_ammunition/bruiser/he,
+/obj/item/ship_ammunition/francisca/ap{
+	pixel_y = 8
+	},
+/obj/item/ship_ammunition/francisca/ap,
 /turf/simulated/floor/diona,
 /area/tarwa_ship/armory)
 "HP" = (
@@ -2297,14 +2434,16 @@
 	},
 /obj/machinery/door/airlock/command{
 	req_access = list(210);
-	name = "Bridge"
+	name = "Bridge";
+	dir = 1
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship)
 "HR" = (
 /obj/machinery/door/airlock/glass_mining{
 	req_access = list(210);
-	name = "Hangar"
+	name = "Hangar";
+	dir = 4
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/hangar)
@@ -2320,6 +2459,7 @@
 /area/tarwa_ship/engineering2)
 "Ie" = (
 /obj/structure/bed/stool/padded/green,
+/obj/effect/floor_decal/corner/dark_green/diagonal,
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/canteen)
 "Ii" = (
@@ -2339,14 +2479,28 @@
 /area/tarwa_ship/oldhangar)
 "Ik" = (
 /obj/structure/cable/green,
-/obj/machinery/power/apc{
+/obj/machinery/power/apc/south{
 	is_critical = 1;
-	name = "south bump";
-	pixel_y = -24;
 	req_access = list(210)
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/crew)
+"Il" = (
+/obj/machinery/door/airlock/external,
+/obj/machinery/atmospherics/pipe/simple/hidden{
+	dir = 9
+	},
+/obj/machinery/access_button{
+	pixel_x = 28
+	},
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_aft";
+	name = "airlock_tarwa_aft";
+	frequency = 1993
+	},
+/obj/effect/map_effect/marker_helper/airlock/interior,
+/turf/simulated/floor/plating,
+/area/tarwa_ship)
 "Iz" = (
 /obj/machinery/iff_beacon/name_change,
 /turf/simulated/floor/diona/airless,
@@ -2361,6 +2515,12 @@
 /obj/item/clothing/gloves/yellow/specialu,
 /turf/simulated/floor/plating,
 /area/tarwa_ship/engineering2)
+"IS" = (
+/obj/structure/cable/green{
+	icon_state = "1-2"
+	},
+/turf/simulated/floor/tiled,
+/area/tarwa_ship/eva)
 "Jc" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/fuel,
 /turf/simulated/floor/diona,
@@ -2389,24 +2549,50 @@
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/crew)
 "Jw" = (
+/obj/effect/floor_decal/corner/dark_green/diagonal,
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/canteen)
+"JG" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/supply{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
+	dir = 4
+	},
+/obj/structure/cable/green{
+	d1 = 4;
+	d2 = 8;
+	icon_state = "4-8"
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden/fuel{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/manifold/hidden,
+/turf/simulated/floor/plating,
+/area/tarwa_ship/engineering2)
+"JL" = (
+/obj/effect/floor_decal/spline/plain/black{
+	dir = 8
+	},
+/turf/simulated/floor/lino,
+/area/tarwa_ship/canteen)
 "JO" = (
-/obj/machinery/alarm{
-	pixel_y = 25;
+/obj/machinery/alarm/north{
 	req_one_access = list(210)
 	},
+/obj/structure/table/rack,
+/obj/item/clothing/shoes/magboots,
+/obj/item/clothing/mask/breath,
+/obj/item/clothing/suit/space/void/unathi_pirate/tarwa/captain,
+/obj/item/clothing/head/helmet/space/void/unathi_pirate/tarwa/captain,
 /turf/simulated/floor/carpet/orange,
 /area/tarwa_ship/captain)
 "JW" = (
-/obj/machinery/alarm{
-	dir = 8;
-	pixel_x = 25;
-	pixel_y = 0;
-	req_one_access = list(215)
-	},
 /obj/machinery/light{
 	dir = 4
+	},
+/obj/machinery/alarm/east{
+	req_one_access = list(210)
 	},
 /turf/simulated/floor/plating,
 /area/tarwa_ship/engineering1)
@@ -2474,6 +2660,10 @@
 	d2 = 4;
 	icon_state = "2-4"
 	},
+/obj/machinery/atmospherics/portables_connector{
+	dir = 4
+	},
+/obj/machinery/portable_atmospherics/canister/air/airlock,
 /turf/simulated/floor/diona,
 /area/tarwa_ship/oldhangar)
 "KH" = (
@@ -2519,27 +2709,23 @@
 /turf/simulated/floor/diona,
 /area/tarwa_ship/bridge)
 "Lc" = (
-/obj/machinery/atmospherics/pipe/simple/visible/yellow{
-	dir = 4
-	},
+/obj/effect/map_effect/window_spawner/full/reinforced/firedoor,
 /turf/simulated/floor/diona,
-/area/shuttle/tarwa)
+/area/tarwa_ship/oldhangar)
 "Ld" = (
 /obj/structure/cable/green{
 	d2 = 2;
 	icon_state = "0-2"
 	},
-/obj/machinery/power/apc{
-	dir = 1;
-	name = "north bump";
-	pixel_x = 0;
-	pixel_y = 24;
-	req_access = list(113)
-	},
 /obj/structure/bed/stool/padded/green,
 /obj/machinery/light{
 	dir = 1
 	},
+/obj/machinery/power/apc/north{
+	pixel_x = 0;
+	req_access = list(210)
+	},
+/obj/effect/floor_decal/corner/dark_green/diagonal,
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/canteen)
 "Le" = (
@@ -2550,9 +2736,18 @@
 /obj/effect/overmap/visitable/ship/landable/tarwa_shuttle,
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
+"Lj" = (
+/obj/effect/landmark/entry_point/starboard{
+	name = "starboard, old hangar"
+	},
+/turf/simulated/wall/diona,
+/area/tarwa_ship/oldhangar)
 "Ly" = (
 /obj/machinery/light{
 	dir = 1
+	},
+/obj/structure/sink{
+	pixel_y = 25
 	},
 /turf/simulated/floor/lino,
 /area/tarwa_ship/canteen)
@@ -2569,9 +2764,7 @@
 	d2 = 2;
 	icon_state = "1-2"
 	},
-/obj/machinery/alarm{
-	dir = 4;
-	pixel_x = -28;
+/obj/machinery/alarm/west{
 	req_one_access = list(210)
 	},
 /obj/structure/cable/green{
@@ -2630,7 +2823,8 @@
 	},
 /obj/machinery/door/airlock/glass_mining{
 	req_access = list(210);
-	name = "Hangar"
+	name = "Hangar";
+	dir = 4
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/hangar)
@@ -2648,7 +2842,8 @@
 	},
 /obj/machinery/door/airlock/diona{
 	req_access = list(210);
-	name = "Gun Deck"
+	name = "Gun Deck";
+	dir = 4
 	},
 /turf/simulated/floor/diona,
 /area/tarwa_ship/gun)
@@ -2664,6 +2859,18 @@
 	},
 /turf/simulated/floor/diona,
 /area/tarwa_ship/armory)
+"Mu" = (
+/obj/machinery/door/airlock/diona/external{
+	dir = 4
+	},
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_stbd";
+	name = "airlock_tarwa_stbd";
+	frequency = 1451
+	},
+/obj/effect/map_effect/marker_helper/airlock/exterior,
+/turf/simulated/floor/diona,
+/area/tarwa_ship/oldhangar)
 "My" = (
 /obj/structure/bed,
 /obj/item/bedsheet/random,
@@ -2694,7 +2901,8 @@
 	},
 /obj/machinery/door/airlock/glass_medical{
 	req_access = list(210);
-	name = "Infirmary"
+	name = "Infirmary";
+	dir = 4
 	},
 /turf/simulated/floor/tiled/white,
 /area/tarwa_ship/medical)
@@ -2748,25 +2956,34 @@
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/crew)
 "Nt" = (
-/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
-	dir = 4
-	},
-/obj/structure/cable/green{
-	d2 = 8;
-	icon_state = "0-8"
-	},
-/obj/machinery/power/apc{
-	dir = 1;
-	name = "north bump";
-	pixel_x = 0;
-	pixel_y = 24;
-	req_access = list(113)
-	},
-/turf/simulated/floor/tiled,
-/area/tarwa_ship/bridge)
+/obj/structure/table/reinforced/steel,
+/turf/simulated/floor/diona,
+/area/tarwa_ship/gun)
 "Nw" = (
 /turf/simulated/wall/shuttle/raider,
 /area/tarwa_ship/engineering1)
+"Nz" = (
+/obj/machinery/door/airlock/diona/external{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/manifold/hidden,
+/obj/machinery/access_button{
+	dir = 4;
+	pixel_x = 12;
+	pixel_y = -28
+	},
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_stbd";
+	name = "airlock_tarwa_stbd";
+	frequency = 1451
+	},
+/obj/effect/map_effect/marker_helper/airlock/interior,
+/turf/simulated/floor/diona,
+/area/tarwa_ship/oldhangar)
+"NB" = (
+/obj/structure/ship_weapon_dummy/barrel,
+/turf/simulated/floor/diona/airless,
+/area/space)
 "NC" = (
 /obj/effect/landmark/entry_point/aft{
 	name = "port"
@@ -2819,12 +3036,9 @@
 	d2 = 2;
 	icon_state = "0-2"
 	},
-/obj/machinery/power/apc{
-	dir = 1;
-	name = "north bump";
-	pixel_x = 0;
-	pixel_y = 24;
-	req_access = list(113)
+/obj/machinery/power/apc/east{
+	is_critical = 1;
+	req_access = list(210)
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship)
@@ -2890,6 +3104,23 @@
 /obj/structure/bed/stool/chair/office/bridge/pilot,
 /turf/simulated/floor/diona,
 /area/tarwa_ship/cic)
+"Pv" = (
+/obj/machinery/door/airlock/diona/external{
+	dir = 4
+	},
+/obj/machinery/access_button{
+	dir = 8;
+	pixel_x = -12;
+	pixel_y = -28
+	},
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_stbd";
+	name = "airlock_tarwa_stbd";
+	frequency = 1451
+	},
+/obj/effect/map_effect/marker_helper/airlock/exterior,
+/turf/simulated/floor/diona,
+/area/tarwa_ship/oldhangar)
 "Px" = (
 /obj/machinery/computer/ship/engines,
 /turf/simulated/floor/diona,
@@ -2910,10 +3141,8 @@
 /obj/structure/cable/green{
 	icon_state = "0-4"
 	},
-/obj/machinery/power/apc{
+/obj/machinery/power/apc/south{
 	is_critical = 1;
-	name = "south bump";
-	pixel_y = -24;
 	req_access = list(210)
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/fuel{
@@ -2934,15 +3163,31 @@
 "PJ" = (
 /obj/structure/diona/bulb,
 /obj/structure/sign/flag/tarwa{
-	pixel_y = 25
+	pixel_y = 25;
+	stand_icon = "banner"
 	},
+/obj/structure/bed/stool/chair/office/bridge/pilot,
 /turf/simulated/floor/diona,
 /area/tarwa_ship/gun)
 "PL" = (
-/obj/machinery/alarm{
-	pixel_y = 25;
+/obj/machinery/alarm/north{
 	req_one_access = list(210)
 	},
+/turf/simulated/floor/diona,
+/area/tarwa_ship/oldhangar)
+"PM" = (
+/obj/machinery/door/airlock/diona/external{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/simple/hidden{
+	dir = 10
+	},
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_stbd";
+	name = "airlock_tarwa_stbd";
+	frequency = 1451
+	},
+/obj/effect/map_effect/marker_helper/airlock/interior,
 /turf/simulated/floor/diona,
 /area/tarwa_ship/oldhangar)
 "PO" = (
@@ -2964,8 +3209,16 @@
 /area/tarwa_ship/engineering1)
 "Ql" = (
 /obj/structure/table/rack,
-/obj/item/clothing/suit/space/void/unathi_pirate,
-/obj/item/clothing/head/helmet/space/void/unathi_pirate,
+/obj/item/clothing/suit/space/void/unathi_pirate/tarwa,
+/obj/item/clothing/head/helmet/space/void/unathi_pirate/tarwa,
+/obj/item/clothing/shoes/magboots,
+/obj/item/clothing/mask/breath,
+/turf/simulated/floor/tiled,
+/area/tarwa_ship/eva)
+"Qm" = (
+/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
+/obj/structure/table/rack,
+/obj/item/storage/bag/inflatable,
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/eva)
 "QA" = (
@@ -2987,11 +3240,8 @@
 /obj/structure/cable/green{
 	icon_state = "0-8"
 	},
-/obj/machinery/power/apc{
-	dir = 4;
+/obj/machinery/power/apc/east{
 	is_critical = 1;
-	name = "east bump";
-	pixel_x = 24;
 	req_access = list(210)
 	},
 /obj/structure/table/rack,
@@ -3001,6 +3251,9 @@
 /obj/item/ship_ammunition/bruiser,
 /obj/item/ship_ammunition/bruiser,
 /obj/item/ship_ammunition/bruiser,
+/obj/item/ship_ammunition/bruiser/flechette,
+/obj/item/ship_ammunition/bruiser/flechette,
+/obj/item/ship_ammunition/bruiser/flechette,
 /turf/simulated/floor/diona,
 /area/tarwa_ship/armory)
 "QQ" = (
@@ -3032,7 +3285,7 @@
 /area/tarwa_ship/bridge)
 "QV" = (
 /obj/item/reagent_containers/food/condiment/flour,
-/obj/item/reagent_containers/food/drinks/milk,
+/obj/item/reagent_containers/food/drinks/carton/milk,
 /obj/structure/closet/secure_closet/freezer/meat,
 /obj/item/reagent_containers/food/snacks/meat/chicken,
 /obj/item/reagent_containers/food/snacks/meat/chicken,
@@ -3048,18 +3301,21 @@
 /area/tarwa_ship/canteen)
 "QW" = (
 /obj/structure/bed/handrail,
-/obj/machinery/atmospherics/unary/vent_pump/on{
-	dir = 8;
-	level = 2;
-	id_tag = "tarwa_shuttle_out_external"
+/obj/machinery/airlock_sensor/airlock_exterior{
+	dir = 1;
+	pixel_y = -31;
+	pixel_x = -24
 	},
-/obj/machinery/airlock_sensor{
-	frequency = 1385;
-	id_tag = "tarwa_shuttle_sensor_exterior";
-	pixel_x = -24;
-	pixel_y = -6;
-	dir = 4;
-	master_tag = "tarwa_shuttle"
+/obj/effect/map_effect/marker_helper/airlock/exterior,
+/obj/effect/map_effect/marker/airlock/shuttle{
+	cycle_to_external_air = 1;
+	master_tag = "airlock_tarwa_shuttle";
+	name = "airlock_tarwa_shuttle";
+	req_one_access = list(210);
+	shuttle_tag = "Tarwa Conglomerate Shuttle"
+	},
+/obj/machinery/atmospherics/unary/vent_pump/high_volume{
+	dir = 8
 	},
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
@@ -3088,10 +3344,15 @@
 	icon_state = "1-2"
 	},
 /obj/machinery/atmospherics/pipe/simple/visible,
-/obj/machinery/door/airlock/diona/external{
-	id_tag = "tarwa_shuttle_internal";
-	frequency = 1411
+/obj/machinery/door/airlock/diona/external,
+/obj/effect/map_effect/marker/airlock/shuttle{
+	cycle_to_external_air = 1;
+	master_tag = "airlock_tarwa_shuttle";
+	name = "airlock_tarwa_shuttle";
+	req_one_access = list(210);
+	shuttle_tag = "Tarwa Conglomerate Shuttle"
 	},
+/obj/effect/map_effect/marker_helper/airlock/interior,
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
 "Ru" = (
@@ -3134,6 +3395,10 @@
 	},
 /turf/simulated/floor/plating,
 /area/tarwa_ship/engineering2)
+"Sk" = (
+/obj/effect/map_effect/window_spawner/full/reinforced/firedoor,
+/turf/simulated/floor/plating,
+/area/tarwa_ship/oldhangar)
 "Ss" = (
 /obj/structure/diona/bulb,
 /turf/simulated/floor/diona,
@@ -3229,9 +3494,14 @@
 /turf/simulated/floor/plating,
 /area/tarwa_ship/engineering2)
 "TZ" = (
-/obj/effect/map_effect/airlock/s_to_n/long/square,
-/turf/simulated/wall/shuttle/raider,
-/area/tarwa_ship/engineering2)
+/obj/machinery/atmospherics/unary/vent_pump/high_volume,
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_aft";
+	name = "airlock_tarwa_aft";
+	frequency = 1993
+	},
+/turf/simulated/floor/plating,
+/area/tarwa_ship)
 "Uj" = (
 /obj/machinery/air_sensor{
 	id_tag = "tarwa_sensor"
@@ -3320,9 +3590,7 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 5
 	},
-/obj/machinery/alarm{
-	dir = 1;
-	pixel_y = -25;
+/obj/machinery/alarm/south{
 	req_one_access = list(210)
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/fuel{
@@ -3344,11 +3612,11 @@
 /area/tarwa_ship/medical)
 "Wg" = (
 /obj/machinery/atmospherics/unary/vent_pump/on,
-/obj/machinery/alarm{
-	pixel_y = 25;
+/obj/machinery/alarm/north{
 	req_one_access = list(210)
 	},
 /obj/structure/bed/stool/padded/green,
+/obj/effect/floor_decal/corner/dark_green/diagonal,
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/canteen)
 "Wq" = (
@@ -3375,10 +3643,27 @@
 /turf/simulated/wall/diona,
 /area/tarwa_ship/engineering2)
 "Wx" = (
-/obj/machinery/door/airlock/diona/external{
-	id_tag = "tarwa_shuttle_internal";
-	frequency = 1411
+/obj/machinery/door/airlock/diona/external,
+/obj/machinery/airlock_sensor/airlock_interior{
+	frequency = 1411;
+	id_tag = "tarwa_shuttle_sensor_interior";
+	master_tag = "tarwa_shuttle";
+	pixel_x = 28;
+	pixel_y = 8
 	},
+/obj/machinery/access_button{
+	dir = 1;
+	pixel_x = 40;
+	pixel_y = 9
+	},
+/obj/effect/map_effect/marker/airlock/shuttle{
+	cycle_to_external_air = 1;
+	master_tag = "airlock_tarwa_shuttle";
+	name = "airlock_tarwa_shuttle";
+	req_one_access = list(210);
+	shuttle_tag = "Tarwa Conglomerate Shuttle"
+	},
+/obj/effect/map_effect/marker_helper/airlock/interior,
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
 "Wz" = (
@@ -3398,7 +3683,8 @@
 	},
 /obj/machinery/door/airlock/glass_service{
 	req_access = list(210);
-	name = "Canteen"
+	name = "Canteen";
+	dir = 4
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/canteen)
@@ -3413,12 +3699,9 @@
 	d2 = 2;
 	icon_state = "0-2"
 	},
-/obj/machinery/power/apc{
-	dir = 1;
-	name = "north bump";
+/obj/machinery/power/apc/north{
 	pixel_x = 0;
-	pixel_y = 24;
-	req_access = list(113)
+	req_access = list(210)
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/eva)
@@ -3434,10 +3717,7 @@
 /area/tarwa_ship/crew)
 "Xr" = (
 /obj/structure/cable/green,
-/obj/machinery/power/apc{
-	dir = 8;
-	name = "west bump";
-	pixel_x = -24;
+/obj/machinery/power/apc/west{
 	req_access = list(210)
 	},
 /turf/simulated/floor/plating,
@@ -3482,7 +3762,8 @@
 	dir = 4
 	},
 /obj/structure/sign/flag/tarwa{
-	pixel_y = 25
+	pixel_y = 25;
+	stand_icon = "banner"
 	},
 /turf/simulated/floor/tiled,
 /area/tarwa_ship/bridge)
@@ -3500,18 +3781,33 @@
 /obj/structure/cable/green{
 	icon_state = "1-2"
 	},
-/obj/machinery/atmospherics/unary/vent_pump/on{
-	dir = 1;
-	id_tag = "tarwa_shuttle_in"
-	},
 /obj/structure/fuel_port/hydrogen{
 	pixel_x = -32
 	},
+/obj/effect/map_effect/marker/airlock/shuttle{
+	cycle_to_external_air = 1;
+	master_tag = "airlock_tarwa_shuttle";
+	name = "airlock_tarwa_shuttle";
+	req_one_access = list(210);
+	shuttle_tag = "Tarwa Conglomerate Shuttle"
+	},
+/obj/machinery/atmospherics/unary/vent_pump/high_volume{
+	dir = 1
+	},
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
+"YI" = (
+/obj/item/reagent_containers/blood/OMinus,
+/obj/item/reagent_containers/blood/OMinus,
+/obj/item/reagent_containers/blood/OMinus,
+/obj/structure/closet/walllocker/medical{
+	name = "Blood Locker";
+	pixel_y = 32
+	},
+/turf/simulated/floor/tiled/white,
+/area/tarwa_ship/medical)
 "YL" = (
-/obj/machinery/atmospherics/portables_connector,
-/obj/machinery/portable_atmospherics/canister/carbon_dioxide,
+/obj/structure/bed/stool/chair/shuttle,
 /turf/simulated/floor/diona,
 /area/shuttle/tarwa)
 "YO" = (
@@ -3576,6 +3872,21 @@
 /obj/random/civgun,
 /turf/simulated/floor/diona,
 /area/tarwa_ship/armory)
+"ZY" = (
+/obj/machinery/airlock_sensor{
+	pixel_y = -23;
+	dir = 1
+	},
+/obj/machinery/atmospherics/unary/vent_pump/high_volume{
+	dir = 4
+	},
+/obj/effect/map_effect/marker/airlock{
+	master_tag = "airlock_tarwa_stbd";
+	name = "airlock_tarwa_stbd";
+	frequency = 1451
+	},
+/turf/simulated/floor/diona,
+/area/tarwa_ship/oldhangar)
 
 (1,1,1) = {"
 ef
@@ -12728,7 +13039,7 @@ uB
 uB
 cy
 cy
-cw
+Nt
 cw
 sW
 xT
@@ -13042,9 +13353,9 @@ ef
 ef
 ef
 ef
-ef
-ef
-ef
+uB
+uB
+uB
 uB
 uB
 uB
@@ -13204,19 +13515,19 @@ uB
 uB
 ef
 ef
-ef
 uB
-uB
-uB
-uB
+ND
+Mu
+Pv
+ND
 uB
 uB
 cy
 cs
 zq
 ID
-uB
-uB
+sP
+sP
 uB
 uB
 uB
@@ -13367,21 +13678,21 @@ UV
 uB
 uB
 uB
-uB
-uB
-uB
-uB
-uB
-cy
+ND
+Fw
+wI
+ND
+ND
+Lj
 cy
 Mn
 ID
 ID
-uB
-uB
-uB
-uB
-uB
+av
+fy
+fy
+NB
+NB
 ef
 ef
 ef
@@ -13529,21 +13840,21 @@ MR
 UV
 UV
 UV
-UV
 ND
-uB
+FT
+ZY
 ND
-zw
+ND
 pd
 pd
 lA
+pd
 Gs
-uB
-uB
-uB
-Uw
-uB
-uB
+gg
+av
+av
+sP
+sP
 ef
 ef
 ef
@@ -13691,21 +14002,21 @@ dP
 MR
 MR
 VF
-VF
-SZ
+Gs
+PM
+Nz
 ND
-qt
 KF
 bi
-bi
+iv
 Ii
-qt
+pd
 Gs
-Gs
-Gs
-Uw
-Uw
-uB
+lY
+Lc
+Lc
+ND
+sP
 ef
 ef
 ef
@@ -13855,19 +14166,19 @@ MR
 VF
 VF
 SZ
-ND
-pd
+wH
+cG
 ag
 pd
 pd
 pd
 pd
 pd
-qt
+Up
+Up
+Up
+Up
 ND
-Uw
-Uw
-Uw
 uB
 ef
 ef
@@ -14018,7 +14329,7 @@ aa
 aa
 yt
 SZ
-ND
+SZ
 KH
 pd
 pd
@@ -14026,10 +14337,10 @@ pd
 pd
 pd
 pd
-ND
-Uw
-GM
-Uw
+Up
+qt
+zw
+Sk
 uB
 ef
 ef
@@ -14188,10 +14499,10 @@ SZ
 pd
 qt
 pd
+pd
+BL
+Ht
 ND
-Uw
-GM
-Uw
 uB
 ef
 ef
@@ -14352,7 +14663,7 @@ LS
 LS
 hi
 Uw
-GM
+Uw
 Uw
 uB
 uB
@@ -14518,10 +14829,10 @@ GM
 Uw
 Uw
 uB
-uB
-uB
-uB
-uB
+ef
+ef
+ef
+ef
 ef
 ef
 ef
@@ -14679,11 +14990,11 @@ Uw
 Uw
 Uw
 Uw
-ce
-ce
-ce
-ce
-hJ
+uB
+uB
+ef
+ef
+ef
 ef
 ef
 ef
@@ -14841,12 +15152,12 @@ Uw
 dd
 uw
 Uw
-aA
-aA
-aA
 ce
-ce
-Ef
+uB
+uB
+uB
+ef
+ef
 ef
 ef
 ef
@@ -15003,12 +15314,12 @@ Uw
 vO
 Hz
 Uw
-AI
-ac
-ia
-aA
 ce
 ce
+ce
+ce
+hJ
+ef
 ef
 ef
 ef
@@ -15137,7 +15448,7 @@ LT
 XU
 HG
 Gd
-Gd
+ci
 Gd
 Gd
 Pz
@@ -15160,17 +15471,17 @@ pd
 pd
 ND
 Gs
-Uw
 Ei
+Qm
 bp
 qy
 Uw
 aA
 aA
-YX
 aA
-aA
-jE
+ce
+ce
+Ef
 ef
 ef
 ef
@@ -15300,9 +15611,9 @@ Rz
 sC
 sC
 sC
-Gd
-Gd
-bI
+sC
+kI
+st
 uS
 ET
 Np
@@ -15311,7 +15622,7 @@ HC
 zs
 pw
 UM
-De
+HC
 SZ
 SZ
 Gs
@@ -15321,18 +15632,18 @@ Gs
 qt
 Up
 ND
-fy
-Uw
+Gs
 Xi
+IS
 as
 Ql
 Uw
-iv
+AI
+ac
+ia
 aA
-aA
-aA
-aA
-jE
+ce
+ce
 ef
 ef
 ef
@@ -15464,7 +15775,7 @@ sC
 sC
 sC
 GO
-st
+JG
 uS
 ys
 Ff
@@ -15482,16 +15793,16 @@ Up
 Up
 pd
 ND
-fy
-fy
-Uw
-vO
+ND
+Gs
+bI
+De
 MP
 Ql
 Uw
-fw
+DV
 aA
-aA
+YX
 aA
 aA
 jE
@@ -15625,7 +15936,7 @@ ef
 sC
 sC
 sC
-TZ
+sC
 nA
 uS
 uS
@@ -15784,10 +16095,10 @@ ef
 sP
 ef
 ef
-hR
-hR
-hR
-hR
+uo
+uJ
+TZ
+fw
 xd
 hn
 hn
@@ -15947,9 +16258,9 @@ aY
 ef
 ef
 BH
+yi
 hR
-hR
-hR
+Il
 LY
 Hc
 vG
@@ -16299,12 +16610,12 @@ NU
 MN
 NU
 NU
-lY
+Eb
 XL
-aA
-aA
-aA
-jE
+XL
+XL
+XL
+fP
 ef
 ef
 ef
@@ -16461,13 +16772,13 @@ NU
 aP
 yx
 NU
-Nt
-aA
+ce
 XL
-aA
-aA
-jE
-ef
+Kc
+XL
+XL
+dg
+fP
 ef
 ef
 ef
@@ -16623,13 +16934,13 @@ NU
 wo
 Hy
 NU
-Eb
+ce
+fm
 XL
 XL
-XL
-XL
+SW
+jS
 fP
-ef
 ef
 ef
 ef
@@ -16787,10 +17098,10 @@ Gi
 Ba
 ce
 XL
+XL
+XL
 Kc
 XL
-XL
-dg
 fP
 ef
 ef
@@ -16948,12 +17259,12 @@ FC
 yd
 oF
 ce
-aA
-XL
-XL
-SW
-jS
+ce
 fP
+XL
+XL
+fP
+Iz
 ef
 ef
 ef
@@ -17097,23 +17408,23 @@ MG
 wj
 Px
 ZA
-Lc
-vW
+UN
+GV
 Dw
-Dw
-Dw
+Fb
+wj
 wj
 MG
 Cm
 NU
-yx
+YI
 aH
 uX
-ce
+NU
+ef
+fP
+fP
 XL
-XL
-XL
-Kc
 XL
 fP
 ef
@@ -17258,8 +17569,8 @@ Wz
 MG
 wj
 YL
-gg
-uJ
+vW
+vW
 vW
 ao
 wj
@@ -17271,13 +17582,13 @@ NU
 yx
 zg
 NU
-ce
-ce
+NU
+ef
+ef
 fP
-XL
-XL
 fP
-Iz
+fP
+ef
 ef
 ef
 ef
@@ -17415,7 +17726,7 @@ Jg
 Dy
 yk
 yk
-fe
+JL
 Wz
 MG
 NC
@@ -17435,11 +17746,11 @@ yx
 NU
 ef
 ef
-fP
-fP
-XL
-XL
-fP
+ef
+ef
+ef
+ef
+ef
 ef
 ef
 ef
@@ -17585,7 +17896,7 @@ ov
 sT
 gD
 lg
-uo
+vW
 Wx
 fF
 Ay
@@ -17598,9 +17909,9 @@ NU
 ef
 ef
 ef
-fP
-fP
-fP
+ef
+ef
+ef
 ef
 ef
 ef

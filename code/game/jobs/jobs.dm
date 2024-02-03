@@ -116,7 +116,6 @@ var/list/service_positions = list(
 	"Chef",
 	"Janitor",
 	"Librarian",
-	"Corporate Reporter",
 	"Chaplain"
 )
 
@@ -124,7 +123,8 @@ var/list/civilian_positions = list(
 	"Assistant",
 	"Off-Duty Crew Member",
 	"Passenger",
-	"Merchant"
+	"Merchant",
+	"Corporate Reporter"
 )
 
 var/list/security_positions = list(
@@ -139,6 +139,18 @@ var/list/nonhuman_positions = list(
 	"AI",
 	"Cyborg",
 	"pAI"
+)
+
+var/list/armory_positions = list(
+	"AI",
+	"Warden",
+	"Captain",
+	"Executive Officer",
+	"Head of Security",
+	"Chief Engineer",
+	"Research Director",
+	"Chief Medical Officer",
+	"Operations Manager"
 )
 
 /proc/guest_jobbans(var/job)

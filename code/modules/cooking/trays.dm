@@ -1,13 +1,13 @@
 /*
- * Trays - Nanako, ported by Jade
- */
- //Use tray on an item to load it.
- //To unload, place on a table, then rightclic > Unload tray. Alternatively, alt+click on the tray to unload it
- //Tray will spill if thrown, dropped on the floor, or used to hit someone with. Spilling scatters contents
+* Trays - Nanako, ported by Jade
+*/
+//Use tray on an item to load it.
+//To unload, place on a table, then rightclic > Unload tray. Alternatively, alt+click on the tray to unload it
+//Tray will spill if thrown, dropped on the floor, or used to hit someone with. Spilling scatters contents
 
 /obj/item/tray
 	name = "tray"
-	icon = 'icons/obj/food.dmi'
+	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "tray"
 	desc = "A metal tray to lay food on."
 	throwforce = 12.0
@@ -15,7 +15,7 @@
 	throw_speed = 1
 	throw_range = 5
 	w_class = 3.0
-	flags = CONDUCT
+	obj_flags = OBJ_FLAG_CONDUCTABLE
 	matter = list(DEFAULT_WALL_MATERIAL = 3000)
 	recyclable = TRUE
 	hitsound = /singleton/sound_category/bottle_hit_broken
@@ -107,7 +107,7 @@
 	vis_contents += I
 	I.vis_flags |= VIS_INHERIT_LAYER | VIS_INHERIT_PLANE
 	item_equipped_event.register(I, src, PROC_REF(pick_up))
-	destroyed_event.register(I, src, PROC_REF(unload_item))
+	GLOB.destroyed_event.register(I, src, PROC_REF(unload_item))
 
 /obj/item/tray/verb/unload()
 	set name = "Unload Tray"
@@ -177,7 +177,7 @@
 
 	for(var/obj/item/I in contents)
 		unload_item(I, dropspot)
-		I.throw_at(get_edge_target_turf(src, pick(alldirs)), rand(0, 2), 10)
+		I.throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(0, 2), 10)
 	if (user)
 		user.visible_message("<b>[user]</b> spills their tray all over the floor.", SPAN_WARNING("You spill the tray!"))
 	else
@@ -215,7 +215,19 @@
 	icon_state = "l_plate"
 	throwforce = 4
 	force = 3
-	flags = null
+	atom_flags = 0
 	matter = list(DEFAULT_TABLE_MATERIAL = 1000)
 	recyclable = TRUE
 	max_carry = 7 // That's 3 dishes, a knife, spoon and fork and a glass
+
+/obj/item/tray/tea
+	name = "tea tray"
+	desc = "A tray for serving tea."
+	icon_state = "teatray"
+	force = 3
+	throwforce = 3
+	atom_flags = 0
+	matter = list(DEFAULT_TABLE_MATERIAL = 1000)
+	recyclable = TRUE
+	max_carry = 6
+	contained_sprite = TRUE

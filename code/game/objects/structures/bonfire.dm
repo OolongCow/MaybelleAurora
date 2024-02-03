@@ -1,6 +1,6 @@
 #define MAX_ACTIVE_BONFIRE_LIMIT	15
 
-var/global/list/total_active_bonfires = list()
+GLOBAL_LIST_EMPTY(total_active_bonfires)
 
 /obj/structure/bonfire
 	name = "bonfire"
@@ -29,12 +29,12 @@ var/global/list/total_active_bonfires = list()
 
 /obj/structure/bonfire/Destroy()
 	STOP_PROCESSING(SSprocessing, src)
-	total_active_bonfires -= src
+	GLOB.total_active_bonfires -= src
 	. = ..()
 
-/obj/structure/bonfire/examine(mob/user)
-	..()
-	if(get_dist(src, user) > 2)
+/obj/structure/bonfire/examine(mob/user, distance, is_adjacent)
+	. = ..()
+	if(distance > 2)
 		return
 	if(on_fire)
 		switch(fuel)
@@ -113,7 +113,7 @@ var/global/list/total_active_bonfires = list()
 	if(!fuel)
 		to_chat(user, SPAN_WARNING("There is not enough fuel to start a fire."))
 		return
-	if(total_active_bonfires.len >= MAX_ACTIVE_BONFIRE_LIMIT)
+	if(GLOB.total_active_bonfires.len >= MAX_ACTIVE_BONFIRE_LIMIT)
 		to_chat(user, SPAN_WARNING("\The [src] refuses to light, despite all your efforts."))
 		return
 	if(!on_fire)
@@ -121,7 +121,7 @@ var/global/list/total_active_bonfires = list()
 		check_light()
 		update_icon()
 		START_PROCESSING(SSprocessing, src)
-		total_active_bonfires += src
+		GLOB.total_active_bonfires += src
 
 /obj/structure/bonfire/proc/check_light()
 	if(on_fire)
@@ -223,7 +223,7 @@ var/global/list/total_active_bonfires = list()
 	STOP_PROCESSING(SSprocessing, src)
 	check_light()
 	update_icon()
-	total_active_bonfires -= src
+	GLOB.total_active_bonfires -= src
 	if(burn_out)
 		visible_message(SPAN_NOTICE("\The [src] burns out, turning to a pile of ash and burnt wood."))
 		new /obj/effect/decal/cleanable/ash(get_turf(src))
@@ -300,7 +300,7 @@ var/global/list/total_active_bonfires = list()
 /obj/structure/bonfire/proc/burn(var/mob/living/M, var/entered = FALSE)
 	if(safe)
 		return
-	if(M && prob((fuel / max_fuel) * 100))
+	if(istype(M) && prob((fuel / max_fuel) * 100))
 		if(entered)
 			to_chat(M, SPAN_WARNING("You are covered by fire and heat from entering \the [src]!"))
 		if(isanimal(M))
@@ -333,7 +333,7 @@ var/global/list/total_active_bonfires = list()
 	check_light()
 	update_icon()
 	START_PROCESSING(SSprocessing, src)
-	total_active_bonfires += src
+	GLOB.total_active_bonfires += src
 
 /obj/structure/bonfire/fireplace
 	name = "fireplace"

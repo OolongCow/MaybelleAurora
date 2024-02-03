@@ -14,7 +14,7 @@
 	place_near_main = list(1, 1)
 
 /obj/effect/overmap/visitable/sector/exoplanet/barren/asteroid/update_icon()
-  	icon_state = "asteroid[rand(1,3)]"
+	icon_state = "asteroid[rand(1,3)]"
 
 /obj/effect/overmap/visitable/sector/exoplanet/barren/asteroid/generate_planet_image()
 	skybox_image = image('icons/skybox/skybox_rock_128.dmi', "bigrock")
@@ -23,6 +23,9 @@
 	skybox_image.pixel_y = rand(128,256)
 	skybox_image.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 	skybox_image.blend_mode = BLEND_OVERLAY
+
+/obj/effect/overmap/visitable/sector/exoplanet/barren/asteroid/generate_atmosphere()
+	atmosphere = null
 
 /obj/effect/overmap/visitable/sector/exoplanet/barren/asteroid/romanovich
 	name = "romanovich cloud asteroid"

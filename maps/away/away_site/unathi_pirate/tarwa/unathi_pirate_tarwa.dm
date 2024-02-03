@@ -8,6 +8,8 @@
 	shuttles_to_initialise = list(/datum/shuttle/autodock/overmap/tarwa_shuttle)
 	id = "tarwa_conglomerate"
 
+	unit_test_groups = list(2)
+
 /singleton/submap_archetype/tramp_freighter
 	map = "Tarwa Conglomerate Ship"
 	descriptor = "Ship with pirate lizards, pirate plants"
@@ -18,7 +20,7 @@
 	class = "ICV"
 	icon_state = "tramp"
 	moving_state = "tramp_moving"
-	colors = list("#c2c1ac", "#1b4720")
+	colors = list("#c2c1ac", "#1b7325")
 	scanimage = "unathi_diona_freighter.png"
 	max_speed = 1/(2 SECONDS)
 	burn_delay = 1 SECONDS
@@ -28,7 +30,7 @@
 	designer = "Izweski Hegemony Naval Guilds, Hephaestus Industries"
 	volume = "65 meters length, 35 meters beam/width, 18 meters vertical height"
 	drive = "Low-Speed Warp Acceleration FTL Drive"
-	weapons = "Wingtip-mounted heavy ballistic, port obscured flight craft bay"
+	weapons = "Dual wingtip-mounted heavy ballistic, port obscured flight craft bay"
 	sizeclass = "Modified Azkrazal-class cargo freighter"
 	shiptype = "Unknown"
 	initial_restricted_waypoints = list(
@@ -40,6 +42,7 @@
 		"nav_tarwa3",
 		"nav_tarwa4"
 	)
+	invisible_until_ghostrole_spawn = TRUE
 
 /obj/effect/overmap/visitable/ship/tarwa/New()
 	designation = "[pick("Silent Sentinel", "Symbiosis", "Flying Dead", "Immortal", "Blood for Blood", "Unnatural Compatibility", "Barkscale", "Boneclaw", "Watcher in the Dark")]"
@@ -56,19 +59,19 @@
 	base_area = /area/space
 
 /obj/effect/shuttle_landmark/tarwa_ship/nav1
-	name = "Tarwa Conglomerate Freighter - Fore"
+	name = "Fore"
 	landmark_tag = "nav_tarwa1"
 
 /obj/effect/shuttle_landmark/tarwa_ship/nav2
-	name = "Tarwa Conglomerate Freighter - Port"
+	name = "Port"
 	landmark_tag = "nav_tarwa2"
 
 /obj/effect/shuttle_landmark/tarwa_ship/nav3
-	name = "Tarwa Conglomerate Freighter - Starboard"
+	name = "Starboard"
 	landmark_tag = "nav_tarwa3"
 
 /obj/effect/shuttle_landmark/tarwa_ship/nav4
-	name = "Tarwa Conglomerate Freighter - Aft"
+	name = "Aft"
 	landmark_tag = "nav_tarwa4"
 
 //Shuttle stuff
@@ -98,7 +101,7 @@
 	shuttle_area = list(/area/shuttle/tarwa)
 	current_location = "nav_hangar_tarwa"
 	landmark_transition = "nav_transit_tarwa"
-	dock_target = "tarwa_shuttle"
+	dock_target = "airlock_tarwa_shuttle"
 	range = 1
 	fuel_consumption = 2
 	logging_home_tag = "nav_hangar_tarwa"

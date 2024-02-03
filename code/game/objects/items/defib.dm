@@ -17,7 +17,7 @@
 	action_button_name = "Toggle Paddles"
 
 	var/obj/item/shockpaddles/linked/paddles
-	var/obj/item/cell/bcell = null
+	var/obj/item/cell/bcell
 
 /obj/item/defibrillator/Initialize() //starts without a cell for rnd
 	. = ..()
@@ -120,7 +120,7 @@
 		reattach_paddles(user)
 	else if(istype(W, /obj/item/cell))
 		if(bcell)
-			to_chat(user, SPAN_NOTICE("\the [src] already has a cell."))
+			to_chat(user, SPAN_NOTICE("\The [src] already has a cell."))
 		else
 			if(!user.unEquip(W))
 				return
@@ -251,15 +251,20 @@
 		playsound(src, 'sound/machines/defib_ready.ogg', 50, 0)
 
 /obj/item/shockpaddles/proc/wield()
-	var/mob/living/M = loc
-	if(istype(M) && !wielded)
-		wielded = TRUE
-		name = "[initial(name)] (wielded)"
-		var/obj/item/offhand/O = new(M)
-		O.name = "[initial(name)] - offhand"
-		O.desc = "The second set of paddles."
-		M.put_in_inactive_hand(O)
-		update_icon()
+	var/mob/living/carbon/human/M = loc
+	if(istype(M))
+		var/obj/A = M.get_inactive_hand()
+		if(A)
+			to_chat(M, SPAN_WARNING("Your other hand is occupied!"))
+			return
+		if(!wielded)
+			wielded = TRUE
+			name = "[initial(name)] (wielded)"
+			var/obj/item/offhand/O = new(M)
+			O.name = "[initial(name)] - offhand"
+			O.desc = "The second set of paddles."
+			M.put_in_inactive_hand(O)
+			update_icon()
 
 /obj/item/shockpaddles/proc/unwield()
 	wielded = FALSE
@@ -319,7 +324,7 @@
 /obj/item/shockpaddles/proc/check_contact(mob/living/carbon/human/H)
 	if(!combat)
 		for(var/obj/item/clothing/cloth in list(H.wear_suit, H.w_uniform))
-			if((cloth.body_parts_covered & UPPER_TORSO) && (cloth.item_flags & THICKMATERIAL))
+			if((cloth.body_parts_covered & UPPER_TORSO) && (cloth.item_flags & ITEM_FLAG_THICK_MATERIAL))
 				return FALSE
 	return TRUE
 
@@ -375,7 +380,7 @@
 
 	//beginning to place the paddles on patient's chest to allow some time for people to move away to stop the process
 	user.visible_message(SPAN_WARNING("\The [user] begins to place [src] on [H]'s chest."), SPAN_WARNING("You begin to place [src] on [H]'s chest..."))
-	if(!do_after(user, 3 SECONDS, act_target = H))
+	if(!do_after(user, 3 SECONDS, H, DO_DEFAULT | DO_USER_UNIQUE_ACT))
 		return
 	user.visible_message(SPAN_NOTICE("\The [user] places [src] on [H]'s chest."), SPAN_WARNING("You place [src] on [H]'s chest."))
 	playsound(get_turf(src), 'sound/machines/defib_charge.ogg', 50, 0)
@@ -390,7 +395,7 @@
 		make_announcement("buzzes, \"Warning - Patient is in hypovolemic shock and may require a blood transfusion.\"", "warning") //also includes heart damage
 
 	//placed on chest and short delay to shock for dramatic effect, revive time is 5sec total
-	if(!do_after(user, chargetime, act_target = H))
+	if(!do_after(user, chargetime, H))
 		return
 
 	//deduct charge here, in case the base unit was EMPed or something during the delay time
@@ -453,7 +458,7 @@
 	playsound(get_turf(src), 'sound/machines/defib_charge.ogg', 50, 0)
 	audible_message(SPAN_WARNING("\The [src] lets out a steadily rising hum..."))
 
-	if(!do_after(user, chargetime, act_target = H))
+	if(!do_after(user, chargetime, H))
 		return
 
 	//deduct charge here, in case the base unit was EMPed or something during the delay time
@@ -528,6 +533,8 @@
 		return TRUE
 
 /obj/item/shockpaddles/emp_act(severity)
+	. = ..()
+
 	var/new_safety = rand(0, 1)
 	if(safety != new_safety)
 		safety = new_safety
@@ -538,7 +545,6 @@
 			make_announcement("beeps, \"Safety protocols disabled!\"", "warning")
 			playsound(get_turf(src), 'sound/machines/defib_safetyoff.ogg', 50, 0)
 		update_icon()
-	..()
 
 /obj/item/shockpaddles/robot
 	name = "defibrillator paddles"
@@ -598,7 +604,7 @@
 /obj/item/shockpaddles/linked/equipped(mob/user, slot, assisted_equip)
 	. = ..()
 	if(ismob(loc))
-		RegisterSignal(loc, COMSIG_MOVABLE_MOVED, PROC_REF(unlatch))
+		RegisterSignal(loc, COMSIG_MOVABLE_MOVED, PROC_REF(unlatch), TRUE)
 
 /obj/item/shockpaddles/linked/proc/unlatch()
 	if(get_dist(loc, base_unit) > 1)
@@ -664,13 +670,17 @@
 		STOP_PROCESSING(SSprocessing, src)
 
 /obj/item/shockpaddles/standalone/emp_act(severity)
-	..()
+	. = ..()
+
 	var/new_fail = 0
+
 	switch(severity)
-		if(3)
+
+		if(EMP_HEAVY)
 			new_fail = max(fail_counter, 20)
 			visible_message("\The [src]'s reactor overloads!")
-		if(2)
+
+		if(EMP_LIGHT)
 			new_fail = max(fail_counter, 8)
 			if(ismob(loc))
 				to_chat(loc, SPAN_WARNING("\The [src] feel pleasantly warm."))

@@ -25,16 +25,16 @@
 	src.actual_instrument = where
 	src.echo = musical_config.echo_default.Copy()
 	src.env = musical_config.env_default.Copy()
-	instrument_synchronizer.register_global(src, .proc/check_wait)
+	GLOB.instrument_synchronizer.register_global(src, .proc/check_wait)
 
 /datum/sound_player/Destroy()
-	src.song.playing = 0
+	src.song.playing = FALSE
 	src.actual_instrument = null
 	src.instrument = null
 	QDEL_NULL(song)
 	QDEL_NULL(event_manager)
-	tokens.Cut()
-	instrument_synchronizer.unregister_global(src, .proc/check_wait)
+	tokens = null
+	GLOB.instrument_synchronizer.unregister_global(src, .proc/check_wait)
 	wait = null
 	. = ..()
 

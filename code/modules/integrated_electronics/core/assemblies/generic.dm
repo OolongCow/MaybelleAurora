@@ -195,7 +195,7 @@
 	if(get_dist(on_wall,user) > 1)
 		return
 	var/ndir = get_dir(on_wall, user)
-	if(!(ndir in cardinal))
+	if(!(ndir in GLOB.cardinal))
 		return
 	var/turf/T = get_turf(user)
 	if(!istype(T, /turf/simulated/floor))
@@ -210,13 +210,16 @@
 	user.drop_item(T)
 	anchored = TRUE
 	on_anchored()
-	pixel_x = DIR2PIXEL_X(ndir)
-	pixel_y = DIR2PIXEL_Y(ndir)
+	set_pixel_offsets()
 
 /obj/item/device/electronic_assembly/wallmount/on_unanchored()
 	pixel_x = 0
 	pixel_y = 0
 	..()
+
+/obj/item/device/electronic_assembly/wallmount/set_pixel_offsets()
+	pixel_x = DIR2PIXEL_X(dir)
+	pixel_y = DIR2PIXEL_Y(dir)
 
 /obj/item/device/electronic_assembly/wallmount/heavy
 	name = "heavy wall-mounted electronic assembly"

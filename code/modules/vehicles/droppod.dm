@@ -113,7 +113,7 @@
 
 	if(!dest || dest == get_turf(src))
 		var/list/options = new()
-		for(var/test_dir in alldirs)
+		for(var/test_dir in GLOB.alldirs)
 			var/new_dir = get_step_to(src, get_step(src, test_dir))
 			if(new_dir && user.Adjacent(new_dir))
 				options += new_dir
@@ -146,6 +146,8 @@
 
 /obj/vehicle/droppod/attack_hand(mob/user as mob)
 	..()
+	if(isobserver(user))
+		return
 	if(user == humanload || user == passenger)
 		if(status != USED)
 			launchinterface()
@@ -154,6 +156,12 @@
 	else if ((!humanload || !passenger) && status != USED)
 		load(user)
 		launchinterface()
+
+/obj/vehicle/droppod/attack_ghost(mob/user)
+	if(isobserver(user) && check_rights(R_ADMIN, FALSE, user))
+		..()
+	else // normal ghosts cannot use this
+		return
 
 /obj/vehicle/droppod/ui_interact(mob/user, var/datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)

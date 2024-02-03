@@ -42,7 +42,7 @@
 		pickup_sound = material.pickup_sound
 
 	if(material.conductive)
-		flags |= CONDUCT
+		obj_flags |= OBJ_FLAG_CONDUCTABLE
 
 	matter = material.get_matter()
 
@@ -238,6 +238,11 @@
 	default_type = MATERIAL_TRITIUM
 	apply_colour = TRUE
 
+/obj/item/stack/material/tritium/ten/Initialize()
+	. = ..()
+	amount = 10
+	update_icon()
+
 /obj/item/stack/material/tritium/full/Initialize()
 	. = ..()
 	amount = max_amount
@@ -286,6 +291,10 @@
 	item_state = "sheet-metal"
 	default_type = MATERIAL_PLASTEEL
 	icon_has_variants = TRUE
+
+/obj/item/stack/material/plasteel/Destroy()
+	. = ..()
+	GC_TEMPORARY_HARDDEL
 
 /obj/item/stack/material/plasteel/full/Initialize()
 	. = ..()
@@ -556,6 +565,30 @@
 	icon_has_variants = TRUE
 
 /obj/item/stack/material/graphite/full/Initialize()
+	. = ..()
+	amount = max_amount
+	update_icon()
+
+// Fusion fuel.
+/obj/item/stack/material/deuterium
+	name = "deuterium"
+	icon_state = "puck"
+	default_type = MATERIAL_DEUTERIUM
+
+/obj/item/stack/material/deuterium/full/Initialize()
+	. = ..()
+	amount = max_amount
+	update_icon()
+
+/obj/item/stack/material/supermatter
+	name = "stable supermatter cluster"
+	icon_state = "sheet-supermatter"
+	max_amount = 5
+	default_type = MATERIAL_SUPERMATTER
+	color = COLOR_YELLOW
+	icon_has_variants = TRUE
+
+/obj/item/stack/material/supermatter/full/Initialize()
 	. = ..()
 	amount = max_amount
 	update_icon()

@@ -75,7 +75,7 @@
 					return TRUE
 				to_chat(user, "<span class='notice'>You start to add cables to the frame.</span>")
 				playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
-				if (do_after(user, 20) && state == 2)
+				if (do_after(user, 2 SECONDS, src, DO_REPAIR_CONSTRUCT) && state == 2)
 					if (C.use(5))
 						state = 3
 						icon_state = "3"
@@ -101,7 +101,7 @@
 					return
 				to_chat(user, "<span class='notice'>You start to put in the glass panel.</span>")
 				playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
-				if (do_after(user, 20) && state == 3)
+				if (do_after(user, 2 SECONDS, src, DO_REPAIR_CONSTRUCT) && state == 3)
 					if(RG.use(2))
 						to_chat(user, "<span class='notice'>You put in the glass panel.</span>")
 						state = 4
@@ -178,7 +178,7 @@
 					var/open_for_latejoin = alert(user, "Would you like this core to be open for latejoining AIs?", "Latejoin", "Yes", "Yes", "No") == "Yes"
 					var/obj/structure/AIcore/deactivated/D = new(loc)
 					if(open_for_latejoin)
-						empty_playable_ai_cores += D
+						GLOB.empty_playable_ai_cores += D
 				else
 					var/mob/living/silicon/ai/A = new /mob/living/silicon/ai ( loc, laws, brain )
 					if(A) //if there's no brain, the mob is deleted and a structure/AIcore is created
@@ -196,8 +196,8 @@
 	state = 20//So it doesn't interact based on the above. Not really necessary.
 
 /obj/structure/AIcore/deactivated/Destroy()
-	if(src in empty_playable_ai_cores)
-		empty_playable_ai_cores -= src
+	if(src in GLOB.empty_playable_ai_cores)
+		GLOB.empty_playable_ai_cores -= src
 	return ..()
 
 /obj/structure/AIcore/deactivated/proc/load_ai(var/mob/living/silicon/ai/transfer, var/obj/item/aicard/card, var/mob/user)
@@ -267,9 +267,9 @@
 	var/obj/structure/AIcore/deactivated/D = cores[id]
 	if(!D) return
 
-	if(D in empty_playable_ai_cores)
-		empty_playable_ai_cores -= D
+	if(D in GLOB.empty_playable_ai_cores)
+		GLOB.empty_playable_ai_cores -= D
 		to_chat(src, "\The [id] is now <font color=\"#ff0000\">not available</font> for latejoining AIs.")
 	else
-		empty_playable_ai_cores += D
+		GLOB.empty_playable_ai_cores += D
 		to_chat(src, "\The [id] is now <font color=\"#008000\">available</font> for latejoining AIs.")

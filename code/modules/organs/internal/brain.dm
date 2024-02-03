@@ -183,7 +183,7 @@
 	var/blood_volume = owner.get_blood_oxygenation()
 	if(blood_volume < BLOOD_VOLUME_BAD)
 		to_chat(user, "<span class='danger'>Parts of [src] didn't survive the procedure due to lack of air supply!</span>")
-		set_max_damage(Floor(max_damage - 0.25*damage))
+		set_max_damage(FLOOR(max_damage - 0.25*damage))
 	heal_damage(damage)
 
 /obj/item/organ/internal/brain/get_scarring_level()
@@ -208,7 +208,7 @@
 	callHook("debrain", list(brainmob))
 
 /obj/item/organ/internal/brain/examine(mob/user) // -- TLE
-	..(user)
+	. = ..()
 	if(brainmob && brainmob.client)//if thar be a brain inside... the brain.
 		to_chat(user, "You can feel the small spark of life still left in this one.")
 	else

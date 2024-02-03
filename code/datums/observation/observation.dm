@@ -63,7 +63,7 @@
 	var/list/global_listeners = list()  // Associative list of instances that listen to all events of this type (as opposed to events belonging to a specific source) and the proc to call.
 
 /singleton/observ/New()
-	all_observable_events += src
+	GLOB.all_observable_events += src
 	..()
 
 /singleton/observ/proc/is_listening(event_source, datum/listener, proc_call)
@@ -216,8 +216,7 @@
 				try
 					call(listener, proc_call)(arglist(args))
 				catch (var/exception/e)
-					log_error("[e.name] - [e.file] - [e.line]")
-					log_error(e.desc)
+					log_exception(e)
 					unregister_global(listener, proc_call)
 
 	// Call the listeners for this specific event source, if they exist.
@@ -232,8 +231,7 @@
 				try
 					call(listener, proc_call)(arglist(args))
 				catch (var/exception/e)
-					log_error("[e.name] - [e.file] - [e.line]")
-					log_error(e.desc)
+					log_exception(e)
 					unregister(source, listener, proc_call)
 
 	return TRUE

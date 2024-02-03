@@ -98,19 +98,25 @@
 	for(var/af in affecting)
 		if(!ismovable(af))
 			continue
+
+		//If we're overrunning the tick, abort and we will continue at the next machine processing
+		if(TICK_CHECK)
+			break
+
 		var/atom/movable/mv = af
-		stoplag()
 		if(QDELETED(mv) || (mv.loc != loc))
 			continue
 		if(!mv.simulated)
 			continue
-		mv.conveyor_act(movedir)
+
+		if(!mv.anchored && mv.simulated && has_gravity(mv))
+			mv.conveyor_act(movedir)
+
 	conveying = FALSE
 
 /atom/movable/proc/conveyor_act(move_dir)
 	set waitfor = FALSE
-	if (!anchored && simulated && has_gravity(src))
-		step(src, move_dir)
+	step(src, move_dir)
 
 /obj/effect/conveyor_act()
 	return
@@ -312,7 +318,7 @@
 	if(!proximity || !istype(A, /turf/simulated/floor) || istype(A, /area/shuttle) || user.incapacitated())
 		return
 	var/cdir = get_dir(A, user)
-	if(!(cdir in cardinal) || A == user.loc)
+	if(!(cdir in GLOB.cardinal) || A == user.loc)
 		return
 	for(var/obj/machinery/conveyor/CB in A)
 		if(CB.dir == cdir || CB.dir == turn(cdir,180))

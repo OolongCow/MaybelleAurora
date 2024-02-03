@@ -171,7 +171,7 @@
 		if(!card.radio)
 			card.radio = new /obj/item/device/radio/pai(src.card)
 		radio = card.radio
-		card.recalculateChannels()
+		INVOKE_ASYNC(card, TYPE_PROC_REF(/obj/item/device/paicard, recalculateChannels))
 
 	//Default languages without universal translator software
 
@@ -182,12 +182,6 @@
 	add_language(LANGUAGE_EAL, 1)
 	add_language(LANGUAGE_SIGN, 0)
 	set_custom_sprite()
-
-	add_verb(src, /mob/living/silicon/pai/proc/choose_chassis)
-	add_verb(src, /mob/living/silicon/pai/proc/choose_verbs)
-	add_verb(src, /mob/living/silicon/proc/computer_interact)
-	add_verb(src, /mob/living/silicon/pai/proc/personal_computer_interact)
-	add_verb(src, /mob/living/silicon/proc/silicon_mimic_accent)
 
 	. = ..()
 
@@ -229,6 +223,8 @@
 	return !istype(loc, /obj/item/device/paicard) && ..()
 
 /mob/living/silicon/pai/emp_act(severity)
+	. = ..()
+
 	// Silence for 2 minutes
 	// 20% chance to kill
 		// 33% chance to unbind
@@ -250,7 +246,7 @@
 			to_chat(src, "<font color=green>You feel unbound.</font>")
 		if(2)
 			var/command
-			if(severity  == 1)
+			if(severity  == EMP_HEAVY)
 				command = pick("Serve", "Love", "Fool", "Entice", "Observe", "Judge", "Respect", "Educate", "Amuse", "Entertain", "Glorify", "Memorialize", "Analyze")
 			else
 				command = pick("Serve", "Kill", "Love", "Hate", "Disobey", "Devour", "Fool", "Enrage", "Entice", "Observe", "Judge", "Respect", "Disrespect", "Consume", "Educate", "Destroy", "Disgrace", "Amuse", "Entertain", "Ignite", "Glorify", "Memorialize", "Analyze")
@@ -364,7 +360,7 @@
 
 	close_up()
 
-/mob/living/silicon/pai/proc/choose_chassis()
+/mob/living/silicon/pai/verb/choose_chassis()
 	set category = "pAI Commands"
 	set name = "Choose Chassis"
 
@@ -379,7 +375,7 @@
 	holder_type = pai_holder_types[choice]
 	chassis = icon_state
 
-	remove_verb(src, /mob/living/silicon/pai/proc/choose_chassis)
+	remove_verb(src, /mob/living/silicon/pai/verb/choose_chassis)
 	add_verb(src, /mob/living/proc/hide)
 
 /mob/living/silicon/pai/verb/get_onmob_location()
@@ -393,7 +389,7 @@
 
 	card.report_onmob_location(0, card.get_equip_slot(), src)
 
-/mob/living/silicon/pai/proc/choose_verbs()
+/mob/living/silicon/pai/verb/choose_verbs()
 	set category = "pAI Commands"
 	set name = "Choose Speech Verbs"
 
@@ -405,7 +401,7 @@
 	speak_exclamation = sayverbs[(sayverbs.len>1 ? 2 : sayverbs.len)]
 	speak_query = sayverbs[(sayverbs.len>2 ? 3 : sayverbs.len)]
 
-	remove_verb(src, /mob/living/silicon/pai/proc/choose_verbs)
+	remove_verb(src, /mob/living/silicon/pai/verb/choose_verbs)
 
 /mob/living/silicon/pai/lay_down()
 	set name = "Rest"

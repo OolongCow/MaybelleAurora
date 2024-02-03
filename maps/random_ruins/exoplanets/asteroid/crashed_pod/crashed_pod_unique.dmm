@@ -29,7 +29,7 @@
 	dir = 8
 	},
 /obj/structure/window/reinforced,
-/turf/simulated/floor,
+/turf/simulated/floor/airless,
 /area/template_noop)
 "i" = (
 /obj/item/arrow/rod,
@@ -84,7 +84,7 @@
 /obj/structure/window/reinforced{
 	dir = 8
 	},
-/turf/simulated/floor,
+/turf/simulated/floor/airless,
 /area/template_noop)
 "q" = (
 /obj/structure/grille,
@@ -97,7 +97,7 @@
 /obj/structure/window/reinforced{
 	dir = 1
 	},
-/turf/simulated/floor,
+/turf/simulated/floor/airless,
 /area/template_noop)
 "t" = (
 /turf/simulated/wall/shuttle/cardinal,
@@ -126,7 +126,8 @@
 /obj/effect/decal/cleanable/blood/drip,
 /obj/machinery/door/airlock/external{
 	icon_state = "door_locked";
-	locked = 1
+	locked = 1;
+	dir = 1
 	},
 /obj/effect/decal/cleanable/blood/drip,
 /turf/simulated/floor/shuttle/dark_blue/airless,
@@ -150,7 +151,8 @@
 "D" = (
 /obj/machinery/door/airlock/external{
 	icon_state = "door_locked";
-	locked = 1
+	locked = 1;
+	dir = 1
 	},
 /obj/effect/decal/cleanable/blood/drip,
 /turf/simulated/floor/shuttle/dark_blue/airless,

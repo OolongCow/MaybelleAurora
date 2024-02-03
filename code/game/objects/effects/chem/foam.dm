@@ -8,7 +8,7 @@
 	opacity = 0
 	anchored = 1
 	density = 0
-	layer = OBJ_LAYER + 0.9
+	layer = TURF_LAYER + 0.2
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	animate_movement = 0
 	var/solid_time = 120
@@ -49,7 +49,7 @@
 	if(--amount < 0)
 		return
 
-	for(var/direction in cardinal)
+	for(var/direction in GLOB.cardinal)
 		var/turf/T = get_step(src, direction)
 		if(!T)
 			continue

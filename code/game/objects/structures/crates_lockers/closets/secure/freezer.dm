@@ -50,16 +50,16 @@
 /obj/structure/closet/secure_closet/freezer/fridge/fill()
 	..()
 	for(var/i = 0, i < 5, i++)
-		new /obj/item/reagent_containers/food/drinks/milk(src)
+		new /obj/item/reagent_containers/food/drinks/carton/milk(src)
 	for(var/i = 0, i < 2, i++)
-		new /obj/item/reagent_containers/food/drinks/soymilk(src)
+		new /obj/item/reagent_containers/food/drinks/carton/soymilk(src)
 	for(var/i = 0, i < 2, i++)
 		new /obj/item/storage/box/fancy/egg_box(src)
 
 /obj/structure/closet/secure_closet/freezer/kitchen
 	name = "kitchen cabinet"
 	desc = "A cabinet."
-	req_access = list(access_kitchen)
+	req_access = list(ACCESS_KITCHEN)
 
 /obj/structure/closet/secure_closet/freezer/kitchen/fill()
 	for(var/i = 0, i < 2, i++)
@@ -73,7 +73,7 @@
 /obj/structure/closet/secure_closet/freezer/money
 	name = "freezer"
 	desc = "This contains cold hard cash."
-	req_access = list(access_heads_vault)
+	req_access = list(ACCESS_HEADS_VAULT)
 
 /obj/structure/closet/secure_closet/freezer/money/fill()
 	..()
@@ -82,3 +82,23 @@
 
 	for(var/i = 0, i < rand(6,9), i++)
 		new /obj/random/coin(src)
+
+/obj/structure/closet/secure_closet/freezer/cafe/fill()
+	..()
+	for(var/i = 0, i < 6, i++)
+		new /obj/item/reagent_containers/food/drinks/carton/milk(src)
+	for(var/i = 0, i < 3, i++)
+		new /obj/item/storage/box/fancy/egg_box(src)
+		new /obj/item/reagent_containers/food/condiment/flour(src)
+	for(var/i = 0, i < 2, i++)
+		new /obj/item/reagent_containers/food/drinks/carton/soymilk(src)
+		new /obj/item/reagent_containers/food/condiment/sugar(src)
+
+/obj/structure/closet/secure_closet/freezer/kois
+	name = "k'ois freezer"
+	desc = "A freezer with k'ois inside. Don't eat this unless you're a Vaurca!"
+
+/obj/structure/closet/secure_closet/freezer/kois/fill()
+	..()
+	for(var/i = 0, i < 8, i++)
+		new /obj/item/reagent_containers/food/snacks/grown/kois(src)

@@ -3,18 +3,14 @@
 #define EXPLFX_SHAKE 1
 #define EXPLFX_NONE 0
 
-var/datum/controller/subsystem/explosives/SSexplosives
-
-// yes, let's move the laggiest part of the game to a process
-// nothing could go wrong -- Lohikar
-/datum/controller/subsystem/explosives
+SUBSYSTEM_DEF(explosives)
 	name = "Explosives"
 	wait = 1
 	flags = SS_NO_INIT | SS_BACKGROUND | SS_POST_FIRE_TIMING
 	priority = SS_PRIORITY_EXPLOSIVES
 	runlevels = RUNLEVELS_PLAYING
 
-	suspended = TRUE	// Start disabled, explosions will wake us if need be.
+	can_fire = FALSE	// Start disabled, explosions will wake us if need be.
 
 	var/list/work_queue = list()
 	var/ticks_without_work = 0
@@ -22,9 +18,6 @@ var/datum/controller/subsystem/explosives/SSexplosives
 	var/explosion_in_progress
 
 	var/mc_notified = FALSE
-
-/datum/controller/subsystem/explosives/New()
-	NEW_SS_GLOBAL(SSexplosives)
 
 /datum/controller/subsystem/explosives/Recover()
 	work_queue = SSexplosives.work_queue
@@ -36,7 +29,7 @@ var/datum/controller/subsystem/explosives/SSexplosives
 		ticks_without_work++
 		if (ticks_without_work > 5)
 			// All explosions handled, we can sleep now.
-			suspend()
+			can_fire = FALSE
 
 			mc_notified = FALSE
 			Master.ExplosionEnd()
@@ -117,7 +110,7 @@ var/datum/controller/subsystem/explosives/SSexplosives
 				vibration = 1
 
 	if (vibration)
-		for(var/thing in player_list)
+		for(var/thing in GLOB.player_list)
 			var/mob/M = thing
 			CHECK_TICK
 			// Double check for client
@@ -228,7 +221,7 @@ var/datum/controller/subsystem/explosives/SSexplosives
 
 	var/took = (world.timeofday-start)/10
 	//You need to press the DebugGame verb to see these now....they were getting annoying and we've collected a fair bit of data. Just -test- changes  to explosion code using this please so we can compare
-	if(Debug2)	world.log <<  "## DEBUG: Explosion([x0],[y0],[z0])(d[devastation_range],h[heavy_impact_range],l[light_impact_range]): Took [took] seconds."
+	if(GLOB.Debug2)	world.log <<  "## DEBUG: Explosion([x0],[y0],[z0])(d[devastation_range],h[heavy_impact_range],l[light_impact_range]): Took [took] seconds."
 
 // All the vars used on the turf should be on unsimulated turfs too, we just don't care about those generally.
 #define SEARCH_DIR(dir) \
@@ -249,10 +242,10 @@ var/datum/controller/subsystem/explosives/SSexplosives
 	if(!epicenter)
 		return
 
-	message_admins("Explosion with size ([power]) in area [epicenter.loc.name] ([epicenter.x],[epicenter.y],[epicenter.z])")
+	message_admins("Explosion with size ([power]) in area [epicenter.loc.name] ([epicenter.x],[epicenter.y],[epicenter.z]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[epicenter.x];Y=[epicenter.y];Z=[epicenter.z]'>JMP</a>)")
 	log_game("Explosion with size ([power]) in area [epicenter.loc.name] ")
 
-	log_debug("iexpl: Beginning discovery phase.")
+	LOG_DEBUG("iexpl: Beginning discovery phase.")
 	var/time = world.time
 
 	explosion_in_progress = TRUE
@@ -264,11 +257,11 @@ var/datum/controller/subsystem/explosives/SSexplosives
 		if (O.explosion_resistance)
 			power -= O.explosion_resistance
 
-	if (power >= config.iterative_explosives_z_threshold)
+	if (power >= GLOB.config.iterative_explosives_z_threshold)
 		if ((z_transfer & UP) && HasAbove(epicenter.z))
 			var/datum/explosiondata/data = new
 			data.epicenter = GetAbove(epicenter)
-			data.rec_pow = (power * config.iterative_explosives_z_multiplier) - config.iterative_explosives_z_subtraction
+			data.rec_pow = (power * GLOB.config.iterative_explosives_z_multiplier) - GLOB.config.iterative_explosives_z_subtraction
 			data.z_transfer = UP
 			data.spreading = TRUE
 			queue(data)
@@ -276,7 +269,7 @@ var/datum/controller/subsystem/explosives/SSexplosives
 		if ((z_transfer & DOWN) && HasBelow(epicenter.z))
 			var/datum/explosiondata/data = new
 			data.epicenter = GetBelow(epicenter)
-			data.rec_pow = (power * config.iterative_explosives_z_multiplier) - config.iterative_explosives_z_subtraction
+			data.rec_pow = (power * GLOB.config.iterative_explosives_z_multiplier) - GLOB.config.iterative_explosives_z_subtraction
 			data.z_transfer = DOWN
 			data.spreading = TRUE
 			queue(data)
@@ -326,8 +319,8 @@ var/datum/controller/subsystem/explosives/SSexplosives
 
 		CHECK_TICK
 
-	log_debug("iexpl: Discovery completed in [(world.time-time)/10] seconds.")
-	log_debug("iexpl: Beginning SFX phase.")
+	LOG_DEBUG("iexpl: Discovery completed in [(world.time-time)/10] seconds.")
+	LOG_DEBUG("iexpl: Beginning SFX phase.")
 	time = world.time
 
 	var/volume = 10 + (power * 20)
@@ -336,7 +329,7 @@ var/datum/controller/subsystem/explosives/SSexplosives
 
 	var/sound/explosion_sound = sound(get_sfx(/singleton/sound_category/explosion_sound))
 
-	for (var/thing in player_list)
+	for (var/thing in GLOB.player_list)
 		var/mob/M = thing
 		var/reception = EXPLFX_BOTH
 
@@ -376,8 +369,8 @@ var/datum/controller/subsystem/explosives/SSexplosives
 
 		CHECK_TICK
 
-	log_debug("iexpl: SFX phase completed in [(world.time-time)/10] seconds.")
-	log_debug("iexpl: Beginning application phase.")
+	LOG_DEBUG("iexpl: SFX phase completed in [(world.time-time)/10] seconds.")
+	LOG_DEBUG("iexpl: Beginning application phase.")
 	time = world.time
 
 	var/turf_tally = 0
@@ -412,7 +405,7 @@ var/datum/controller/subsystem/explosives/SSexplosives
 		turf_tally++
 
 	explosion_in_progress = FALSE
-	log_debug("iexpl: Application completed in [(world.time-time)/10] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
+	LOG_DEBUG("iexpl: Application completed in [(world.time-time)/10] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
 
 #undef SEARCH_DIR
 
@@ -424,8 +417,8 @@ var/datum/controller/subsystem/explosives/SSexplosives
 	work_queue += data
 
 	// Wake it up from sleeping if necessary.
-	if (suspended)
-		wake()
+	if (!can_fire)
+		can_fire = TRUE
 
 /datum/controller/subsystem/explosives/stat_entry(msg)
 	msg ="P:[work_queue.len]"

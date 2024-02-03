@@ -8,6 +8,8 @@
 	var/datum/trade_destination/affected_dest
 
 /datum/event/economic_event/start()
+	..()
+
 	affected_dest = pickweight(weighted_randomevent_locations)
 	if(affected_dest.viable_random_events.len)
 		endWhen = rand(60,300)
@@ -70,7 +72,7 @@
 			if(PIRATES)
 				body = "[pick("Pirates","Criminal elements","A [pick("mercenary","Donk Co.","Waffle Co.","\'REDACTED\'")] strike force")] have [pick("raided","blockaded","attempted to blackmail","attacked")] [affected_dest.name] today. Security has been tightened, but many valuable minerals were taken."
 			if(CORPORATE_ATTACK)
-				body = "A small [pick("pirate","Cybersun Industries","Gorlex Marauders","mercenary")] fleet has precise-jumped into proximity with [affected_dest.name], [pick("for a smash-and-grab operation","in a hit and run attack","in an overt display of hostilities")]. Much damage was done, and security has been tightened since the incident."
+				body = "A small [pick("pirate","Cybersun Industries","Hammertail Smiths","mercenary")] fleet has precise-jumped into proximity with [affected_dest.name], [pick("for a smash-and-grab operation","in a hit and run attack","in an overt display of hostilities")]. Much damage was done, and security has been tightened since the incident."
 			if(ALIEN_RAIDERS)
 				if(prob(20))
 					body = "The Tiger Co-operative have raided [affected_dest.name] today, no doubt on orders from their enigmatic masters. Stealing wildlife, farm animals, medical research materials and kidnapping civilians. [current_map.company_name] authorities are standing by to counter attempts at bio-terrorism."
@@ -93,6 +95,8 @@
 	SSnews.SubmitArticle(body, author, ch, null, 1)
 
 /datum/event/economic_event/end()
+	..()
+
 	for(var/good_type in dearer_goods)
 		affected_dest.temp_price_change[good_type] = 1
 	for(var/good_type in cheaper_goods)

@@ -18,7 +18,8 @@ export type SleeperData = {
   pulse: string;
   reagents: SleeperReagent[];
   stasissettings: number[];
-  beaker: number;
+  beaker: BooleanLike;
+  beakerfreespace: number;
   filtering: BooleanLike;
   pump: BooleanLike;
 };
@@ -45,10 +46,10 @@ export const Sleeper = (props, context) => {
           <Table>
             <BlockQuote>No occupant detected.</BlockQuote>
             <Button
-              content={data.beaker < 0 ? 'No Beaker' : 'Eject Beaker'}
+              content={data.beaker ? 'Eject Beaker' : 'No Beaker'}
               icon="medkit"
               color="red"
-              disabled={data.beaker < 0}
+              disabled={!data.beaker}
               onClick={() => act('beaker')}
             />
           </Table>
@@ -70,7 +71,7 @@ export const OccupantStatus = (props, context) => {
             title="Occupant Status"
             buttons={
               <Button
-                content="Eject"
+                content="Eject Occupant"
                 color="bad"
                 icon="person-booth"
                 onClick={() => act('eject')}
@@ -128,7 +129,7 @@ export const OccupantStatus = (props, context) => {
           <Section title="Stomach Reagents">
             {data.hasstomach ? (
               data.stomachreagents.length ? (
-                <BloodReagents />
+                <StomachReagents />
               ) : (
                 'No detected reagents in the stomach.'
               )
@@ -136,8 +137,6 @@ export const OccupantStatus = (props, context) => {
               'No stomach detected.'
             )}
           </Section>
-        </Table.Cell>
-        <Table.Cell>
           <Section title="Injectable Reagents">
             <Table>
               {data.reagents.map((reagent) => (
@@ -182,30 +181,30 @@ export const OccupantStatus = (props, context) => {
               title="Dialysis"
               buttons={
                 <Button
-                  content={data.beaker < 0 ? 'No Beaker' : 'Eject Beaker'}
+                  content={data.beaker ? 'Eject Beaker' : 'No Beaker'}
                   icon="medkit"
                   color="red"
-                  disabled={data.beaker < 0}
+                  disabled={!data.beaker}
                   onClick={() => act('beaker')}
                 />
               }>
               <Button
                 content="Blood Dialysis"
                 color={data.filtering ? 'good' : ''}
-                disabled={data.beaker < 0}
+                disabled={!data.beaker || data.beakerfreespace <= 0}
                 icon="heart"
                 onClick={() => act('filter')}
               />
               <Button
                 content="Stomach Pump"
                 color={data.pump ? 'good' : ''}
-                disabled={data.beaker < 0}
+                disabled={!data.beaker || data.beakerfreespace <= 0}
                 icon="splotch"
                 onClick={() => act('pump')}
               />
-              {data.beaker > -1 ? (
+              {data.beaker ? (
                 <BlockQuote>
-                  {Math.round(data.beaker)}u of free space remaining.
+                  {Math.round(data.beakerfreespace)}u of free space remaining.
                 </BlockQuote>
               ) : (
                 <BlockQuote color="bad">No beaker inserted.</BlockQuote>

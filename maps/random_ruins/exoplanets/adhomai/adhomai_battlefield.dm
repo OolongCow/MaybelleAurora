@@ -11,7 +11,7 @@
 	name = "PRA Soldier"
 	corpseuniform = /obj/item/clothing/under/tajaran/pra_uniform
 	corpsesuit = /obj/item/clothing/suit/storage/tajaran/pra_jacket/armored
-	corpseshoes = /obj/item/clothing/shoes/tajara/jackboots
+	corpseshoes = /obj/item/clothing/shoes/jackboots/tajara
 	corpsehelmet = /obj/item/clothing/head/beret/tajaran/pra
 	corpseid = FALSE
 	species = SPECIES_TAJARA_MSAI
@@ -34,7 +34,7 @@
 			M.change_skin_color(192, 192, 192)
 
 	M.adjustBruteLoss(rand(200,400))
-	M.dir = pick(cardinal)
+	M.dir = pick(GLOB.cardinal)
 
 /obj/item/photo/soldier
 	name = "family photo"

@@ -1,6 +1,4 @@
-var/datum/controller/subsystem/overlays/SSoverlays
-
-/datum/controller/subsystem/overlays
+SUBSYSTEM_DEF(overlays)
 	name = "Overlay"
 	flags = SS_TICKER
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
@@ -13,19 +11,17 @@ var/datum/controller/subsystem/overlays/SSoverlays
 	var/idex = 1
 	var/list/overlay_icon_state_caches = list()
 	var/list/overlay_icon_cache = list()
-	var/initialized = FALSE
+	initialized = FALSE
 
 /datum/controller/subsystem/overlays/stat_entry(msg)
 	msg = "Ov:[processing.len - (idex - 1)]"
 	return ..()
 
-/datum/controller/subsystem/overlays/New()
-	NEW_SS_GLOBAL(SSoverlays)
-
 /datum/controller/subsystem/overlays/Initialize()
 	initialized = TRUE
 	Flush()
-	..()
+
+	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/overlays/Recover()
 	overlay_icon_state_caches = SSoverlays.overlay_icon_state_caches
@@ -52,7 +48,7 @@ var/datum/controller/subsystem/overlays/SSoverlays
 
 /datum/controller/subsystem/overlays/proc/Flush()
 	if(processing.len)
-		log_ss("overlays", "Flushing [processing.len] overlays.")
+		log_subsystem("overlays", "Flushing [processing.len] overlays.")
 		fire(mc_check = FALSE)
 
 /atom/proc/compile_overlays()

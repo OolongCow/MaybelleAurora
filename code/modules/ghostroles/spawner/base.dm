@@ -40,6 +40,9 @@
 	var/mob_name_suffix = null //The suffix that should be applied to the mob name
 	var/away_site = FALSE
 
+	/// A lazylist of weakrefs to mobs this spawner has spawned
+	var/list/datum/weakref/spawned_mobs
+
 /datum/ghostspawner/New()
 	. = ..()
 	if(!jobban_job)
@@ -83,7 +86,7 @@
 		return "This spawner is not enabled."
 	if(respawn_flag && !user.MayRespawn(0,respawn_flag))
 		return "You can not respawn at this time."
-	if(!config.enter_allowed)
+	if(!GLOB.config.enter_allowed)
 		return "There is an administrative lock on entering the game."
 	if(SSticker.mode?.explosion_in_progress)
 		return "The station is currently exploding."
@@ -109,7 +112,7 @@
 //This proc selects the spawnpoint to use. - Only used when mode is GS_LOC_POS
 /datum/ghostspawner/proc/select_spawnlocation(var/use=TRUE)
 	if(loc_type != GS_LOC_POS)
-		log_debug("Ghostspawner: select_spawnlocation is not valid for spawner [short_name] as it is not position based")
+		log_module_ghostroles_spawner("select_spawnlocation is not valid for spawner [short_name] as it is not position based")
 		return null
 	if(!isnull(spawnpoints))
 		for(var/spawnpoint in spawnpoints) //Loop through the applicable spawnpoints
@@ -121,21 +124,21 @@
 				return T
 	if(!isnull(landmark_name))
 		var/list/possible_landmarks = list()
-		for(var/obj/effect/landmark/landmark in landmarks_list)
+		for(var/obj/effect/landmark/landmark in GLOB.landmarks_list)
 			if(landmark.name == landmark_name)
 				possible_landmarks += landmark
 		if(length(possible_landmarks))
 			var/obj/effect/landmark/L = pick(possible_landmarks)
 			return get_turf(L)
 
-	log_debug("Ghostspawner: Spawner [short_name] has neither spawnpoints nor landmarks or a matching spawnpoint/landmark could not be found")
+	log_module_ghostroles_spawner("Spawner [short_name] has neither spawnpoints nor landmarks or a matching spawnpoint/landmark could not be found")
 
 	return null //If we dont have anything return null
 
 //Selects a spawnatom from the list of available atoms and removes it if use is set to true (default)
 /datum/ghostspawner/proc/select_spawnatom(var/use=TRUE)
 	if(loc_type != GS_LOC_ATOM)
-		log_debug("Ghostspawner: select_spawnatom is not valid for spawner [short_name] as it is not atom based")
+		log_module_ghostroles_spawner("select_spawnatom is not valid for spawner [short_name] as it is not atom based")
 		return null
 	var/atom/A = pick(spawn_atoms)
 	if(use)
@@ -171,9 +174,9 @@
 			to_chat(user, SPAN_INFO("You are spawning as: ") + name)
 		if(desc)
 			to_chat(user, SPAN_INFO("Role description: ") + desc)
-	universe.OnPlayerLatejoin(user)
+	GLOB.universe.OnPlayerLatejoin(user)
 	if(current_map.use_overmap)
-		var/obj/effect/overmap/visitable/sector = map_sectors["[user.z]"]
+		var/obj/effect/overmap/visitable/sector = GLOB.map_sectors["[user.z]"]
 		if(sector?.invisible_until_ghostrole_spawn)
 			sector.x = sector.start_x
 			sector.y = sector.start_y
@@ -207,7 +210,7 @@
 		log_and_message_admins("has enabled the ghostspawner [src.name]")
 	enabled = TRUE
 	if(enable_dmessage)
-		for(var/mob/abstract/observer/O in player_list)
+		for(var/mob/abstract/observer/O in GLOB.player_list)
 			if(O.client && !cant_see(O))
 				if(enable_dmessage == TRUE)
 					to_chat(O, "<span class='deadsay'><b>A ghostspawner for a \"[src.name]\" has been enabled.</b></span>")

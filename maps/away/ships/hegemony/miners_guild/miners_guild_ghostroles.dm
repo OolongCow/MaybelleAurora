@@ -28,7 +28,7 @@
 
 /datum/outfit/admin/miners_guild
 	uniform = list(/obj/item/clothing/under/unathi, /obj/item/clothing/under/unathi/himation)
-	shoes = /obj/item/clothing/shoes/caligae
+	shoes = /obj/item/clothing/shoes/sandals/caligae/socks
 	suit = /obj/item/clothing/accessory/poncho/unathimantle/miner
 	back = /obj/item/storage/backpack/satchel/eng
 	l_ear = /obj/item/device/radio/headset/ship
@@ -36,7 +36,7 @@
 	backpack_contents = list(/obj/item/storage/box/survival = 1, /obj/item/storage/wallet/random = 1)
 
 /datum/outfit/admin/miners_guild/get_id_access()
-	return list(access_generic_away_site, access_external_airlocks)
+	return list(ACCESS_GENERIC_AWAY_SITE, ACCESS_EXTERNAL_AIRLOCKS)
 
 /datum/outfit/admin/miners_guild/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(H?.w_uniform)

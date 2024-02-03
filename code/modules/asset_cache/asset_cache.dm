@@ -63,7 +63,7 @@ var/list/asset_datums = list()
 
 /// Returns whether or not the asset should attempt to read from cache
 /datum/asset/proc/should_refresh()
-	return !cross_round_cachable || !config.cache_assets
+	return !cross_round_cachable || !GLOB.config.cache_assets
 
 //If you don't need anything complicated.
 /datum/asset/simple
@@ -149,7 +149,7 @@ var/list/asset_datums = list()
 		return
 
 	// If it's cached, may as well load it now, while the loading is cheap
-	if(config.cache_assets && cross_round_cachable)
+	if(GLOB.config.cache_assets && cross_round_cachable)
 		load_immediately = TRUE
 
 	create_spritesheets()
@@ -195,7 +195,7 @@ var/list/asset_datums = list()
 	SSassets.transport.register_asset(res_name, fcopy_rsc(fname))
 	fdel(fname)
 
-	if (config.cache_assets && cross_round_cachable)
+	if (GLOB.config.cache_assets && cross_round_cachable)
 		write_to_cache()
 	fully_generated = TRUE
 	// If we were ever in there, remove ourselves
@@ -346,7 +346,11 @@ var/list/asset_datums = list()
 	return out.Join("\n")
 
 /datum/asset/spritesheet/proc/should_load_immediately()
+#ifdef DO_NOT_DEFER_ASSETS
 	return TRUE
+#else
+	return load_immediately
+#endif
 
 /datum/asset/spritesheet/proc/Insert(sprite_name, icon/I, icon_state="", dir=SOUTH, frame=1, moving=FALSE, icon/forced=FALSE)
 	if(should_load_immediately())
@@ -449,11 +453,10 @@ var/list/asset_datums = list()
 /datum/asset/simple/namespaced/fontawesome
 	legacy = TRUE
 	assets = list(
-		"fa-regular-400.eot"  = 'html/font-awesome/webfonts/fa-regular-400.eot',
-		"fa-regular-400.woff" = 'html/font-awesome/webfonts/fa-regular-400.woff',
-		"fa-solid-900.eot"    = 'html/font-awesome/webfonts/fa-solid-900.eot',
-		"fa-solid-900.woff"   = 'html/font-awesome/webfonts/fa-solid-900.woff',
-		"v4shim.css"          = 'html/font-awesome/css/v4-shims.min.css'
+		"fa-regular-400.ttf" = 'html/font-awesome/webfonts/fa-regular-400.ttf',
+		"fa-solid-900.ttf" = 'html/font-awesome/webfonts/fa-solid-900.ttf',
+		"fa-v4compatibility.ttf" = 'html/font-awesome/webfonts/fa-v4compatibility.ttf',
+		"v4shim.css" = 'html/font-awesome/css/v4-shims.min.css',
 	)
 	parents = list("font-awesome.css" = 'html/font-awesome/css/all.min.css')
 	cross_round_cachable = TRUE
@@ -481,6 +484,7 @@ var/list/asset_datums = list()
 
 /datum/asset/simple/paper
 	legacy = TRUE
+	keep_local_name = TRUE
 	assets = list(
 		"talisman.png" = 'html/images/talisman.png',
 		"barcode0.png" = 'html/images/barcode0.png',
@@ -567,6 +571,8 @@ var/list/asset_datums = list()
 		"raskara.png" = 'html/images/scans/exoplanets/raskara.png',
 		"comet.png" = 'html/images/scans/exoplanets/comet.png',
 		"asteroid.png" = 'html/images/scans/exoplanets/asteroid.png',
+		"konyang.png" = 'html/images/scans/exoplanets/konyang.png',
+		"konyang_point_verdant.png" = 'html/images/scans/exoplanets/konyang_point_verdant.png',
 		//end scan images
 		"bluebird.woff" = 'html/fonts/OFL/Bluebird.woff',
 		"grandhotel.woff" = 'html/fonts/OFL/GrandHotel.woff',
@@ -586,7 +592,8 @@ var/list/asset_datums = list()
 		"copt-b.woff" = 'html/fonts/OFL/Copt-B.woff',
 		"ducados.woff" = 'html/fonts/OFL/Ducados.woff',
 		"kawkabmono.woff" = 'html/fonts/OFL/KawkabMono.woff',
-		"kaushanscript.woff" = 'html/fonts/OFL/KaushanScript.woff'
+		"kaushanscript.woff" = 'html/fonts/OFL/KaushanScript.woff',
+		"typewriter.woff" = 'html/fonts/OFL/typewriter.woff'
 	)
 	cross_round_cachable = TRUE
 
@@ -659,8 +666,8 @@ var/list/asset_datums = list()
 
 /datum/asset/spritesheet/chem_master
 	name = "chemmaster"
-	cross_round_cachable = TRUE
-	var/list/bottle_sprites = list("bottle-1", "bottle-2", "bottle-3", "bottle-4", "bottle-5", "bottle-6")
+	cross_round_cachable = FALSE
+	var/list/bottle_sprites = list("bottle-1", "bottle-2", "bottle-3", "bottle-4")
 	var/max_pill_sprite = 20
 
 /datum/asset/spritesheet/chem_master/register()
@@ -668,7 +675,7 @@ var/list/asset_datums = list()
 		Insert("pill[i]", 'icons/obj/chemical.dmi', "pill[i]")
 
 	for (var/sprite in bottle_sprites)
-		Insert(sprite, icon('icons/obj/chemical.dmi', sprite))
+		Insert(sprite, icon('icons/obj/item/reagent_containers/glass.dmi', sprite))
 	return ..()
 
 /datum/asset/spritesheet/accents

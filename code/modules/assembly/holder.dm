@@ -3,7 +3,8 @@
 	icon = 'icons/obj/assemblies/new_assemblies.dmi'
 	icon_state = "holder"
 	item_state = "assembly"
-	flags = CONDUCT | PROXMOVE
+	obj_flags = OBJ_FLAG_CONDUCTABLE
+	movable_flags = MOVABLE_FLAG_PROXMOVE
 	throwforce = 5
 	w_class = ITEMSIZE_SMALL
 	throw_speed = 3
@@ -13,6 +14,19 @@
 	var/obj/item/device/assembly/a_left = null
 	var/obj/item/device/assembly/a_right = null
 	var/obj/special_assembly = null
+
+/obj/item/device/assembly_holder/Initialize(mapload, ...)
+	. = ..()
+	become_hearing_sensitive()
+
+/obj/item/device/assembly_holder/Destroy()
+	lose_hearing_sensitivity()
+
+	QDEL_NULL(a_left)
+	QDEL_NULL(a_right)
+	QDEL_NULL(special_assembly)
+
+	. = ..()
 
 /obj/item/device/assembly_holder/proc/detached()
 	if(a_left)
@@ -62,9 +76,9 @@
 	if(master)
 		master.update_icon()
 
-/obj/item/device/assembly_holder/examine(mob/user)
-	. = ..(user)
-	if(. && (in_range(src, user) || src.loc == user))
+/obj/item/device/assembly_holder/examine(mob/user, distance, is_adjacent)
+	. = ..()
+	if(distance <= 1 || src.loc == user)
 		if (src.secured)
 			to_chat(user, SPAN_NOTICE("\The [src] is ready!"))
 		else
@@ -172,17 +186,6 @@
 	if(master)
 		master.receive_signal()
 	return TRUE
-
-/obj/item/device/assembly_holder/Initialize(mapload, ...)
-	. = ..()
-	become_hearing_sensitive()
-
-/obj/item/device/assembly_holder/Destroy()
-	if(a_left)
-		a_left.holder = null
-	if(a_right)
-		a_right.holder = null
-	return ..()
 
 /obj/item/device/assembly_holder/hear_talk(mob/living/M, msg, verb, datum/language/speaking)
 	if(a_right)

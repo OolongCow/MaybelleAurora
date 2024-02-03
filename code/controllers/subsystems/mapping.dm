@@ -1,6 +1,4 @@
-var/datum/controller/subsystem/mapping/SSmapping
-
-/datum/controller/subsystem/mapping
+SUBSYSTEM_DEF(mapping)
 	name = "Mapping"
 	init_order = SS_INIT_AWAY_MAPS
 	flags = SS_NO_FIRE
@@ -12,9 +10,6 @@ var/datum/controller/subsystem/mapping/SSmapping
 	var/list/submaps = list()
 	var/list/submap_archetypes = list()
 
-/datum/controller/subsystem/mapping/New()
-	NEW_SS_GLOBAL(SSmapping)
-
 /datum/controller/subsystem/mapping/Initialize(timeofday)
 	// Load templates and build away sites.
 	preloadTemplates()
@@ -23,7 +18,8 @@ var/datum/controller/subsystem/mapping/SSmapping
 
 	current_map.build_away_sites()
 	current_map.build_exoplanets()
-	. = ..(timeofday)
+
+	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/mapping/Recover()
 	flags |= SS_NO_INIT

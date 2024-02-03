@@ -107,7 +107,7 @@
 	desc = "Use this to send crates and closets to cargo telepads."
 	icon = 'icons/obj/telescience.dmi'
 	icon_state = "rcs"
-	flags = CONDUCT
+	obj_flags = OBJ_FLAG_CONDUCTABLE
 	force = 10
 	throwforce = 10
 	throw_speed = 2
@@ -122,7 +122,7 @@
 	var/teleporting = 0
 
 /obj/item/rcs/examine(mob/user)
-	..()
+	. = ..()
 	to_chat(user, "There are [rcharges] charge\s left.")
 
 /obj/item/rcs/process()
@@ -148,5 +148,5 @@
 /obj/item/rcs/attackby(var/obj/item/O, var/mob/user)
 	if (istype(O, /obj/item/card/emag) && !emagged)
 		emagged = 1
-		spark(src, 5, alldirs)
+		spark(src, 5, GLOB.alldirs)
 		to_chat(user, "<span class='caution'>You emag the RCS. Click on it to toggle between modes.</span>")

@@ -56,7 +56,7 @@
 	if(oxy < BLOOD_VOLUME_BAD) //MOAR
 		pulse_mod++
 
-	if(owner.status_flags & FAKEDEATH || owner.chem_effects[CE_NOPULSE])
+	if(owner.status_flags & FAKEDEATH)
 		pulse = Clamp(PULSE_NONE + pulse_mod, PULSE_NONE, PULSE_2FAST) //pretend that we're dead. unlike actual death, can be inflienced by meds
 		return
 
@@ -67,6 +67,7 @@
 		var/should_stop = prob(80) && owner.get_blood_circulation() < BLOOD_VOLUME_SURVIVE //cardiovascular shock, not enough liquid to pump
 		should_stop = should_stop || prob(max(0, owner.getBrainLoss() - owner.maxHealth * 0.75)) //brain failing to work heart properly
 		should_stop = should_stop || (prob(5) && pulse == PULSE_THREADY) //erratic heart patterns, usually caused by oxyloss
+		should_stop = should_stop || owner.chem_effects[CE_NOPULSE]
 		if(should_stop) // The heart has stopped due to going into traumatic or cardiovascular shock.
 			to_chat(owner, "<span class='danger'>Your heart has stopped!</span>")
 			pulse = PULSE_NONE
@@ -145,7 +146,7 @@
 							blood_max += ((W.damage / 40) * species.bleed_mod)
 
 			if(temp.status & ORGAN_ARTERY_CUT)
-				var/bleed_amount = Floor((owner.vessel.total_volume / (temp.applied_pressure || !open_wound ? 450 : 250)) * temp.arterial_bleed_severity)
+				var/bleed_amount = FLOOR((owner.vessel.total_volume / (temp.applied_pressure || !open_wound ? 450 : 250)) * temp.arterial_bleed_severity)
 				if(bleed_amount)
 					if(CE_BLOODCLOT in owner.chem_effects)
 						bleed_amount *= 0.8 // won't do much, but it'll help

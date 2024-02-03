@@ -56,8 +56,10 @@
 /obj/item/device/radio/headset/list_channels(var/mob/user)
 	return list_secure_channels()
 
-/obj/item/device/radio/headset/examine(mob/user)
-	if(!(..(user, 1) && radio_desc))
+/obj/item/device/radio/headset/examine(mob/user, distance, is_adjacent)
+	. = ..()
+
+	if(!(is_adjacent && radio_desc))
 		return
 
 	to_chat(user, "The following channels are available:")
@@ -72,10 +74,10 @@
 /obj/item/device/radio/headset/handle_message_mode(mob/living/M, message, channel)
 	if(channel == "special")
 		if(translate_binary)
-			var/datum/language/binary = all_languages[LANGUAGE_ROBOT]
+			var/datum/language/binary = GLOB.all_languages[LANGUAGE_ROBOT]
 			binary.broadcast(M, message)
 		if(translate_hivenet)
-			var/datum/language/bug = all_languages[LANGUAGE_VAURCA]
+			var/datum/language/bug = GLOB.all_languages[LANGUAGE_VAURCA]
 			bug.broadcast(M, message)
 		return null
 
@@ -200,7 +202,7 @@
 	desc_info = "This radio doubles as a pair of earmuffs by providing sound protection."
 	icon_state = "earset"
 	item_state = "earset"
-	item_flags = SOUNDPROTECTION
+	item_flags = ITEM_FLAG_SOUND_PROTECTION
 	slot_flags = SLOT_EARS | SLOT_TWOEARS
 
 /obj/item/device/radio/headset/wrist
@@ -475,6 +477,28 @@
 	item_state = "wristset_sci"
 	ks2type = /obj/item/device/encryptionkey/headset_sci
 
+/obj/item/device/radio/headset/headset_xenoarch
+	name = "xenoarchaeology radio headset"
+	desc = "A sciency headset for Xenoarchaeologists."
+	icon_state = "sci_headset"
+	ks2type = /obj/item/device/encryptionkey/headset_xenoarch
+
+/obj/item/device/radio/headset/headset_xenoarch/alt
+	name = "xenoarchaeology bowman headset"
+	icon_state = "sci_headset_alt"
+
+/obj/item/device/radio/headset/alt/double/xenoarch
+	name = "soundproof xenoarchaeology headset"
+	icon_state = "earset_sci"
+	item_state = "earset_sci"
+	ks2type = /obj/item/device/encryptionkey/headset_xenoarch
+
+/obj/item/device/radio/headset/wrist/xenoarch
+	name = "wristbound xenoarchaeology radio"
+	icon_state = "wristset_sci"
+	item_state = "wristset_sci"
+	ks2type = /obj/item/device/encryptionkey/headset_xenoarch
+
 /obj/item/device/radio/headset/headset_rob
 	name = "robotics radio headset"
 	desc = "Made specifically for the roboticists who cannot decide between departments."
@@ -647,10 +671,10 @@
 	name = "earmuffs"
 	desc = "Protects your hearing from loud noises, and quiet ones as well."
 	desc_antag = "This set of earmuffs has a secret compartment housing radio gear, allowing it to function as a standard headset."
-	icon = 'icons/obj/clothing/ears.dmi'
+	icon = 'icons/obj/clothing/ears/earmuffs.dmi'
 	icon_state = "earmuffs"
 	item_state = "earmuffs"
-	item_flags = SOUNDPROTECTION
+	item_flags = ITEM_FLAG_SOUND_PROTECTION
 	slot_flags = SLOT_EARS | SLOT_TWOEARS
 
 /obj/item/device/radio/headset/syndicate
@@ -676,6 +700,12 @@
 	origin_tech = list(TECH_ILLEGAL = 2)
 	syndie = TRUE
 	ks1type = /obj/item/device/encryptionkey/burglar
+
+/obj/item/device/radio/headset/jockey
+	icon_state = "syn_headset"
+	origin_tech = list(TECH_ILLEGAL = 2)
+	syndie = TRUE
+	ks1type = /obj/item/device/encryptionkey/jockey
 
 /obj/item/device/radio/headset/ninja
 	icon_state = "syn_headset"
@@ -704,7 +734,7 @@
 		return ..()
 
 	var/turf/T = get_turf(src)
-	var/obj/effect/overmap/visitable/V = map_sectors["[T.z]"]
+	var/obj/effect/overmap/visitable/V = GLOB.map_sectors["[T.z]"]
 	if(istype(V) && V.comms_support)
 		default_frequency = assign_away_freq(V.name)
 		if(V.comms_name)
@@ -714,6 +744,10 @@
 
 	if (use_common)
 		set_frequency(PUB_FREQ)
+
+/obj/item/device/radio/headset/ship/coalition_navy
+	icon_state = "coal_headset"
+	ks1type = /obj/item/device/encryptionkey/ship/coal_navy
 
 /obj/item/device/radio/headset/ship/common
 	use_common = TRUE
@@ -728,6 +762,11 @@
 	desc = "The headset of the boss's boss."
 	icon_state = "com_headset"
 	ks2type = /obj/item/device/encryptionkey/ert
+
+/obj/item/device/radio/headset/ert/alt
+	name = "emergency response team bowman headset"
+	icon_state = "com_headset_alt"
+	item_state = "headset_alt"
 
 /obj/item/device/radio/headset/legion
 	name = "Tau Ceti Foreign Legion radio headset"
@@ -765,6 +804,10 @@
 	ks2type = /obj/item/device/encryptionkey/heads/ai_integrated
 	var/myAi = null    // Atlantis: Reference back to the AI which has this radio.
 	var/disabledAi = 0 // Atlantis: Used to manually disable AI's integrated radio via intellicard menu.
+
+/obj/item/device/radio/headset/heads/ai_integrated/Destroy()
+	. = ..()
+	GC_TEMPORARY_HARDDEL
 
 /obj/item/device/radio/headset/heads/ai_integrated/can_receive(input_frequency, level)
 	return ..(input_frequency, level, !disabledAi)

@@ -154,15 +154,12 @@
 /proc/iszombie(A)
 	if(ishuman(A))
 		var/mob/living/carbon/human/H = A
-		switch(H.get_species())
-			if(SPECIES_ZOMBIE)
-				return TRUE
-			if(SPECIES_ZOMBIE_TAJARA)
-				return TRUE
-			if(SPECIES_ZOMBIE_UNATHI)
-				return TRUE
-			if(SPECIES_ZOMBIE_SKRELL)
-				return TRUE
+
+		if(istype(H.get_species(TRUE), /datum/species/zombie))
+			return TRUE
+		else
+			return FALSE
+
 	return FALSE
 
 /proc/isundead(A)
@@ -467,7 +464,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		return
 	M.shakecamera = current_time + max(TICKS_PER_RECOIL_ANIM, duration)
 	strength = abs(strength)*PIXELS_PER_STRENGTH_VAL
-	var/steps = min(1, Floor(duration/TICKS_PER_RECOIL_ANIM))-1
+	var/steps = min(1, FLOOR(duration/TICKS_PER_RECOIL_ANIM))-1
 	animate(M.client, pixel_x = rand(-(strength), strength), pixel_y = rand(-(strength), strength), time = TICKS_PER_RECOIL_ANIM, easing = JUMP_EASING|EASE_IN)
 	if(steps)
 		for(var/i = 1 to steps)
@@ -475,7 +472,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	animate(pixel_x = 0, pixel_y = 0, time = TICKS_PER_RECOIL_ANIM)
 
 /proc/findname(msg)
-	for(var/mob/M in mob_list)
+	for(var/mob/M in GLOB.mob_list)
 		if (M.real_name == text("[msg]"))
 			return 1
 	return 0
@@ -537,10 +534,10 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 				hud_used.action_intent.icon_state = I_HELP
 
 /proc/broadcast_security_hud_message(var/message, var/broadcast_source)
-	broadcast_hud_message(message, broadcast_source, sec_hud_users, /obj/item/clothing/glasses/hud/security)
+	broadcast_hud_message(message, broadcast_source, GLOB.sec_hud_users, /obj/item/clothing/glasses/hud/security)
 
 /proc/broadcast_medical_hud_message(var/message, var/broadcast_source)
-	broadcast_hud_message(message, broadcast_source, med_hud_users, /obj/item/clothing/glasses/hud/health)
+	broadcast_hud_message(message, broadcast_source, GLOB.med_hud_users, /obj/item/clothing/glasses/hud/health)
 
 /proc/broadcast_hud_message(var/message, var/broadcast_source, var/list/targets, var/icon)
 	var/turf/sourceturf = get_turf(broadcast_source)
@@ -551,7 +548,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 
 /proc/mobs_in_area(var/area/A)
 	var/list/mobs = new
-	for(var/mob/living/M in mob_list)
+	for(var/mob/living/M in GLOB.mob_list)
 		if(get_area(M) == A)
 			mobs += M
 	return mobs
@@ -577,7 +574,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 			else
 				name = realname
 
-	for(var/mob/M in player_list)
+	for(var/mob/M in GLOB.player_list)
 		if(M.client && ((!istype(M, /mob/abstract/new_player) && M.stat == DEAD) || (M.client.holder && check_rights(R_DEV|R_MOD|R_ADMIN, 0, M))) && (M.client.prefs.toggles & CHAT_DEAD))
 			var/follow
 			var/lname
@@ -739,6 +736,9 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 	return 1
 
 /mob/living/carbon/human/proc/delayed_vomit()
+	if(QDELETED(src))
+		return
+
 	if(!check_has_mouth())
 		return
 	if(stat == DEAD)
@@ -753,9 +753,10 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 		spawn(150)	//15 seconds until second warning
 			to_chat(src, "<span class='warning'>You feel like you are about to throw up!</span>")
 			spawn(100)	//and you have 10 more for mad dash to the bucket
-				empty_stomach()
-				spawn(350)	//wait 35 seconds before next volley
-					lastpuke = 0
+				if(!QDELETED(src))
+					empty_stomach()
+					spawn(350)	//wait 35 seconds before next volley
+						lastpuke = 0
 
 /obj/proc/get_equip_slot()
 	//This function is called by an object which is somewhere on a humanoid mob
@@ -1070,20 +1071,20 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 // It's not worth adding a proc for every single one of these types.
 /mob/living/simple_animal/find_type()
 	. = ..()
-	if (is_type_in_typecache(src, SSmob.mtl_synthetic))
+	if (is_type_in_typecache(src, SSmobs.mtl_synthetic))
 		. |= TYPE_SYNTHETIC
 
-	if (is_type_in_typecache(src, SSmob.mtl_weird))
+	if (is_type_in_typecache(src, SSmobs.mtl_weird))
 		. |= TYPE_WEIRD
 
-	if (is_type_in_typecache(src, SSmob.mtl_incorporeal))
+	if (is_type_in_typecache(src, SSmobs.mtl_incorporeal))
 		. |= TYPE_INCORPOREAL
 
 	// If it's not TYPE_SYNTHETIC, TYPE_WEIRD or TYPE_INCORPOREAL, we can assume it's TYPE_ORGANIC.
 	if (!(. & (TYPE_SYNTHETIC|TYPE_WEIRD|TYPE_INCORPOREAL)))
 		. |= TYPE_ORGANIC
 
-	if (is_type_in_typecache(src, SSmob.mtl_humanoid))
+	if (is_type_in_typecache(src, SSmobs.mtl_humanoid))
 		. |= TYPE_HUMANOID
 
 #undef SAFE_PERP
@@ -1219,12 +1220,6 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 	client.init_verbs()
 	return src
 
-/mob/proc/get_standard_pixel_x()
-	return initial(pixel_x)
-
-/mob/proc/get_standard_pixel_y()
-	return initial(pixel_y)
-
 /mob/proc/remove_nearsighted()
 	disabilities &= ~NEARSIGHTED
 
@@ -1300,6 +1295,9 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 
 /mob/proc/get_talk_bubble()
 	return 'icons/mob/talk.dmi'
+
+/mob/proc/adjust_typing_indicator_offsets(var/atom/movable/typing_indicator/indicator)
+	return
 
 /datum/proc/get_client()
 	return null

@@ -22,7 +22,7 @@
 	name = "People's Volunteer Spacer Militia Crew"
 
 	id = /obj/item/card/id
-	shoes = /obj/item/clothing/shoes/tajara/jackboots
+	shoes = /obj/item/clothing/shoes/jackboots/tajara
 
 	uniform = /obj/item/clothing/under/tajaran/pvsm
 	l_ear = /obj/item/device/radio/headset/ship
@@ -33,7 +33,7 @@
 	r_pocket = /obj/item/storage/wallet/random
 
 /datum/outfit/admin/hailstorm_crew/get_id_access()
-	return list(access_dpra, access_external_airlocks)
+	return list(ACCESS_DPRA, ACCESS_EXTERNAL_AIRLOCKS)
 
 /datum/ghostspawner/human/hailstorm_crew/captain
 	short_name = "hailstorm_captain"

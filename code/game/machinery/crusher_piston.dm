@@ -174,7 +174,7 @@
 	if(!pstn) //We dont process if theres no piston
 		return
 	if(process_lock)
-		log_debug("crusher_piston process() has been called while it was still locked. Aborting")
+		LOG_DEBUG("crusher_piston process() has been called while it was still locked. Aborting")
 		return
 	process_lock = 1
 	var/timediff = world.time - action_start_time
@@ -478,7 +478,7 @@
 	var/turf/T = get_turf(src)
 
 	var/list/valid_turfs = list()
-	for(var/dir_to_test in cardinal)
+	for(var/dir_to_test in GLOB.cardinal)
 		var/turf/new_turf = get_step(T, dir_to_test)
 		if(!new_turf.contains_dense_objects())
 			valid_turfs += new_turf

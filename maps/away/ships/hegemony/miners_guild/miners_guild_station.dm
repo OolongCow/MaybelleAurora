@@ -8,13 +8,15 @@
 	id = "miners_guild_station"
 	shuttles_to_initialise = list(/datum/shuttle/autodock/overmap/miners_guild)
 
+	unit_test_groups = list(1)
+
 /singleton/submap_archetype/miners_guild_station
 	map = "Miners' Guild Outpost"
 	descriptor = "A station constructed by the Unathi Miners' Guild"
 
 /obj/effect/overmap/visitable/sector/miners_guild_station
 	name = "Miners' Guild Outpost"
-	desc = "A Kutah-class mining station, owned and operated by the Hegemony Miners' Guild. These stations are usually temporary, constructed in mineral-rich systems and operated until \
+	desc = "A Kutah-class mining station, owned and operated by the Hegemony Miners' Guild, now a proud subsidiary of Hephaestus Industries. These stations are usually temporary, constructed in mineral-rich systems and operated until \
 	the local celestial bodies have been stripped of any minerals of value. They have earned a reputation for being slapdash and shoddily-constructed, though this one seems to be in good shape."
 	icon = 'icons/obj/overmap/overmap_stationary.dmi'
 	icon_state = "outpost"
@@ -35,20 +37,35 @@
 	base_area = /area/space
 
 /obj/effect/shuttle_landmark/miners_guild/nav1
-	name = "Miners' Guild Outpost - Fore"
+	name = "Fore"
 	landmark_tag = "miners_guild_nav1"
 
 /obj/effect/shuttle_landmark/miners_guild/nav2
-	name = "Miners' Guild Outpost - Port"
+	name = "Port"
 	landmark_tag = "miners_guild_nav2"
 
 /obj/effect/shuttle_landmark/miners_guild/nav3
-	name = "Miners' Guild Outpost - Starboard"
+	name = "Starboard"
 	landmark_tag = "miners_guild_nav3"
 
 /obj/effect/shuttle_landmark/miners_guild/nav4
-	name = "Miners' Guild Outpost - Aft"
+	name = "Aft"
 	landmark_tag = "miners_guild_nav4"
+
+/obj/effect/shuttle_landmark/miners_guild/dock1
+	name = "Aft Docking Bay"
+	landmark_tag = "miners_guild_dock1"
+	docking_controller = "airlock_minersguild_dock1"
+
+/obj/effect/shuttle_landmark/miners_guild/dock2
+	name = "Port Docking Bay"
+	landmark_tag = "miners_guild_dock2"
+	docking_controller = "airlock_minersguild_dock2"
+
+/obj/effect/shuttle_landmark/miners_guild/dock3
+	name = "Starboard Docking Bay"
+	landmark_tag = "miners_guild_dock3"
+	docking_controller = "airlock_minersguild_dock3"
 
 /obj/effect/overmap/visitable/sector/miners_guild_station/get_skybox_representation()
 	var/image/skybox_image = image('icons/skybox/subcapital_ships.dmi', "guild_station")
@@ -60,7 +77,7 @@
 /obj/effect/overmap/visitable/ship/landable/miners_guild
 	name = "Miners' Guild Shuttle"
 	class = "IHGV" //Izweski Hegemony Guild Vessel
-	desc = "Commonly used by the Miners’ Guild, Glizkin-class shuttles are short-range mining vessels, designed for persistent mining of celestial bodies. \
+	desc = "Commonly used by the Miners’ Guild, now a proud Hephaestus subsidiary, Glizkin-class shuttles are short-range mining vessels, designed for persistent mining of celestial bodies. \
 	They are viewed by their crews as small, yet reliable and enduring - much like the Tza Prairie folk hero for which they are named. They are usually found attached to larger stations or mining vessels."
 	shuttle = "Miners' Guild Shuttle"
 	icon_state = "shuttle"
@@ -90,14 +107,16 @@
 	shuttle_area = list(/area/shuttle/miners_guild)
 	current_location = "miners_guild_navhangar"
 	landmark_transition = "miners_guild_navtransit"
+	dock_target = "airlock_guild_shuttle"
 	range = 1
 	fuel_consumption = 2
 	logging_home_tag = "miners_guild_navhangar"
 	defer_initialisation = TRUE
 
 /obj/effect/shuttle_landmark/miners_guild/hangar
-	name = "Miners' Guild Outpost - Hangar"
+	name = "Hangar"
 	landmark_tag = "miners_guild_navhangar"
+	docking_controller = "guild_shuttle_dock"
 	base_area = /area/miners_guild/hangar
 	base_turf = /turf/simulated/floor/plating
 	movable_flags = MOVABLE_FLAG_EFFECTMOVE

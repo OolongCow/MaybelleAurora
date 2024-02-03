@@ -12,10 +12,10 @@
 	var/light_firing_sound = 'sound/effects/explosionfar.ogg' //The sound played when you're a few walls away. Kind of loud.
 	var/projectile_type = /obj/item/projectile/ship_ammo
 	var/special_firing_mechanism = FALSE //If set to TRUE, the gun won't show up on normal controls.
-	var/charging_sound //The sound played when the gun is charging up.
+	var/charging_sound					 //The sound played when the gun is charging up.
 	var/caliber = SHIP_CALIBER_NONE
-	var/use_ammunition = TRUE //If we use physical ammo or not. Note that the creation of ammunition in pre_fire() is still REQUIRED!
-							  //This just skips the initial check for ammunition.
+	var/use_ammunition = TRUE	//If we use physical ammo or not. Note that the creation of ammunition in pre_fire() is still REQUIRED!
+								//This just skips the initial check for ammunition.
 	var/list/obj/item/ship_ammunition/ammunition = list()
 	var/ammo_per_shot = 1
 	var/max_ammo = 1
@@ -36,7 +36,7 @@
 
 /obj/machinery/ship_weapon/LateInitialize()
 	SSshuttle.weapons_to_initialize += src
-	if(SSshuttle.init_state == SS_INITSTATE_DONE)
+	if(SSshuttle.initialized)
 		SSshuttle.initialize_ship_weapons()
 	for(var/obj/structure/ship_weapon_dummy/SD in orange(1, src))
 		SD.connect(src)
@@ -49,6 +49,7 @@
 	destroy_dummies()
 	ammunition.Cut()
 	barrel = null
+	LAZYREMOVE(linked?.ship_weapons, src)
 	return ..()
 
 /obj/machinery/ship_weapon/ex_act(severity)
@@ -137,19 +138,19 @@
 /obj/machinery/ship_weapon/proc/on_fire() //We just fired! Cool effects!
 	if(firing_effects & FIRING_EFFECT_FLAG_EXTREMELY_LOUD)
 		var/list/connected_z_levels = GetConnectedZlevels(z)
-		for(var/mob/living/carbon/human/H in player_list)
+		for(var/mob/living/carbon/human/H in GLOB.player_list)
 			if(H.z in connected_z_levels)
 				sound_to(H, sound(heavy_firing_sound, volume = 50))
 				if(H.is_listening())
 					H.adjustEarDamage(rand(0, 5), 2, TRUE)
 	else if(firing_effects & FIRING_EFFECT_FLAG_SILENT)
-		for(var/mob/living/carbon/human/H in human_mob_list)
+		for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
 			if(get_area(H) == get_area(src))
 				sound_to(H, sound(heavy_firing_sound, volume = 50))
 				if(H.is_listening())
 					H.adjustEarDamage(rand(0, 5), 2, TRUE)
 	else
-		for(var/mob/living/carbon/human/H in human_mob_list)
+		for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
 			var/list/connected_z_levels = GetConnectedZlevels(z)
 			if(get_area(H) == get_area(src))
 				sound_to(H, sound(heavy_firing_sound, volume = 50))
@@ -160,21 +161,21 @@
 					sound_to(H, sound(light_firing_sound, volume = 50))
 	if(screenshake_type == SHIP_GUN_SCREENSHAKE_ALL_MOBS)
 		var/list/connected_z_levels = GetConnectedZlevels(z)
-		for(var/mob/living/carbon/human/H in human_mob_list)
+		for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
 			if(H.z in connected_z_levels)
 				to_chat(H, SPAN_DANGER("<font size=4>Your legs buckle as the ground shakes beneath you!</font>"))
 				shake_camera(H, 10, 5)
 	else if(screenshake_type == SHIP_GUN_SCREENSHAKE_SCREEN)
-		for(var/mob/living/carbon/human/H in human_mob_list)
+		for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
 			if(get_area(H) == get_area(src))
 				if(!H.buckled_to)
 					to_chat(H, SPAN_DANGER("<font size=4>Your legs buckle as the ground shakes beneath you!</font>"))
 					shake_camera(H, 10, 5)
 	if(firing_effects & FIRING_EFFECT_FLAG_THROW_MOBS)
 		var/list/connected_z_levels = GetConnectedZlevels(z)
-		for(var/mob/M in living_mob_list)
+		for(var/mob/M in GLOB.living_mob_list)
 			if(M.z in connected_z_levels)
-				if(!M.Check_Shoegrip() && !M.buckled_to)
+				if(!M.Check_Shoegrip() && !M.buckled_to && !M.anchored)
 					M.throw_at_random(FALSE, 7, 10)
 	flick("weapon_firing", src)
 	return TRUE
@@ -274,16 +275,22 @@
 	. = ..()
 
 /obj/structure/ship_weapon_dummy/examine(mob/user)
-	connected.examine(user)
+	if(connected)
+		return connected.examine(user)
+	else
+		return TRUE
 
 /obj/structure/ship_weapon_dummy/attack_hand(mob/user)
-	connected.attack_hand(user)
+	if(connected)
+		connected.attack_hand(user)
 
 /obj/structure/ship_weapon_dummy/attackby(obj/item/W, mob/user)
-	connected.attackby(W, user)
+	if(connected)
+		connected.attackby(W, user)
 
 /obj/structure/ship_weapon_dummy/hitby(atom/movable/AM, var/speed = THROWFORCE_SPEED_DIVISOR)
-	connected.hitby(AM)
+	if(connected)
+		connected.hitby(AM)
 	if(ismob(AM))
 		if(isliving(AM))
 			var/mob/living/M = AM

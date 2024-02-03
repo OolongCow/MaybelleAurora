@@ -1,7 +1,7 @@
 /obj/structure/closet/secure_closet/personal
 	name = "personal closet"
 	desc = "It's a secure locker for personnel. The first card swiped gains control."
-	req_access = list(access_all_personal_lockers)
+	req_access = list(ACCESS_ALL_PERSONAL_LOCKERS)
 	var/registered_name = null
 
 /obj/structure/closet/secure_closet/personal/fill()
@@ -20,7 +20,7 @@
 		new /obj/item/clothing/under/medical_gown(src)
 	else
 		new /obj/item/clothing/under/medical_gown/white(src)
-	new /obj/item/clothing/shoes/white( src )
+	new /obj/item/clothing/shoes/sneakers( src )
 
 
 /obj/structure/closet/secure_closet/personal/cabinet

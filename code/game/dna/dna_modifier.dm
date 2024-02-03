@@ -148,7 +148,7 @@
 		|| locate(/obj/machinery/computer/cloning, get_step(src, WEST)))
 
 		if(!M.client && M.mind)
-			for(var/mob/abstract/observer/ghost in player_list)
+			for(var/mob/abstract/observer/ghost in GLOB.player_list)
 				if(ghost.mind == M.mind)
 					to_chat(ghost, "<b><font color = #330033><font size = 3>Your corpse has been placed into a cloning scanner. Return to your body if you want to be resurrected/cloned!</b> (Verbs -> Ghost -> Re-enter corpse)</font></font>")
 					break
@@ -222,6 +222,29 @@
 	active_power_usage = 400
 	var/waiting_for_user_input=0 // Fix for #274 (Mash create block injector without answering dialog to make unlimited injectors) - N3X
 
+/obj/machinery/computer/scan_consolenew/Initialize()
+	..()
+	for(var/i=0;i<3;i++)
+		buffers[i+1]=new /datum/dna2/record
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/computer/scan_consolenew/LateInitialize()
+	. = ..()
+	for(dir in list(NORTH,EAST,SOUTH,WEST))
+		connected = locate(/obj/machinery/dna_scannernew, get_step(src, dir))
+		if(!isnull(connected))
+			break
+
+	src.injector_ready = 1
+
+/obj/machinery/computer/scan_consolenew/Destroy()
+	connected = null
+	disk = null
+
+	QDEL_LIST_ASSOC(buffers)
+
+	. = ..()
+
 /obj/machinery/computer/scan_consolenew/attackby(obj/item/I as obj, mob/user as mob)
 	if (istype(I, /obj/item/disk/data)) //INSERT SOME diskS
 		if (!src.disk)
@@ -234,31 +257,14 @@
 		return ..()
 
 /obj/machinery/computer/scan_consolenew/ex_act(severity)
-
 	switch(severity)
 		if(1.0)
 			//SN src = null
 			qdel(src)
-			return
 		if(2.0)
 			if (prob(50))
 				//SN src = null
 				qdel(src)
-				return
-	return
-
-/obj/machinery/computer/scan_consolenew/New()
-	..()
-	for(var/i=0;i<3;i++)
-		buffers[i+1]=new /datum/dna2/record
-	spawn(5)
-		for(dir in list(NORTH,EAST,SOUTH,WEST))
-			connected = locate(/obj/machinery/dna_scannernew, get_step(src, dir))
-			if(!isnull(connected))
-				break
-		spawn(250)
-			src.injector_ready = 1
-		return
 	return
 
 /obj/machinery/computer/scan_consolenew/proc/all_dna_blocks(var/list/buffer)
@@ -295,17 +301,17 @@
 	if(!..())
 		ui_interact(user)
 
- /**
-  * The ui_interact proc is used to open and update Nano UIs
-  * If ui_interact is not used then the UI will not update correctly
-  * ui_interact is currently defined for /atom/movable (which is inherited by /obj and /mob)
-  *
-  * @param user /mob The mob who is interacting with this ui
-  * @param ui_key string A string key to use for this ui. Allows for multiple unique uis on one obj/mob (defaut value "main")
-  * @param ui /datum/nanoui This parameter is passed by the nanoui process() proc when updating an open ui
-  *
-  * @return nothing
-  */
+/**
+ * The ui_interact proc is used to open and update Nano UIs
+ * If ui_interact is not used then the UI will not update correctly
+ * ui_interact is currently defined for /atom/movable (which is inherited by /obj and /mob)
+ *
+ * @param user /mob The mob who is interacting with this ui
+ * @param ui_key string A string key to use for this ui. Allows for multiple unique uis on one obj/mob (defaut value "main")
+ * @param ui /datum/nanoui This parameter is passed by the nanoui process() proc when updating an open ui
+ *
+ * @return nothing
+ */
 /obj/machinery/computer/scan_consolenew/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
 	if (!connected)
 		return

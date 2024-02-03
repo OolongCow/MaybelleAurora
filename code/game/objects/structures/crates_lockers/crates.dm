@@ -179,7 +179,7 @@
 	if (timeneeded > 0)
 		user.visible_message("[user] starts hoisting \the [src] onto \the [table].", "You start hoisting \the [src] onto \the [table]. This will take about [timeneeded * 0.1] seconds.")
 		user.face_atom(src)
-		if (!do_after(user, timeneeded, needhand = TRUE, act_target = src))
+		if (!do_after(user, timeneeded, src))
 			return FALSE
 		else
 			forceMove(get_turf(table))
@@ -236,6 +236,27 @@
 	name = "mining cart"
 	icon_state = "miningcart"
 	door_hinge = 2.5
+
+/obj/structure/closet/crate/miningcart/ore/fill()
+	var/i_max = rand(3, 6)
+	for(var/i in 1 to i_max)
+		var/o = pickweight(
+			list(
+				/obj/item/ore = 2,
+				/obj/item/ore/coal = 3,
+				/obj/item/ore/diamond = 1,
+				/obj/item/ore/glass = 3,
+				/obj/item/ore/gold = 2,
+				/obj/item/ore/iron = 3,
+				/obj/item/ore/osmium = 1,
+				/obj/item/ore/silver = 2,
+				/obj/item/ore/slag = 1,
+				/obj/item/ore/uranium = 1
+			)
+		)
+		var/j_max = rand(4, 10)
+		for(var/j in 1 to j_max)
+			new o(src)
 
 /*these aren't needed anymore
 /obj/structure/closet/crate/hat
@@ -338,6 +359,10 @@
 	desc = "A large bin."
 	icon_state = "largebin"
 
+/obj/structure/closet/crate/bin/filled/fill()
+	for(var/i=1,i<=6,i++)
+		new /obj/random/junk(src)
+
 /obj/structure/closet/crate/drop
 	name = "drop crate"
 	desc = "A large, sturdy crate meant for airdrops."
@@ -392,7 +417,7 @@
 	name = "AI modules crate"
 	desc = "A secure crate full of AI modules."
 	icon_state = "science_crate"
-	req_access = list(access_cent_specops)
+	req_access = list(ACCESS_CENT_SPECOPS)
 
 /obj/structure/closet/crate/secure/aimodules/fill()
 	for(var/moduletype in subtypesof(/obj/item/aiModule))
@@ -421,7 +446,7 @@
 	name = "foreign legion supply crate"
 	desc = "A secure supply crate, It carries the insignia of the Tau Ceti Foreign Legion. It appears quite scuffed."
 	icon_state = "tcfl_crate"
-	req_access = list(access_legion)
+	req_access = list(ACCESS_LEGION)
 
 /obj/structure/closet/crate/secure/phoron
 	name = "phoron crate"
@@ -439,7 +464,7 @@
 	name = "secure hydroponics crate"
 	desc = "A crate with a lock on it, painted in the scheme of the station's botanists."
 	icon_state = "hydro_secure_crate"
-	req_one_access = list(access_hydroponics, access_xenobotany)
+	req_one_access = list(ACCESS_HYDROPONICS, ACCESS_XENOBOTANY)
 
 /obj/structure/closet/crate/secure/bin
 	name = "secure bin"
@@ -526,11 +551,13 @@
 //Quantity of spawns is number of discrete selections from the loot lists, default 10
 
 /obj/structure/closet/crate/loot
+	icon = 'icons/obj/random.dmi'
+	icon_state = "loot_crate"
 	var/rarity = 1
 	var/quantity = 10
 	var/list/spawntypes
 
-/obj/structure/closet/crate/loot/Initialize(mapload)
+/obj/structure/closet/crate/loot/Initialize(mapload, no_fill)
 	. = ..()
 
 	spawntypes = list(
@@ -556,6 +583,9 @@
 		C.locked = FALSE
 		C.secure_lights = FALSE
 		C.req_access = null
+
+	C.anchored = FALSE
+
 	C.update_icon()
 
 	qdel(src)

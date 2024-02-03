@@ -7,7 +7,7 @@
 	r_pocket = /obj/item/storage/wallet/random
 
 /datum/outfit/admin/adhomian_circus/get_id_access()
-	return list(access_generic_away_site, access_external_airlocks)
+	return list(ACCESS_GENERIC_AWAY_SITE, ACCESS_EXTERNAL_AIRLOCKS)
 
 /datum/ghostspawner/human/adhomian_circus
 	short_name = "adhomian_circus_crew"
@@ -34,7 +34,7 @@
 
 	uniform = /obj/item/clothing/under/service_overalls
 	back = /obj/item/storage/backpack/satchel
-	shoes = /obj/item/clothing/shoes/tajara/jackboots
+	shoes = /obj/item/clothing/shoes/jackboots/tajara
 
 /datum/ghostspawner/human/adhomian_circus/ringmaster
 	short_name = "adhomian_circus_ringmaster"
@@ -56,7 +56,7 @@
 	name = "Adhomian Circus Ringmaster"
 
 	uniform = /obj/item/clothing/under/ringmaster
-	shoes = /obj/item/clothing/shoes/tajara/jackboots/ringmaster
+	shoes = /obj/item/clothing/shoes/jackboots/tajara/ringmaster
 	head = /obj/item/clothing/head/that/ringmaster
 	suit = /obj/item/clothing/suit/storage/ringmaster
 
@@ -104,7 +104,7 @@
 	name = "Adhomian Circus Tamer"
 
 	uniform = /obj/item/clothing/under/tamer
-	shoes = /obj/item/clothing/shoes/tajara/jackboots
+	shoes = /obj/item/clothing/shoes/jackboots/tajara
 	belt = /obj/item/melee/whip
 	accessory = /obj/item/clothing/accessory/holster/hip/brown
 

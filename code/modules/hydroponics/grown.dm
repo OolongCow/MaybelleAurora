@@ -92,7 +92,7 @@
 			descriptors |= "radioactive"
 		if(reagents.has_reagent(/singleton/reagent/toxin/amatoxin) || reagents.has_reagent(/singleton/reagent/toxin))
 			descriptors |= "poisonous"
-		if(reagents.has_reagent(/singleton/reagent/psilocybin) || reagents.has_reagent(/singleton/reagent/ambrosia_extract) || reagents.has_reagent(/singleton/reagent/space_drugs) || reagents.has_reagent(/singleton/reagent/mindbreaker))
+		if(reagents.has_reagent(/singleton/reagent/drugs/psilocybin) || reagents.has_reagent(/singleton/reagent/drugs/ambrosia_extract) || reagents.has_reagent(/singleton/reagent/drugs/mms) || reagents.has_reagent(/singleton/reagent/drugs/mindbreaker))
 			descriptors |= "hallucinogenic"
 		if(reagents.has_reagent(/singleton/reagent/bicaridine) || reagents.has_reagent(/singleton/reagent/dylovene))
 			descriptors |= "medicinal"
@@ -155,7 +155,7 @@
 
 			if(istype(M,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = M
-				if(H.shoes && H.shoes.item_flags & NOSLIP)
+				if(H.shoes && H.shoes.item_flags & ITEM_FLAG_NO_SLIP)
 					return
 
 			M.stop_pulling()
@@ -281,7 +281,7 @@
 		var/flesh_colour = seed.get_trait(TRAIT_FLESH_COLOUR)
 		if(!flesh_colour) flesh_colour = seed.get_trait(TRAIT_PRODUCT_COLOUR)
 		for(var/i=0,i<2,i++)
-			var/obj/item/stack/tile/grass_alt/G = new (user.loc)
+			var/obj/item/stack/tile/grass/G = new (user.loc)
 			if(flesh_colour) G.color = flesh_colour
 			for (var/obj/item/stack/tile/grass/NG in user.loc)
 				if(G==NG)
@@ -367,3 +367,38 @@ var/list/fruit_icon_cache = list()
 		I.color = flesh_colour
 		fruit_icon_cache["slice-[rind_colour]"] = I
 	add_overlay(fruit_icon_cache["slice-[rind_colour]"])
+
+/obj/item/reagent_containers/food/snacks/grown/konyang_tea
+	name = "sencha leaves"
+	desc = "A type of green tea originating from Japan on Earth, sencha is unique in that it is steamed instead of pan-roasted like most teas. \
+			It has a fresh flavor profile as a result, with flavors like seaweed, grass, or spinach greens predominant. On Konyang, it is most popular in Aoyama."
+	plantname = "sencha"
+	icon = 'icons/obj/item/reagent_containers/teaware.dmi'
+	icon_state = "sencha"
+
+/obj/item/reagent_containers/food/snacks/grown/konyang_tea/update_desc()
+	return
+
+/obj/item/reagent_containers/food/snacks/grown/konyang_tea/afterattack(atom/target, mob/user, proximity, params)
+	if(proximity && target.is_open_container() && target.reagents)
+		if(!target.reagents.total_volume)
+			to_chat(user, SPAN_WARNING("You can't steep tea inside of an empty pot!"))
+			return
+		to_chat(user, SPAN_NOTICE("You steep \the [src] inside \the [target]."))
+
+		reagents.trans_to(target, reagents.total_volume)
+		qdel(src)
+
+/obj/item/reagent_containers/food/snacks/grown/konyang_tea/tieguanyin
+	name = "tieguanyin leaves"
+	desc = "A type of oolong tea originating from China on Earth. Like most oolongs, its flavor is somewhere between green and black tea. \
+			It has a nutty, peppery, and floral flavor profile. On Konyang, it is most popular in Ganzaodeng and New Hong Kong."
+	plantname = "tieguanyin"
+	icon_state = "tieguanyin"
+
+/obj/item/reagent_containers/food/snacks/grown/konyang_tea/jaekseol
+	name = "jaekseol leaves"
+	desc = "A type of black tea originating from Korea on Earth. It has a relatively typical flavor for a black tea, with a sweet, toasty flavor. \
+			On Konyang, it is most popular in Suwon, although coffee is still a more popular beverage in general."
+	plantname = "jaekseol"
+	icon_state = "jaekseol"

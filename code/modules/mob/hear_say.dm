@@ -48,8 +48,6 @@
 
 	var/track = null
 	if(isobserver(src))
-		if(italics && client.prefs.toggles & CHAT_GHOSTRADIO)
-			return
 		if(speaker_name != speaker.real_name && speaker.real_name)
 			speaker_name = "[speaker.real_name] ([speaker_name])"
 		track = "[ghost_follow_link(speaker, src)] "
@@ -181,7 +179,7 @@
 				var/list/impersonated = list()
 				var/mob/living/carbon/human/I = impersonated[speaker_name]
 				if(!I)
-					for(var/mob/living/carbon/human/M in mob_list)
+					for(var/mob/living/carbon/human/M in GLOB.mob_list)
 						if(M.real_name == speaker_name)
 							I = M
 							impersonated[speaker_name] = I

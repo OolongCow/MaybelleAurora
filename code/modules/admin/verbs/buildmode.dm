@@ -1,4 +1,4 @@
-/proc/togglebuildmode(mob/M as mob in player_list)
+/proc/togglebuildmode(mob/M as mob in GLOB.player_list)
 	set name = "Toggle Build Mode"
 	set category = "Special Verbs"
 	if(M.client)
@@ -42,10 +42,11 @@
 /obj/effect/bmode//Cleaning up the tree a bit
 	density = 1
 	anchored = 1
-	layer = SCREEN_LAYER
+	layer = SCREEN_LAYER + 1
 	dir = NORTH
 	icon = 'icons/misc/buildmode.dmi'
-	var/obj/effect/bmode/buildholder/master = null
+	mouse_opacity = MOUSE_OPACITY_OPAQUE
+	var/obj/effect/bmode/buildholder/master
 
 /obj/effect/bmode/Destroy()
 	if(master && master.cl)
@@ -210,7 +211,7 @@
 					if("number")
 						master.buildmode.valueholder = input(usr,"Enter variable value:" ,"Value", 123) as num
 					if("mob-reference")
-						master.buildmode.valueholder = input(usr,"Enter variable value:" ,"Value") as mob in mob_list
+						master.buildmode.valueholder = input(usr,"Enter variable value:" ,"Value") as mob in GLOB.mob_list
 					if("obj-reference")
 						master.buildmode.valueholder = input(usr,"Enter variable value:" ,"Value") as obj in world
 					if("turf-reference")
@@ -332,7 +333,7 @@
 	try
 		templates = json_decode(return_file_text("config/templates_list.json"))
 	catch(var/exception/ej)
-		log_debug("Warning: Could not load the templates config as templates_list.json is missing - [ej]")
+		LOG_DEBUG("Warning: Could not load the templates config as templates_list.json is missing - [ej]")
 		return
 
 	if(!templates || !templates["templates_list"] || templates["templates_folder"] == "")
@@ -346,7 +347,7 @@
 
 	var/datum/map_template/maploader = new (templates["templates_folder"] + name, name)
 	if (!maploader)
-		log_debug("Error, unable to load maploader in proc load_template!")
+		LOG_DEBUG("Error, unable to load maploader in proc load_template!")
 		return
 
 	var/centered = input(user, "Do you want template to load as center or Edge?", "Load Template", null) as null|anything in list("Center", "Edge")

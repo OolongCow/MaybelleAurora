@@ -188,7 +188,7 @@
 		return 0
 	return 1
 
-/obj/machinery/atmospherics/unary/vent_pump/process()
+/obj/machinery/atmospherics/unary/vent_pump/process(seconds_per_tick)
 	..()
 
 	if (broadcast_status_next_process)
@@ -222,7 +222,7 @@
 
 			//limit flow rate from turfs
 			transfer_moles = min(transfer_moles, environment.total_moles*air_contents.volume/environment.volume)	//group_multiplier gets divided out here
-			power_draw = pump_gas(src, environment, air_contents, transfer_moles, power_rating)
+			power_draw = pump_gas(src, environment, air_contents, transfer_moles * seconds_per_tick, power_rating)
 
 	else
 		//If we're in an area that is fucking ideal, and we don't have to do anything, chances are we won't next tick either so why redo these calculations?
@@ -233,7 +233,7 @@
 
 	if (power_draw >= 0)
 		last_power_draw = power_draw
-		use_power_oneoff(power_draw)
+		use_power_oneoff(power_draw * seconds_per_tick)
 		if(network)
 			network.update = 1
 
@@ -296,7 +296,7 @@
 
 	hibernate = 0
 
-	//log_debug("DEBUG \[[world.timeofday]\]: /obj/machinery/atmospherics/unary/vent_pump/receive_signal([signal.debug_print()])")
+	//LOG_DEBUG("DEBUG \[[world.timeofday]\]: /obj/machinery/atmospherics/unary/vent_pump/receive_signal([signal.debug_print()])")
 	if(!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
 		return 0
 
@@ -387,8 +387,8 @@
 				update_icon()
 				playsound(src, 'sound/items/welder_pry.ogg', 50, 1)
 				user.visible_message(SPAN_NOTICE("\The [user] [welded ? "welds \the [src] shut" : "unwelds \the [src]"]."), \
-									 SPAN_NOTICE("You [welded ? "weld \the [src] shut" : "unweld \the [src]"]."), \
-									 "You hear welding.")
+										SPAN_NOTICE("You [welded ? "weld \the [src] shut" : "unweld \the [src]"]."), \
+										"You hear welding.")
 			else
 				to_chat(user, SPAN_NOTICE("You fail to complete the welding."))
 		else
@@ -410,14 +410,15 @@
 			playsound(loc, 'sound/weapons/smash.ogg', 60, TRUE)
 			if(i == cut_amount)
 				welded = FALSE
-				spark(get_turf(src), 3, alldirs)
+				spark(get_turf(src), 3, GLOB.alldirs)
 				playsound(loc, 'sound/items/welder_pry.ogg', 50, TRUE)
 				update_icon()
 	else
 		return ..()
 
-/obj/machinery/atmospherics/unary/vent_pump/examine(mob/user)
-	if(..(user, 1))
+/obj/machinery/atmospherics/unary/vent_pump/examine(mob/user, distance, is_adjacent)
+	. = ..()
+	if(distance <= 1)
 		to_chat(user, "A small gauge in the corner reads [round(last_flow_rate, 0.1)] L/s; [round(last_power_draw)] W")
 	else
 		to_chat(user, "You are too far away to read the gauge.")

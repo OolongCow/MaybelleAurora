@@ -10,7 +10,7 @@
 	light_color = LIGHT_COLOR_CYAN
 	light_range = 1.4
 
-	req_one_access = list(access_bar, access_kitchen)
+	req_one_access = list(ACCESS_BAR, ACCESS_KITCHEN)
 
 	var/rave_mode = FALSE
 	var/menu_text = ""
@@ -73,11 +73,12 @@
 		return TRUE
 	return ..()
 
-/obj/item/holomenu/examine(mob/user, distance)
-	if(anchored && length(menu_text))
+/obj/item/holomenu/examine(mob/user, distance, is_adjacent)
+	if(anchored && length(menu_text) && is_adjacent)
 		interact(user)
-		return
-	return ..()
+		return TRUE
+	else
+		. = ..()
 
 /obj/item/holomenu/attack_hand(mob/user)
 	if(anchored)

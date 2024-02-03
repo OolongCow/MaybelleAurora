@@ -20,6 +20,8 @@
 
 /datum/unit_test/zas_area_test
 	name = "ZAS: Area Test Template"
+	groups = list("map")
+
 	var/area_path = null                    // Put the area you are testing here.
 	var/expectation = UT_NORMAL             // See defines above.
 
@@ -133,6 +135,8 @@
 
 /datum/unit_test/zas_supply_shuttle_moved
 	name = "ZAS: Supply Shuttle (When Moved)"
+	groups = list("map")
+
 	async = TRUE				// We're moving the shuttle using built in procs.
 
 	var/datum/shuttle/autodock/ferry/supply/shuttle = null
@@ -192,6 +196,7 @@
 
 /datum/unit_test/zas_active_edges
 	name = "ZAS: Roundstart Active Edges"
+	groups = list("map")
 
 /datum/unit_test/zas_active_edges/start_test()
 
@@ -201,8 +206,9 @@
 		return UNIT_TEST_PASSED
 
 
-	/**Something went wrong
-	 * compose a message and fail the test, let the poor soul try to figure out where the issue is, assuming it's not intermittent
+	/*
+		Something went wrong
+		compose a message and fail the test, let the poor soul try to figure out where the issue is, assuming it's not intermittent
 	 */
 	var/fail_message = "[SSair.active_edges.len] edges active at round-start!\n"
 	for(var/connection_edge/E in SSair.active_edges)

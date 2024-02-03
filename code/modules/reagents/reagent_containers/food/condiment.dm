@@ -8,9 +8,9 @@
 /obj/item/reagent_containers/food/condiment
 	name = "condiment container"
 	desc = "Just your average condiment container."
-	icon = 'icons/obj/food.dmi'
+	icon = 'icons/obj/item/reagent_containers/food/condiment.dmi'
 	icon_state = "emptycondiment"
-	flags = OPENCONTAINER
+	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	possible_transfer_amounts = list(1,5,10)
 	center_of_mass = list("x"=16, "y"=6)
 	volume = 50
@@ -40,10 +40,8 @@
 	if(fixed_state && !force)
 		return
 	if(isemptylist(reagents.reagent_volumes))
-		icon_state = "emptycondiment"
 		name = "condiment bottle"
 		desc = "An empty condiment bottle."
-		center_of_mass = list("x"=16, "y"=6)
 		return
 
 	var/singleton/reagent/master = reagents.get_primary_reagent_decl()
@@ -64,12 +62,10 @@
 
 /obj/item/reagent_containers/food/condiment/shaker
 	name = "shaker"
+	empty_icon_state = "emptyshaker"
 	volume = 20
-	fixed_state = TRUE
 	center_of_mass = list("x"=17, "y"=11)
 	amount_per_transfer_from_this = 1
-	volume = 20
-	fixed_state = TRUE
 
 /obj/item/reagent_containers/food/condiment/shaker/Initialize()
 	. = ..()
@@ -100,6 +96,11 @@
 	volume = 40
 	reagents_to_add = list(/singleton/reagent/nutriment/sprinkles = 40)
 
+/obj/item/reagent_containers/food/condiment/shaker/pumpkinspice
+	icon_state = "spacespicebottle"
+	volume = 40
+	reagents_to_add = list(/singleton/reagent/spacespice/pumpkinspice = 40)
+
 /obj/item/reagent_containers/food/condiment/flour
 	name = "flour sack"
 	desc = "A big bag of flour. Good for baking!"
@@ -110,16 +111,42 @@
 	reagents_to_add = list(/singleton/reagent/nutriment/flour = 200)
 
 /obj/item/reagent_containers/food/condiment/barbecue
+	icon_state = "barbecue"
 	fixed_state = TRUE
 	reagents_to_add = list(/singleton/reagent/nutriment/barbecue = 20)
 
 /obj/item/reagent_containers/food/condiment/garlicsauce
+	icon_state = "garlic_sauce"
 	fixed_state = TRUE
 	reagents_to_add = list(/singleton/reagent/nutriment/garlicsauce = 50)
 
 /obj/item/reagent_containers/food/condiment/pacid
 	name = "culinary acid"
 	reagents_to_add = list(/singleton/reagent/acid/polyacid = 50)
+
+/obj/item/reagent_containers/food/condiment/honey
+	icon_state = "honey"
+	fixed_state = TRUE
+	name = "honey"
+	reagents_to_add = list(/singleton/reagent/nutriment/honey = 50)
+
+/obj/item/reagent_containers/food/condiment/soysauce
+	icon_state = "soysauce"
+	fixed_state = TRUE
+	name = "soy sauce"
+	reagents_to_add = list(/singleton/reagent/nutriment/soysauce = 50)
+
+/obj/item/reagent_containers/food/condiment/ketchup
+	icon_state = "ketchup"
+	fixed_state = TRUE
+	name = "ketchup"
+	reagents_to_add = list(/singleton/reagent/nutriment/ketchup = 50)
+
+/obj/item/reagent_containers/food/condiment/mayonnaise
+	icon_state = "mayonnaise"
+	fixed_state = TRUE
+	name = "mayonnaise"
+	reagents_to_add = list(/singleton/reagent/nutriment/mayonnaise = 50)
 
 //MRE condiments and drinks.
 
@@ -257,6 +284,3 @@
 
 /obj/item/reagent_containers/food/condiment/small/packet/crayon/brown
 	reagents_to_add = list(/singleton/reagent/crayon_dust/brown = 10)
-
-
-//End of MRE stuff.

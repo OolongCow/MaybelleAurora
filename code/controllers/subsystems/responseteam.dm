@@ -1,6 +1,4 @@
-/var/datum/controller/subsystem/distress/SSdistress
-
-/datum/controller/subsystem/distress
+SUBSYSTEM_DEF(distress)
 	name = "Distress"
 	flags = SS_NO_FIRE
 
@@ -18,12 +16,10 @@
 /datum/controller/subsystem/distress/Recover()
 	send_emergency_team = SSdistress.send_emergency_team
 
-/datum/controller/subsystem/distress/New()
-	NEW_SS_GLOBAL(SSdistress)
-	feedback_set("responseteam_count",0)
+/datum/controller/subsystem/distress/PreInit()
+	feedback_set("responseteam_count", 0)
 
 /datum/controller/subsystem/distress/Initialize(start_timeofday)
-	. = ..()
 	var/list/all_teams = subtypesof(/datum/responseteam)
 	for(var/team in all_teams)
 		CHECK_TICK
@@ -31,6 +27,8 @@
 		if(SSatlas.current_sector.name in ert.possible_space_sector)
 			available_teams += ert
 		all_ert_teams += ert
+
+	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/distress/stat_entry(msg)
 	msg = "CC:[can_call_ert]"
@@ -109,7 +107,7 @@
 				good_spawner.enable()
 	if(picked_team.equipment_map)
 		var/landmark_position
-		for(var/obj/effect/landmark/distress_team_equipment/L in landmarks_list)
+		for(var/obj/effect/landmark/distress_team_equipment/L in GLOB.landmarks_list)
 			landmark_position = L.loc
 		if(landmark_position)
 			var/datum/map_template/distress_map = new picked_team.equipment_map
@@ -151,7 +149,7 @@
 	for(var/datum/responseteam/A in SSdistress.all_ert_teams)
 		plaintext_teams += A.name
 
-	var/choice = input("Select the response team type.","Response Team Selection") as null|anything in plaintext_teams
+	var/choice = input(usr, "Select the response team type.","Response Team Selection", plaintext_teams)
 
 	if(SSdistress.send_emergency_team)
 		to_chat(usr, "<span class='danger'>Looks like somebody beat you to it!</span>")

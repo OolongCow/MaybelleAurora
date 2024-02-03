@@ -77,7 +77,7 @@ STOCK_ITEM_COMMON(bees, 2)
 		var/datum/cargo_master/def = new type()
 		def.register_spawner()
 		i++
-	log_debug("Registered [i] cargo spawners.")
+	LOG_DEBUG("Registered [i] cargo spawners.")
 
 // These lists are populated by the files in `./random_stock` using the above procs.
 var/list/global/random_stock_common = list()
@@ -96,12 +96,6 @@ var/list/global/random_stock_large = list()
 	var/list/full_containers = list()//Used to hold references to crates we filled up
 	var/area/warehouse
 	var/list/warehouseturfs = list()
-
-	var/list/infest_mobs_minor = list(
-		/mob/living/simple_animal/rat = 1,
-		/mob/living/simple_animal/lizard = 0.5,
-		/mob/living/simple_animal/yithian = 0.7,
-		/mob/living/simple_animal/tindalos = 0.6)
 
 	var/list/infest_mobs_moderate = list(
 		/mob/living/simple_animal/bee/standalone = 1,
@@ -202,19 +196,14 @@ var/list/global/random_stock_large = list()
 		if ("3")
 			return pickweight(random_stock_common)
 
-//Minor and moderate mobs are checked per crate
-#define INFEST_PROB_MINOR	6
+// Moderate mobs are checked per crate
 #define INFEST_PROB_MODERATE	3
 
 #define INFEST_PROB_SEVERE	3//Severe is once per round, not per crate
 
 /datum/cargospawner/proc/handle_infestation()
 	for (var/obj/O in containers)
-		if (prob(INFEST_PROB_MINOR))
-	//No admin message for the minor mobs, because they are friendly and harmless
-			var/ctype = pickweight(infest_mobs_minor)
-			new ctype(O)
-		else if	 (prob(INFEST_PROB_MODERATE))
+		if(prob(INFEST_PROB_MODERATE))
 			var/ctype = pickweight(infest_mobs_moderate)
 			new ctype(O)
 			msg_admin_attack("Common cargo warehouse critter [ctype] spawned inside [O.name] coords (<a href='?_src_=holder;adminplayerobservecoodjump=1;X=[O.x];Y=[O.y];Z=[O.z]'>JMP</a>)")

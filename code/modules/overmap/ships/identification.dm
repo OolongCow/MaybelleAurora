@@ -3,6 +3,7 @@
 	desc = "A complex set of various bluespace and subspace arrays that transmit a ship's identification tags."
 	icon = 'icons/obj/machinery/iff_transponder.dmi'
 	icon_state = "iff"
+	anchored = TRUE
 	idle_power_usage = 500
 	var/datum/wires/iff/wires
 	var/disabled = FALSE
@@ -17,7 +18,7 @@
 
 /obj/machinery/iff_beacon/LateInitialize()
 	if(current_map.use_overmap && !linked)
-		var/my_sector = map_sectors["[z]"]
+		var/my_sector = GLOB.map_sectors["[z]"]
 		if (istype(my_sector, /obj/effect/overmap/visitable))
 			attempt_hook_up(my_sector)
 
@@ -28,7 +29,7 @@
 	if(panel_open)
 		if(O.ismultitool() || O.iswirecutter())
 			if(panel_open)
-				wires.Interact(user)
+				wires.interact(user)
 			else
 				to_chat(user, SPAN_WARNING("\The [src]'s wires aren't exposed."))
 			return TRUE

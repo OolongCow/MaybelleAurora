@@ -15,9 +15,9 @@
 	var/ChargeCapacity = 5000000
 	var/IOCapacity = 250000
 
-/obj/item/smes_coil/examine(mob/user)
+/obj/item/smes_coil/examine(mob/user, distance, is_adjacent)
 	. = ..()
-	if(Adjacent(user))
+	if(is_adjacent)
 		to_chat(user, "The label reads:\
 			<div class='notice' style='padding-left:2rem'>Only certified professionals are allowed to handle and install this component.<br>\
 			Charge capacity: [ChargeCapacity/1000000] MJ<br>\
@@ -99,6 +99,10 @@
 	output_level = 1300000
 	charge = 5.55e+007
 
+/obj/machinery/power/smes/buildable/third_party_shuttle/empty/Initialize()
+	. = ..()
+	charge = 0
+
 /obj/machinery/power/smes/buildable/autosolars/Initialize() //for third parties that have their solars autostart, It's slightly upgraded for them
 	. = ..()
 	component_parts += new /obj/item/smes_coil/super_capacity(src)
@@ -162,7 +166,7 @@
 // This also causes the SMES to quickly discharge, and has small chance of damaging output APCs.
 /obj/machinery/power/smes/buildable/process()
 	if(!grounding && (Percentage() > 5))
-		spark(src, 5, alldirs)
+		spark(src, 5, GLOB.alldirs)
 		charge -= (output_level_max * SMESRATE)
 		if(prob(1)) // Small chance of overload occuring since grounding is disabled.
 			apcs_overload(5,10,20)
@@ -182,7 +186,7 @@
 
 	// Cyborgs standing next to the SMES can play with the wiring.
 	if(istype(usr, /mob/living/silicon/robot) && Adjacent(usr) && open_hatch)
-		wires.Interact(usr)
+		wires.interact(usr)
 
 // Proc: Initialize()
 // Parameters: 2 (dir - direction machine should face, install_coils - if coils should be spawned)
@@ -207,7 +211,7 @@
 /obj/machinery/power/smes/buildable/attack_hand()
 	..()
 	if(open_hatch)
-		wires.Interact(usr)
+		wires.interact(usr)
 
 // Proc: recalc_coils()
 // Parameters: None
@@ -407,6 +411,8 @@
 			if(newtag)
 				RCon_tag = newtag
 				to_chat(user, "<span class='notice'>You changed the RCON tag to: [newtag]</span>")
+				if(RCon_tag != "NO_TAG")
+					SSmachinery.build_rcon_lists()
 			return
 		// Charged above 1% and safeties are enabled.
 		if((charge > (capacity/100)) && safeties_enabled)
@@ -432,7 +438,7 @@
 
 			playsound(get_turf(src), W.usesound, 50, 1)
 			to_chat(user, "<span class='warning'>You begin to disassemble the [src]!</span>")
-			if (do_after(usr, 100 * cur_coils)) // More coils = takes longer to disassemble. It's complex so largest one with 5 coils will take 50s
+			if (do_after(usr, 100 * cur_coils, src, DO_REPAIR_CONSTRUCT)) // More coils = takes longer to disassemble. It's complex so largest one with 5 coils will take 50s
 
 				if (failure_probability && prob(failure_probability))
 					total_system_failure(failure_probability, user)

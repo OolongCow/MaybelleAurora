@@ -33,7 +33,7 @@
 	listeners = list()
 	listener_status = list()
 
-	destroyed_event.register(source, src, /datum/proc/qdel_self)
+	GLOB.destroyed_event.register(source, src, /datum/proc/qdel_self)
 
 	player.subscribe(src)
 
@@ -52,4 +52,5 @@
 
 /datum/sound_token/instrument/Destroy()
 	. = ..()
+	player.unsubscribe(src)
 	player = null

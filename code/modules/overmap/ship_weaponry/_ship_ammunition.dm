@@ -53,10 +53,10 @@
 			return
 	return ..()
 
-/obj/item/ship_ammunition/examine(mob/user, distance)
+/obj/item/ship_ammunition/examine(mob/user, distance, is_adjacent)
 	. = ..()
 	if(written_message)
-		if(get_dist(user, src) > 3)
+		if(distance > 3)
 			to_chat(user, "It has something written on it, but you'd need to get closer to tell what the writing says.")
 		else
 			to_chat(user, "It has a message written on the casing: <span class='notice'><i>[written_message]</i></span>")
@@ -68,7 +68,7 @@
 			var/datum/species/S = H.species
 			if(S.mob_size >= mob_carry_size || S.resist_mod >= 10 || user.status_flags & GODMODE)
 				visible_message(SPAN_NOTICE("[user] tightens their grip on [src] and starts heaving..."))
-				if(do_after(user, 1 SECONDS))
+				if(do_after(user, 1 SECONDS, src, DO_UNIQUE))
 					visible_message(SPAN_NOTICE("[user] heaves \the [src] up!"))
 					wield(user)
 					return TRUE
@@ -77,7 +77,7 @@
 				var/obj/item/rig/R = H.back
 				if(R.suit_is_deployed())
 					visible_message(SPAN_NOTICE("[user] tightens their grip on [src] and starts heaving with some difficulty..."))
-					if(do_after(user, 5 SECONDS))
+					if(do_after(user, 5 SECONDS, src, DO_UNIQUE))
 						visible_message(SPAN_NOTICE("[user] heaves \the [src] up!"))
 						wield(user)
 						return TRUE
@@ -128,6 +128,10 @@
 	return
 
 /obj/item/ship_ammunition/proc/wield(var/mob/living/carbon/human/user)
+	var/obj/A = user.get_inactive_hand()
+	if(A)
+		to_chat(user, SPAN_WARNING("Your other hand is occupied!"))
+		return
 	wielded = TRUE
 	var/obj/item/offhand/O = new(user)
 	O.name = "[initial(name)] - offhand"
@@ -164,13 +168,13 @@
 /obj/item/ship_ammunition/touch_map_edge(var/new_z)
 	if(isprojectile(loc))
 		transfer_to_overmap(new_z)
-		origin = map_sectors["[new_z]"]
+		origin = GLOB.map_sectors["[new_z]"]
 		return TRUE
 	else
 		. = ..()
 
 /obj/item/ship_ammunition/proc/transfer_to_overmap(var/new_z)
-	var/obj/effect/overmap/start_object = map_sectors["[new_z]"]
+	var/obj/effect/overmap/start_object = GLOB.map_sectors["[new_z]"]
 	if(!start_object)
 		return FALSE
 
@@ -217,7 +221,7 @@
 
 /obj/item/projectile/ship_ammo/touch_map_edge()
 	if(primed)
-		for(var/mob/living/carbon/human/H in human_mob_list)
+		for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
 			if(AreConnectedZLevels(H.z, z))
 				to_chat(H, SPAN_WARNING("The flooring below you vibrates a little as shells fly by the hull of the ship!"))
 				H.playsound_simple(null, 'sound/effects/explosionfar.ogg', 25)

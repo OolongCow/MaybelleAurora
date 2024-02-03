@@ -7,8 +7,8 @@
 	size = 12
 	requires_ntnet = TRUE
 	available_on_ntnet = TRUE
-	required_access_download = access_hop
-	required_access_run = access_cargo
+	required_access_download = ACCESS_HOP
+	required_access_run = ACCESS_CARGO
 	usage_flags = PROGRAM_CONSOLE | PROGRAM_TELESCREEN
 	tgui_id = "CargoControl"
 
@@ -102,7 +102,7 @@
 
 	var/datum/shuttle/autodock/ferry/supply/shuttle = SScargo.shuttle
 	if (!shuttle)
-		log_debug("## ERROR: Eek. The supply/shuttle datum is missing somehow.")
+		LOG_DEBUG("## ERROR: Eek. The supply/shuttle datum is missing somehow.")
 		return
 
 	switch(action)
