@@ -2,6 +2,8 @@
 	name = "Konyang Village"
 	id = "konyang_village"
 	description = "A rural village on Konyang."
+	spawn_weight = 1
+	spawn_cost = 2
 
 	template_flags = TEMPLATE_FLAG_NO_RUINS|TEMPLATE_FLAG_RUIN_STARTS_DISALLOWED
 	sectors = list(SECTOR_HANEUNIM)
@@ -15,7 +17,7 @@
 	dynamic_lighting = TRUE
 	no_light_control = FALSE
 	base_turf = /turf/simulated/mineral
-	area_flags = AREA_FLAG_HIDE_FROM_HOLOMAP
+	area_flags = AREA_FLAG_HIDE_FROM_HOLOMAP | AREA_FLAG_INDESTRUCTIBLE_TURFS
 
 /datum/ghostspawner/human/konyang_villager
 	short_name = "konyang_villager"
