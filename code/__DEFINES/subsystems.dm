@@ -1,7 +1,3 @@
-// -- SSprocessing stuff --
-#define START_PROCESSING(Processor, Datum) if (!Datum.isprocessing) {Datum.isprocessing = 1;Processor.processing += Datum}
-#define STOP_PROCESSING(Processor, Datum) Datum.isprocessing = 0;Processor.processing -= Datum
-
 /// START specific to SSmachinery
 #define START_PROCESSING_MACHINE(machine, flag)\
 	if(!istype(machine, /obj/machinery)) CRASH("A non-machine [log_info_line(machine)] was queued to process on the machinery subsystem.");\
@@ -11,7 +7,9 @@
 /// STOP specific to SSmachinery
 #define STOP_PROCESSING_MACHINE(machine, flag)\
 	machine.processing_flags &= ~flag;\
-	if(machine.processing_flags == 0) STOP_PROCESSING(SSmachinery, machine)
+	if(machine.processing_flags == 0){\
+		machine.datum_flags &= ~DF_ISPROCESSING;\
+		SSmachinery.processing -= machine}
 
 //! ## Timing subsystem
 /**
@@ -100,8 +98,8 @@
 
 
 // -- SSoverlays --
-#define CUT_OVERLAY_IN(ovr, time) addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, cut_overlay), ovr), time, TIMER_STOPPABLE | TIMER_CLIENT_TIME)
-#define ATOM_USING_SSOVERLAY(atom) (atom.our_overlays || atom.priority_overlays)
+#define CUT_OVERLAY_IN(ovr, time) addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, CutOverlays), ovr), time, TIMER_STOPPABLE | TIMER_CLIENT_TIME)
+#define ATOM_USING_SSOVERLAY(atom) (atom.atom_overlay_cache || atom.atom_protected_overlay_cache)
 
 // -- SSticker --
 #define ROUND_IS_STARTED (SSticker.current_state >= GAME_STATE_PLAYING)
@@ -113,10 +111,10 @@
 #define EFFECT_DESTROY 2	// qdel.
 
 // Effect helpers.
-#define QUEUE_EFFECT(effect) if (!effect.isprocessing) {effect.isprocessing = TRUE; SSeffects.effect_systems += effect;}
-#define QUEUE_VISUAL(visual) if (!visual.isprocessing) {visual.isprocessing = TRUE; SSeffects.visuals += visual;}
-#define STOP_EFFECT(effect) effect.isprocessing = FALSE; SSeffects.effect_systems -= effect;
-#define STOP_VISUAL(visual)	visual.isprocessing = FALSE; SSeffects.visuals -= visual;
+#define QUEUE_EFFECT(effect) if (!(effect.datum_flags & DF_ISPROCESSING)) {effect.datum_flags |= DF_ISPROCESSING; SSeffects.effect_systems += effect;}
+#define QUEUE_VISUAL(visual) if (!(visual.datum_flags & DF_ISPROCESSING)) {visual.datum_flags |= DF_ISPROCESSING; SSeffects.visuals += visual;}
+#define STOP_EFFECT(effect) effect.datum_flags &= ~DF_ISPROCESSING; SSeffects.effect_systems -= effect;
+#define STOP_VISUAL(visual)	visual.datum_flags &= ~DF_ISPROCESSING; SSeffects.visuals -= visual;
 
 // -- SSfalling --
 #define ADD_FALLING_ATOM(atom) if (!atom.multiz_falling) { atom.multiz_falling = 1; SSfalling.falling[atom] = 0; }
@@ -214,8 +212,10 @@
 #define INIT_ORDER_PERSISTENT_CONFIGURATION 101 //Aurora snowflake conflg handling
 #define INIT_ORDER_PROFILER 101
 #define INIT_ORDER_GARBAGE 99
+#define INIT_ORDER_SOUNDS 83
 #define INIT_ORDER_DISCORD 78
 #define INIT_ORDER_JOBS 65 // Must init before atoms, to set up properly the dynamic job lists.
+#define INIT_ORDER_AI_CONTROLLERS 55 //So the controller can get the ref
 #define INIT_ORDER_TICKER 55
 #define INIT_ORDER_SEEDS 52 // More aurora snowflake, needs to load before the atoms init as it generates images for seeds that are used
 #define INIT_ORDER_MISC_FIRST 51 //Another aurora snowflake system? Who would have guessed... Anyways, need to load before mapping or global HUDs are not ready when atoms request them
@@ -237,10 +237,13 @@
 #define INIT_ORDER_VOTE -4
 #define INIT_ORDER_ASSETS -5
 #define INIT_ORDER_ICON_UPDATE -5.5 //Yet another aurora snowflake, Icon update queue flush. Should run before overlays, probably before smoothing the icon too
+#define INIT_ORDER_VISCONTENTS -5.6  // Queued vis_contents updates.
 #define INIT_ORDER_ICON_SMOOTHING -6
 #define INIT_ORDER_OVERLAY -7
+#define INIT_ORDER_WEATHER    -9
 #define INIT_ORDER_LIGHTING -20
 #define INIT_ORDER_ZCOPY -21 //Aurora snowflake, Z-mimic flush. Should run after SSoverlay & SSicon_smooth so it copies the smoothed sprites.
+#define INIT_ORDER_PATH -50
 #define INIT_ORDER_STATPANELS -97
 #define INIT_ORDER_CHAT -100 //Should be last to ensure chat remains smooth during init.
 
@@ -250,10 +253,19 @@
 #define FIRE_PRIORITY_PING 10
 #define FIRE_PRIORITY_GARBAGE 15
 #define FIRE_PRIORITY_ASSETS 20
+#define FIRE_PRIORITY_NPC_MOVEMENT 21
+#define FIRE_PRIORITY_NPC_ACTIONS 22
+#define FIRE_PRIORITY_PATHFINDING 23
+#define FIRE_PRIORITY_PROCESS 25
+#define FIRE_PRIORITY_THROWING 25
+#define FIRE_PRIORITY_SPACEDRIFT 30
 #define FIRE_PRIORITY_DEFAULT 50
+#define FIRE_PRIORITY_MOBS 100
 #define FIRE_PRIORITY_STATPANEL 390
 #define FIRE_PRIORITY_CHAT 400
+#define FIRE_PRIORITY_RUNECHAT 410
 #define FIRE_PRIORITY_TIMER 700
+#define FIRE_PRIORITY_SOUND_LOOPS 800
 
 /**
 	Create a new timer and add it to the queue.
@@ -265,9 +277,26 @@
 */
 #define addtimer(args...) _addtimer(args, file = __FILE__, line = __LINE__)
 
+// Subsystem delta times or tickrates, in seconds. I.e, how many seconds in between each process() call for objects being processed by that subsystem.
+// Only use these defines if you want to access some other objects processing seconds_per_tick, otherwise use the seconds_per_tick that is sent as a parameter to process()
+#define SSMOBS_DT (SSmobs.wait/10)
+
 /* AURORA SHIT */
 
 // Don't display in processes panel.
 #define SS_NO_DISPLAY 128
 
 #define SS_IS_RUNNING(subsystem) (subsystem.can_fire && (GAME_STATE & subsystem.runlevels))
+
+// Vote subsystem counting methods
+/// First past the post. One selection per person, and the selection with the most votes wins.
+#define VOTE_COUNT_METHOD_SINGLE 1
+/// Approval voting. Any number of selections per person, and the selection with the most votes wins.
+#define VOTE_COUNT_METHOD_MULTI 2
+
+/// The choice with the most votes wins. Ties are broken by the first choice to reach that number of votes.
+#define VOTE_WINNER_METHOD_SIMPLE "Simple"
+/// The winning choice is selected randomly based on the number of votes each choice has.
+#define VOTE_WINNER_METHOD_WEIGHTED_RANDOM "Weighted Random"
+/// There is no winner for this vote.
+#define VOTE_WINNER_METHOD_NONE "None"

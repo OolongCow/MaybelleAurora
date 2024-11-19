@@ -221,7 +221,7 @@ var/list/debug_verbs = list (
 	var/turf/simulated/location = get_turf(usr)
 
 	if(!istype(location, /turf/simulated)) // We're in space, let's not cause runtimes.
-		to_chat(usr, "<span class='warning'>this debug tool cannot be used from space</span>")
+		to_chat(usr, SPAN_WARNING("this debug tool cannot be used from space"))
 		return
 
 	var/icon/red = new('icons/misc/debug_group.dmi', "red")		//created here so we don't have to make thousands of these.
@@ -347,7 +347,7 @@ var/global/prevent_airgroup_regroup = 0
 	set category = "Mapping"
 	set name = "Regroup All Airgroups Attempt"
 
-	to_chat(usr, "<span class='warning'>Proc disabled.</span>")
+	to_chat(usr, SPAN_WARNING("Proc disabled."))
 
 	/*prevent_airgroup_regroup = 0
 	for(var/datum/air_group/AG in SSair.air_groups)
@@ -358,7 +358,7 @@ var/global/prevent_airgroup_regroup = 0
 	set category = "Mapping"
 	set name = "Kill pipe processing"
 
-	to_chat(usr, "<span class='warning'>Proc disabled.</span>")
+	to_chat(usr, SPAN_WARNING("Proc disabled."))
 
 	/*pipe_processing_killed = !pipe_processing_killed
 	if(pipe_processing_killed)
@@ -370,7 +370,7 @@ var/global/prevent_airgroup_regroup = 0
 	set category = "Mapping"
 	set name = "Kill air processing"
 
-	to_chat(usr, "<span class='warning'>Proc disabled.</span>")
+	to_chat(usr, SPAN_WARNING("Proc disabled."))
 
 //This proc is intended to detect lag problems relating to communication procs
 var/global/say_disabled = 0
@@ -378,7 +378,7 @@ var/global/say_disabled = 0
 	set category = "Mapping"
 	set name = "Disable all communication verbs"
 
-	to_chat(usr, "<span class='warning'>Proc disabled.</span>")
+	to_chat(usr, SPAN_WARNING("Proc disabled."))
 
 	/*say_disabled = !say_disabled
 	if(say_disabled)
@@ -393,7 +393,7 @@ var/global/movement_disabled_exception //This is the client that calls the proc,
 	set category = "Mapping"
 	set name = "Disable all movement"
 
-	to_chat(usr, "<span class='warning'>Proc disabled.</span>")
+	to_chat(usr, SPAN_WARNING("Proc disabled."))
 
 	/*movement_disabled = !movement_disabled
 	if(movement_disabled)
@@ -408,7 +408,7 @@ var/global/movement_disabled_exception //This is the client that calls the proc,
 
 	for(var/obj/machinery/door/airlock/A in world)
 		var/turf/T = get_turf(A)
-		if(istype(T, /turf/space) || istype(T, /turf/unsimulated/floor/asteroid) || isopenturf(T) || T.density)
+		if(istype(T, /turf/space) || istype(T, /turf/simulated/floor/exoplanet/asteroid) || isopenturf(T) || T.density)
 			to_chat(usr, "Airlock [A] with bad turf at ([A.x],[A.y],[A.z]) in [T.loc].")
 
 /client/proc/get_bad_fdoors()
@@ -422,3 +422,7 @@ var/global/movement_disabled_exception //This is the client that calls the proc,
 			firelock_increment += 1
 		if(firelock_increment > 1)
 			to_chat(usr, "Double firedoor [F] at ([F.x],[F.y],[F.z]) in [T.loc].")
+
+#ifdef TESTING
+GLOBAL_LIST_EMPTY(dirty_vars)
+#endif

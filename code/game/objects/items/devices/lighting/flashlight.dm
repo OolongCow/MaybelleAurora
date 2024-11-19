@@ -9,7 +9,7 @@
 		)
 	icon_state = "flashlight"
 	item_state = "flashlight"
-	w_class = ITEMSIZE_SMALL
+	w_class = WEIGHT_CLASS_SMALL
 	obj_flags = OBJ_FLAG_CONDUCTABLE
 	slot_flags = SLOT_BELT
 	light_color = LIGHT_COLOR_HALOGEN
@@ -220,7 +220,7 @@
 	for(var/obj/O in contents)
 		O.emp_act(severity)
 
-/obj/item/device/flashlight/attack(mob/living/M as mob, mob/living/user as mob)
+/obj/item/device/flashlight/attack(mob/living/target_mob, mob/living/user, target_zone)
 	add_fingerprint(user)
 	if(on && user.zone_sel.selecting == BP_EYES)
 
@@ -231,10 +231,10 @@
 			to_chat(user, SPAN_WARNING("This light is too dim to see anything with!"))
 			return
 
-		var/mob/living/carbon/human/H = M	//mob has protective eyewear
+		var/mob/living/carbon/human/H = target_mob	//mob has protective eyewear
 		if(istype(H))
 			if(H.get_flash_protection())
-				to_chat(user, SPAN_WARNING("You're going to need to remove \the [M]'s eye protection first."))
+				to_chat(user, SPAN_WARNING("You're going to need to remove \the [H]'s eye protection first."))
 				return
 
 			var/obj/item/organ/vision
@@ -244,8 +244,8 @@
 				to_chat(user, SPAN_WARNING("You can't find any [H.species.vision_organ ? H.species.vision_organ : "eyes"] on [H]!"))
 
 			user.visible_message(
-				SPAN_NOTICE("\The [user] directs [src] to [M]'s eyes."),
-				SPAN_NOTICE("You direct [src] to [M]'s eyes.")
+				SPAN_NOTICE("\The [user] directs [src] to [H]'s eyes."),
+				SPAN_NOTICE("You direct [src] to [H]'s eyes.")
 			)
 
 			inspect_vision(vision, user)
@@ -298,6 +298,9 @@
 /obj/item/device/flashlight/empty
 	starts_with_cell = FALSE
 
+/obj/item/device/flashlight/on
+	on = TRUE
+
 /obj/item/device/flashlight/pen
 	name = "penlight"
 	desc = "A pen-sized light, used by medical staff."
@@ -308,7 +311,7 @@
 	obj_flags = OBJ_FLAG_CONDUCTABLE
 	slot_flags = SLOT_EARS
 	brightness_on = 2
-	w_class = ITEMSIZE_TINY
+	w_class = WEIGHT_CLASS_TINY
 	light_wedge = LIGHT_OMNI
 
 /obj/item/device/flashlight/drone
@@ -319,7 +322,7 @@
 	obj_flags = OBJ_FLAG_CONDUCTABLE
 	brightness_on = 2
 	efficiency_modifier = 2
-	w_class = ITEMSIZE_TINY
+	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/device/flashlight/heavy
 	name = "heavy duty flashlight"
@@ -327,23 +330,26 @@
 	icon_state = "heavyflashlight"
 	item_state = "heavyflashlight"
 	brightness_on = 4
-	w_class = ITEMSIZE_NORMAL
+	w_class = WEIGHT_CLASS_NORMAL
 	uv_intensity = 60
 	matter = list(MATERIAL_PLASTIC = 100, MATERIAL_GLASS = 70)
 	light_wedge = LIGHT_SEMI
+
+/obj/item/device/flashlight/heavy/on
+	on = TRUE
 
 /obj/item/device/flashlight/maglight
 	name = "maglight"
 	desc = "A heavy flashlight, designed for security personnel."
 	icon_state = "maglight"
 	item_state = "maglight"
-	force = 10
+	force = 9
 	brightness_on = 5
 	efficiency_modifier = 0.8
-	w_class = ITEMSIZE_NORMAL
+	w_class = WEIGHT_CLASS_NORMAL
 	uv_intensity = 70
 	attack_verb = list("slammed", "whacked", "bashed", "thunked", "battered", "bludgeoned", "thrashed")
-	matter = list(DEFAULT_WALL_MATERIAL = 200, MATERIAL_GLASS = 100)
+	matter = list(MATERIAL_ALUMINIUM = 200, MATERIAL_GLASS = 100)
 	hitsound = 'sound/weapons/smash.ogg'
 	light_wedge = LIGHT_NARROW
 
@@ -354,6 +360,9 @@
 	else
 		item_state = "maglight"
 
+/obj/item/device/flashlight/maglight/on
+	on = TRUE
+
 /obj/item/device/flashlight/slime
 	gender = PLURAL
 	name = "glowing slime extract"
@@ -362,7 +371,7 @@
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "floor1" //not a slime extract sprite but... something close enough!
 	item_state = "slime"
-	w_class = ITEMSIZE_TINY
+	w_class = WEIGHT_CLASS_TINY
 	brightness_on = 6
 	uv_intensity = 200
 	on = TRUE //Bio-luminesence has one setting, on.
@@ -379,7 +388,7 @@
 	obj_flags = OBJ_FLAG_CONDUCTABLE
 	slot_flags = SLOT_HEAD | SLOT_EARS
 	brightness_on = 2
-	w_class = ITEMSIZE_TINY
+	w_class = WEIGHT_CLASS_TINY
 	light_wedge = LIGHT_WIDE
 	body_parts_covered = 0
 
@@ -409,3 +418,6 @@
 		item_state = "lantern-on"
 	else
 		item_state = "lantern"
+
+/obj/item/device/flashlight/lantern/on
+	on = TRUE

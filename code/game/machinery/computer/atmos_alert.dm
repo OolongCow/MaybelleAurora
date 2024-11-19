@@ -11,6 +11,7 @@ GLOBAL_LIST_EMPTY(minor_air_alarms)
 
 	icon_screen = "alert:0"
 	icon_keyboard = "cyan_key"
+	icon_keyboard_emis = "cyan_key_mask"
 	light_color = LIGHT_COLOR_CYAN
 
 /obj/machinery/computer/atmos_alert/Initialize()
@@ -30,10 +31,10 @@ GLOBAL_LIST_EMPTY(minor_air_alarms)
 	var/minor_alarms[0]
 
 	for(var/datum/alarm/alarm in atmosphere_alarm.major_alarms())
-		major_alarms[++major_alarms.len] = list("name" = sanitize(alarm.alarm_name()), "ref" = "\ref[alarm]")
+		major_alarms[++major_alarms.len] = list("name" = sanitize(alarm.alarm_name()), "ref" = "[REF(alarm)]")
 
 	for(var/datum/alarm/alarm in atmosphere_alarm.minor_alarms())
-		minor_alarms[++minor_alarms.len] = list("name" = sanitize(alarm.alarm_name()), "ref" = "\ref[alarm]")
+		minor_alarms[++minor_alarms.len] = list("name" = sanitize(alarm.alarm_name()), "ref" = "[REF(alarm)]")
 
 	data["priority_alarms"] = major_alarms
 	data["minor_alarms"] = minor_alarms

@@ -163,19 +163,21 @@ SUBSYSTEM_DEF(unit_tests)
 		var/datum/unit_test/test = curr[curr.len]
 		curr.len--
 
+		TEST_GROUP_OPEN("[test.name]")
+
 		if (test.map_path && SSatlas.current_map && SSatlas.current_map.path != test.map_path)
 			test.pass("[ascii_red]Check Disabled: This test is not allowed to run on this map.", __FILE__, __LINE__)
+			TEST_GROUP_CLOSE("[test.name]")
 			if (MC_TICK_CHECK)
 				return
 			continue
 
 		if (test.disabled)
 			test.pass("[ascii_red]Check Disabled: [test.why_disabled]", __FILE__, __LINE__)
+			TEST_GROUP_CLOSE("[test.name]")
 			if (MC_TICK_CHECK)
 				return
 			continue
-
-		TEST_GROUP_OPEN("[test.name]")
 
 		var/current_test_result = null
 
@@ -256,7 +258,7 @@ SUBSYSTEM_DEF(unit_tests)
 
 //This is only valid during unit tests
 /world/Error(var/exception/e)
-
+	CAN_BE_REDEFINED(TRUE)
 	var/datum/unit_test/UT
 
 	//Try to use the SSunit_tests_config.UT, but if for some god forsaken reason it doesn't exist, make a new one

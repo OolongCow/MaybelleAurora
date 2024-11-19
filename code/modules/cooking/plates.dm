@@ -45,11 +45,11 @@ Plates that can hold your cooking stuff
 					SPAN_NOTICE("You scoop up some of \the [src]'s contents with \the [U]!")
 				)
 
-				U.cut_overlays()
+				U.ClearOverlays()
 				U.loaded = src.name
 				var/image/I = new(U.icon, "loadedfood")
 				I.color = reagents.get_color()
-				U.add_overlay(I)
+				U.AddOverlays(I)
 				reagents.trans_to_obj(U, min(reagents.total_volume,U.transfer_amt))
 				U.is_liquid = TRUE
 				return
@@ -60,8 +60,11 @@ Plates that can hold your cooking stuff
 	update_icon()
 	return ..()
 
-/obj/item/reagent_containers/bowl/attack(mob/living/M, mob/living/user, target_zone)
-	if(grease && !reagents.total_volume && (M == user))
+/obj/item/reagent_containers/bowl/attack(mob/living/target_mob, mob/living/user, target_zone)
+	if(isipc(user))
+		to_chat(user, SPAN_NOTICE("You don't have a mouth, so you can't lick \the [src] clean."))
+		return
+	if(grease && !reagents.total_volume && (target_mob == user))
 		user.visible_message(
 			SPAN_NOTICE("[user] starts to lick \the [src] clean."),
 			SPAN_NOTICE("You start to lick \the [src] clean.")
@@ -85,7 +88,7 @@ Plates that can hold your cooking stuff
 	return
 
 /obj/item/reagent_containers/bowl/update_icon()
-	cut_overlays()
+	ClearOverlays()
 	if(grease)
 		icon_state = "[initial(icon_state)]_mess"
 	else
@@ -95,7 +98,7 @@ Plates that can hold your cooking stuff
 		var/image/I = image(icon=icon, icon_state="[icon_state]_over")
 		I.color = reagents.get_color()
 		LAZYADD(O, I)
-	set_overlays(O)
+	SetOverlays(O)
 	return ..()
 
 /obj/item/reagent_containers/bowl/plate
@@ -154,11 +157,11 @@ Plates that can hold your cooking stuff
 		to_chat(user, SPAN_NOTICE("You take \the [F.name] from \the [name]."))
 		return
 
-/obj/item/reagent_containers/bowl/plate/attack(mob/living/M, mob/living/user, target_zone)
+/obj/item/reagent_containers/bowl/plate/attack(mob/living/target_mob, mob/living/user, target_zone)
 	if(istype(holding, /obj/item/reagent_containers/food/snacks))
 		var/obj/item/reagent_containers/food/snacks/S = holding
-		S.standard_feed_mob(user, M)
-	else if(grease && !holding && (M == user))
+		S.standard_feed_mob(user, target_mob)
+	else if(grease && !holding && (target_mob == user))
 		user.visible_message(SPAN_NOTICE("[user] starts to lick \the [src] clean."), SPAN_NOTICE("You start to lick \the [src] clean."))
 		if(do_after(user, 5))
 			grease = FALSE
@@ -167,7 +170,7 @@ Plates that can hold your cooking stuff
 	return
 
 /obj/item/reagent_containers/bowl/plate/update_icon()
-	cut_overlays()
+	ClearOverlays()
 	var/list/O = list()
 	if(grease)
 		icon_state = "[initial(icon_state)]_mess"
@@ -176,7 +179,7 @@ Plates that can hold your cooking stuff
 	if(holding)
 		holding.update_icon() // Just to be safe.
 		LAZYADD(O, image(icon=holding.icon, icon_state=holding.icon_state))
-	set_overlays(O)
+	SetOverlays(O)
 
 /obj/item/reagent_containers/bowl/zhukamir
 	name = "\improper Zhukamir cauldron"

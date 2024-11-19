@@ -12,8 +12,6 @@
 			. += A
 
 /proc/get_area_turfs(var/area/A, var/list/predicates)
-	set background=1
-
 	. = new/list()
 	A = istype(A) ? A : locate(A)
 	if(!A)
@@ -89,9 +87,6 @@
 
 /proc/is_contact_area(var/area/A)
 	. = isContactLevel(A.z)
-
-/proc/is_player_area(var/area/A)
-	. = isPlayerLevel(A.z)
 
 /proc/is_not_space_area(var/area/A)
 	. = !istype(A,/area/space)

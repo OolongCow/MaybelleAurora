@@ -29,7 +29,7 @@
 	if(.)
 		sleeper.ui_interact(user)
 
-/obj/item/mecha_equipment/sleeper/attack()
+/obj/item/mecha_equipment/sleeper/attack(mob/living/target_mob, mob/living/user, target_zone)
 	return
 
 /obj/item/mecha_equipment/sleeper/attackby(obj/item/attacking_item, mob/user)
@@ -56,7 +56,7 @@
 		return
 
 	//All good, load the person
-	visible_message("<span class='notice'>\The [src] begins loading \the [target] into \the [src].</span>")
+	visible_message(SPAN_NOTICE("\The [src] begins loading \the [target] into \the [src]."))
 	sleeper.go_in(person_to_load, user)
 
 /obj/item/mecha_equipment/sleeper/get_hardpoint_maptext()
@@ -78,9 +78,6 @@
 	interact_offline = TRUE
 	display_loading_message = FALSE
 
-/obj/machinery/sleeper/mounted/ui_interact(mob/user, var/datum/ui_state/state = mech_state)
-	. = ..()
-
 /obj/machinery/sleeper/mounted/ui_host()
 	var/obj/item/mecha_equipment/sleeper/S = loc
 	if(istype(S))
@@ -94,9 +91,13 @@
 
 		if(beaker)
 			beaker.forceMove(get_turf(src))
-			user.visible_message("<span class='notice'>\The [user] removes \the [beaker] from \the [src].</span>", "<span class='notice'>You remove \the [beaker] from \the [src].</span>")
+			user.visible_message(SPAN_NOTICE("\The [user] removes \the [beaker] from \the [src]."),
+									SPAN_NOTICE("You remove \the [beaker] from \the [src]."))
+
 		beaker = attacking_item
-		user.visible_message("<span class='notice'>\The [user] adds \a [attacking_item] to \the [src].</span>", "<span class='notice'>You add \a [attacking_item] to \the [src].</span>")
+		user.visible_message(SPAN_NOTICE("\The [user] adds \a [attacking_item] to \the [src]."),
+								SPAN_NOTICE("You add \a [attacking_item] to \the [src]."))
+
 		return TRUE
 
 /obj/item/mecha_equipment/crisis_drone
@@ -225,7 +226,7 @@
 
 /obj/item/mecha_equipment/crisis_drone/proc/shut_down()
 	if(enabled)
-		owner.visible_message("<span class='notice'>\The [owner]'s [src] buzzes as its drone returns to port.</span>")
+		owner.visible_message(SPAN_NOTICE("\The [owner]'s [src] buzzes as its drone returns to port."))
 		toggle_drone()
 	if(!isnull(Target))
 		Target = null
@@ -298,16 +299,19 @@
 		HA.fullScan = !HA.fullScan
 		to_chat(user, SPAN_NOTICE("You switch to \the [src]'s [HA.fullScan ? "full body" : "basic"] scan mode."))
 
-/obj/item/device/healthanalyzer/mech/attack(mob/living/M, var/mob/living/heavy_vehicle/user)
+/obj/item/device/healthanalyzer/mech/attack(mob/living/target_mob, mob/living/user, target_zone)
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 	user.do_attack_animation(src)
 	if(!fullScan)
-		for(var/mob/pilot in user.pilots)
-			health_scan_mob(M, pilot, TRUE, TRUE, sound_scan = TRUE)
+		var/mob/living/heavy_vehicle/user_vehicle = user
+		if(istype(user_vehicle))
+			for(var/mob/pilot in user_vehicle.pilots)
+				health_scan_mob(target_mob, pilot, TRUE, TRUE, sound_scan = TRUE)
 	else
-		user.visible_message("<b>[user]</b> starts scanning \the [M] with \the [src].", SPAN_NOTICE("You start scanning \the [M] with \the [src]."))
+		user.visible_message("<b>[user]</b> starts scanning \the [target_mob] with \the [src].",
+								SPAN_NOTICE("You start scanning \the [target_mob] with \the [src]."))
 		if(do_after(user, 7 SECONDS))
-			print_scan(M, user)
+			print_scan(target_mob, user)
 			add_fingerprint(user)
 
 /obj/item/device/healthanalyzer/mech/proc/print_scan(var/mob/M, var/mob/living/user)

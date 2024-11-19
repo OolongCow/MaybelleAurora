@@ -66,9 +66,9 @@
 	set desc = "Opens help window with overview of available hardware, software and other important information."
 	var/mob/living/silicon/ai/user = usr
 
-	var/help = file2text('ingame_manuals/malf_ai.html')
+	var/help = file2text('texts/ingame_manuals/malf_ai.html')
 	if(!help)
-		help = "Error loading help (file /ingame_manuals/malf_ai.html is probably missing). Please report this to server administration staff."
+		help = "Error loading help (file /texts/ingame_manuals/malf_ai.html is probably missing). Please report this to server administration staff."
 
 	user << browse(help, "window=malf_ai_help;size=600x500")
 
@@ -239,7 +239,7 @@
 /proc/log_ability_use(var/mob/living/silicon/ai/A, var/ability_name, var/atom/target = null, var/notify_admins = 1)
 	var/message
 	if(target)
-		message = text("used malf ability/function: [ability_name] on [target] ([target.x], [target.y], [target.z])")
+		message = "used malf ability/function: [ability_name] on [target] ([target.x], [target.y], [target.z])"
 	else
-		message = text("used malf ability/function: [ability_name].")
+		message = "used malf ability/function: [ability_name]."
 	admin_attack_log(A, null, message, null, message)

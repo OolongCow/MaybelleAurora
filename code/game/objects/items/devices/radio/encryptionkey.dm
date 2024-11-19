@@ -4,7 +4,7 @@
 	icon = 'icons/obj/radio.dmi'
 	icon_state = "cypherkey"
 	item_state = ""
-	w_class = ITEMSIZE_TINY
+	w_class = WEIGHT_CLASS_TINY
 	slot_flags = SLOT_EARS
 	var/translate_binary = FALSE
 	var/translate_hivenet = FALSE
@@ -31,11 +31,15 @@
 	var/turf/T = get_turf(src)
 	var/obj/effect/overmap/visitable/V = GLOB.map_sectors["[T.z]"]
 	if(istype(V) && V.comms_support)
-		if(V.comms_name)
+		var/freq_name = V.name
+		if(V.freq_name)
+			freq_name = V.freq_name
+			name = "[V.freq_name] encryption key"
+		else if(V.comms_name)
 			name = "[V.comms_name] encryption key"
 
 		channels += list(
-			"[V.name]" = TRUE,
+			"[freq_name]" = TRUE,
 			CHANNEL_HAILING = TRUE
 		)
 
@@ -83,7 +87,7 @@
 
 /obj/item/device/encryptionkey/bluespace
 	name = "bluespace encryption key"
-	desc = "A non-sensical mimickry of a standard encryption key, in the form of an elongated bluespace crystal. It seems to function."
+	desc = "A nonsensical mimicry of a standard encryption key, in the form of an elongated bluespace crystal. It seems to function."
 	icon_state = "bs_cyperkey"
 	additional_channels = list(CHANNEL_BLUESPACE = TRUE)
 	origin_tech = list(TECH_BLUESPACE = 3)
@@ -193,7 +197,7 @@
 	channels = list(CHANNEL_SUPPLY = TRUE, CHANNEL_HAILING = TRUE)
 
 /obj/item/device/encryptionkey/headset_operations_manager
-	name = "operations managaer radio encryption key"
+	name = "operations manager radio encryption key"
 	icon_state = "cargo_cypherkey"
 	channels = list(CHANNEL_COMMAND = TRUE, CHANNEL_SUPPLY = TRUE, CHANNEL_HAILING = TRUE)
 
@@ -208,7 +212,7 @@
 
 /obj/item/device/encryptionkey/onlyert
 	name = "\improper ERT radio encryption key"
-	channels = list(CHANNEL_RESPONSE_TEAM = TRUE)
+	channels = list(CHANNEL_RESPONSE_TEAM = TRUE, CHANNEL_HAILING = TRUE)
 
 /obj/item/device/encryptionkey/rev
 	name = "standard encryption key"

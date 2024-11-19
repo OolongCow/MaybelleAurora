@@ -6,11 +6,11 @@
 	if(GLOB.Debug2)
 		GLOB.Debug2 = 0
 		message_admins("[key_name(src)] toggled debugging off.")
-		log_admin("[key_name(src)] toggled debugging off.",admin_key=key_name(usr))
+		log_admin("[key_name(src)] toggled debugging off.")
 	else
 		GLOB.Debug2 = 1
 		message_admins("[key_name(src)] toggled debugging on.")
-		log_admin("[key_name(src)] toggled debugging on.",admin_key=key_name(usr))
+		log_admin("[key_name(src)] toggled debugging on.")
 
 	switch(alert("Do you want to print all logs to world? This should ONLY EVER HAPPEN IN CRISIS OR DURING DEBUGGING / DEVELOPMENT.", "All logs to world?", "No", "Yes"))
 		if("Yes")
@@ -55,11 +55,11 @@
 
 	var/datum/gas_mixture/env = T.return_air()
 
-	var/t = "<span class='notice'>Coordinates: [T.x],[T.y],[T.z]\n</span>"
-	t += "<span class='warning'>Temperature: [env.temperature]\n</span>"
-	t += "<span class='warning'>Pressure: [env.return_pressure()]kPa\n</span>"
+	var/t = SPAN_NOTICE("Coordinates: [T.x],[T.y],[T.z]\n")
+	t += SPAN_WARNING("Temperature: [env.temperature]\n")
+	t += SPAN_WARNING("Pressure: [env.return_pressure()]kPa\n")
 	for(var/g in env.gas)
-		t += "<span class='notice'>[g]: [env.gas[g]] / [env.gas[g] * R_IDEAL_GAS_EQUATION * env.temperature / env.volume]kPa\n</span>"
+		t += SPAN_NOTICE("[g]: [env.gas[g]] / [env.gas[g] * R_IDEAL_GAS_EQUATION * env.temperature / env.volume]kPa\n")
 
 	usr.show_message(t, 1)
 	feedback_add_details("admin_verb","ASL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -72,7 +72,7 @@
 		alert("Wait until the game starts")
 		return
 	if(istype(M, /mob/living/carbon/human))
-		log_admin("[key_name(src)] has robotized [M.key].",admin_key=key_name(usr),ckey=key_name(M))
+		log_admin("[key_name(src)] has robotized [M.key].")
 		spawn(10)
 			M:Robotize()
 
@@ -95,7 +95,7 @@
 		alert("The mob must not be a new_player.")
 		return
 
-	log_admin("[key_name(src)] has animalized [M.key].",admin_key=key_name(usr),ckey=key_name(M))
+	log_admin("[key_name(src)] has animalized [M.key].")
 	spawn(10)
 		M.Animalize()
 
@@ -135,7 +135,7 @@
 	set category = "Debug"
 	set name = "Make Powernets"
 	SSmachinery.makepowernets()
-	log_admin("[key_name(src)] has remade the powernet. makepowernets() called.",admin_key=key_name(usr))
+	log_admin("[key_name(src)] has remade the powernet. makepowernets() called.")
 	message_admins("[key_name_admin(src)] has remade the powernets. makepowernets() called.", 0)
 	feedback_add_details("admin_verb","MPWN") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
@@ -164,8 +164,8 @@
 	else
 		alert("Invalid mob")
 	feedback_add_details("admin_verb","GFA") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-	log_admin("[key_name(src)] has granted [M.key] full access.",admin_key=key_name(usr),ckey=key_name(M))
-	message_admins("<span class='notice'>[key_name_admin(usr)] has granted [M.key] full access.</span>", 1)
+	log_admin("[key_name(src)] has granted [M.key] full access.")
+	message_admins(SPAN_NOTICE("[key_name_admin(usr)] has granted [M.key] full access."), 1)
 
 /client/proc/cmd_assume_direct_control(var/mob/M in GLOB.mob_list)
 	set category = "Admin"
@@ -179,8 +179,8 @@
 		else
 			var/mob/abstract/observer/ghost = new/mob/abstract/observer(M,1)
 			ghost.ckey = M.ckey
-	message_admins("<span class='notice'>[key_name_admin(usr)] assumed direct control of [M].</span>", 1)
-	log_admin("[key_name(usr)] assumed direct control of [M].",admin_key=key_name(usr))
+	message_admins(SPAN_NOTICE("[key_name_admin(usr)] assumed direct control of [M]."), 1)
+	log_admin("[key_name(usr)] assumed direct control of [M].")
 	var/mob/adminmob = src.mob
 	M.ckey = src.ckey
 	if( isobserver(adminmob) )
@@ -324,30 +324,30 @@
 		if("Cancel")
 			return
 		if("ERT")
-			outfit_catagories["SCC-ERT"] = typesof(/datum/outfit/admin/ert/scc)
-			outfit_catagories["NT-ERT"] = typesof(/datum/outfit/admin/ert/nanotrasen)
-			outfit_catagories["Deathsquad"] = typesof(/datum/outfit/admin/deathsquad)
-			outfit_catagories["TCFL"] = typesof(/datum/outfit/admin/ert/legion)
-			outfit_catagories["Syndicate"] = typesof(/datum/outfit/admin/deathsquad/syndicate)
-			outfit_catagories["Freelance Mercenaries"] = typesof(/datum/outfit/admin/ert/mercenary)
-			outfit_catagories["Free Solarian Fleets Marines"] = typesof(/datum/outfit/admin/ert/fsf)
-			outfit_catagories["Kataphracts"] = typesof(/datum/outfit/admin/ert/kataphract)
-			outfit_catagories["Eridani"] = typesof(/datum/outfit/admin/ert/ap_eridani)
-			outfit_catagories["IAC"] = typesof(/datum/outfit/admin/ert/iac)
-			outfit_catagories["Kosmostrelki"] = typesof(/datum/outfit/admin/ert/pra_cosmonaut)
-			outfit_catagories["Elyran Navy"] = typesof(/datum/outfit/admin/ert/elyran_trooper)
+			outfit_catagories["SCC-ERT"] = typesof(/obj/outfit/admin/ert/scc)
+			outfit_catagories["NT-ERT"] = typesof(/obj/outfit/admin/ert/nanotrasen)
+			outfit_catagories["Deathsquad"] = typesof(/obj/outfit/admin/deathsquad)
+			outfit_catagories["TCFL"] = typesof(/obj/outfit/admin/ert/legion)
+			outfit_catagories["Syndicate"] = typesof(/obj/outfit/admin/deathsquad/syndicate)
+			outfit_catagories["Freelance Mercenaries"] = typesof(/obj/outfit/admin/ert/mercenary)
+			outfit_catagories["Free Solarian Fleets Marines"] = typesof(/obj/outfit/admin/ert/fsf)
+			outfit_catagories["Kataphracts"] = typesof(/obj/outfit/admin/ert/kataphract)
+			outfit_catagories["Eridani"] = typesof(/obj/outfit/admin/ert/ap_eridani)
+			outfit_catagories["IAC"] = typesof(/obj/outfit/admin/ert/iac)
+			outfit_catagories["Kosmostrelki"] = typesof(/obj/outfit/admin/ert/pra_cosmonaut)
+			outfit_catagories["Elyran Navy"] = typesof(/obj/outfit/admin/ert/elyran_trooper)
 		if("Admin")
-			outfit_catagories["Stellar Corporate Conglomerate"] = typesof(/datum/outfit/admin/scc)
-			outfit_catagories["NanoTrasen"] = typesof(/datum/outfit/admin/nt)
-			outfit_catagories["Antagonist"] = typesof(/datum/outfit/admin/syndicate)
-			outfit_catagories["Event"] = typesof(/datum/outfit/admin/event)
-			outfit_catagories["TCFL"] = typesof(/datum/outfit/admin/tcfl)
-			outfit_catagories["Killers"] = typesof(/datum/outfit/admin/killer)
-			outfit_catagories["Job"] = subtypesof(/datum/outfit/job)
-			outfit_catagories["Megacorps"] = subtypesof(/datum/outfit/admin/megacorp)
-			outfit_catagories["Pod Survivors"] = subtypesof(/datum/outfit/admin/pod)
-			outfit_catagories["Miscellaneous"] = typesof(/datum/outfit/admin/random)
-			outfit_catagories["Miscellaneous"] += /datum/outfit/admin/random_employee
+			outfit_catagories["Stellar Corporate Conglomerate"] = typesof(/obj/outfit/admin/scc)
+			outfit_catagories["NanoTrasen"] = typesof(/obj/outfit/admin/nt)
+			outfit_catagories["Antagonist"] = typesof(/obj/outfit/admin/syndicate)
+			outfit_catagories["Event"] = typesof(/obj/outfit/admin/event)
+			outfit_catagories["TCFL"] = typesof(/obj/outfit/admin/tcfl)
+			outfit_catagories["Killers"] = typesof(/obj/outfit/admin/killer)
+			outfit_catagories["Job"] = subtypesof(/obj/outfit/job)
+			outfit_catagories["Megacorps"] = subtypesof(/obj/outfit/admin/megacorp)
+			outfit_catagories["Pod Survivors"] = subtypesof(/obj/outfit/admin/pod)
+			outfit_catagories["Miscellaneous"] = typesof(/obj/outfit/admin/random)
+			outfit_catagories["Miscellaneous"] += /obj/outfit/admin/random_employee
 
 	var/chosen_catagory = input("Select an outfit catagory.", "Robust Quick-dress Shop") as null|anything in outfit_catagories
 	if(isnull(chosen_catagory))
@@ -355,7 +355,7 @@
 
 	var/list/outfit_types = list()
 	for(var/outfit in outfit_catagories[chosen_catagory])
-		var/datum/outfit/admin/A = new outfit
+		var/obj/outfit/admin/A = new outfit
 		outfit_types[A.name] = A
 
 	var/chosen_outfit = input("Select an outfit.", "Robust Quick-dress Shop") as null|anything in outfit_types
@@ -364,7 +364,7 @@
 
 	feedback_add_details("admin_verb","SEQ") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc
 
-	var/datum/outfit/O = outfit_types[chosen_outfit]
+	var/obj/outfit/O = outfit_types[chosen_outfit]
 	if(O)
 		for(var/obj/item/I in M)
 			if(istype(I, /obj/item/implant))
@@ -377,8 +377,8 @@
 
 	M.regenerate_icons()
 
-	log_admin("[key_name(usr)] changed the equipment of [key_name(M)] to [chosen_outfit].",admin_key=key_name(usr),ckey=key_name(M))
-	message_admins("<span class='notice'>[key_name_admin(usr)] changed the equipment of [key_name_admin(M)] to [chosen_outfit].</span>", 1)
+	log_admin("[key_name(usr)] changed the equipment of [key_name(M)] to [chosen_outfit].")
+	message_admins(SPAN_NOTICE("[key_name_admin(usr)] changed the equipment of [key_name_admin(M)] to [chosen_outfit]."), 1)
 	return
 
 /client/proc/cmd_debug_mob_lists()
@@ -397,8 +397,6 @@
 			to_chat(usr, jointext(GLOB.living_mob_list,", "))
 		if("Dead Mobs")
 			to_chat(usr, jointext(GLOB.dead_mob_list,", "))
-		if("Frozen Mobs")
-			to_chat(usr, jointext(GLOB.frozen_crew,", "))
 		if("Clients")
 			to_chat(usr, jointext(GLOB.clients,", "))
 
@@ -414,7 +412,7 @@
 		var/state="[M.dna.GetSEState(block)?"on":"off"]"
 		var/blockname=assigned_blocks[block]
 		message_admins("[key_name_admin(src)] has toggled [M.key]'s [blockname] block [state]!")
-		log_admin("[key_name(src)] has toggled [M.key]'s [blockname] block [state]!",admin_key=key_name(src),ckey=key_name(M))
+		log_admin("[key_name(src)] has toggled [M.key]'s [blockname] block [state]!")
 	else
 		alert("Invalid mob")
 

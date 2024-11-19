@@ -1,6 +1,5 @@
-#define KILOWATTS *1000
-#define MEGAWATTS *1000000
-#define GIGAWATTS *1000000000
+//Watts, yes this is stupid but it's just for visual reference to the code reader, so deal with it
+#define WATTS *1
 
 /**
  * Multiplier for watts per tick <> cell storage (e.g., 0.02 means if there is a load of 1000 watts, 20 units will be taken from a cell per second)
@@ -80,8 +79,9 @@
 #define NETWORK_FIRST_DECK "First Deck"
 #define NETWORK_SECOND_DECK "Second Deck"
 #define NETWORK_THIRD_DECK "Third Deck"
-#define NETWORK_INTREPID "Intrepid"
-#define NETWORK_CANARY "Canary"
+#define NETWORK_INTREPID "Intrepid" // horizon shuttle, expedition/transport
+#define NETWORK_CANARY "Canary" // horizon shuttle, scout/fighter
+#define NETWORK_QUARK "Quark" // horizon shuttle, xenoarch/science
 #define NETWORK_NEWS "News"
 
 

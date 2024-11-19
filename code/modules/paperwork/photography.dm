@@ -15,7 +15,7 @@
 	desc = "A camera film cartridge. Insert it into a camera to reload it."
 	icon_state = "film"
 	item_state = "electropack"
-	w_class = ITEMSIZE_TINY
+	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/device/camera_film/taj_film
 	name = "film canister"
@@ -34,7 +34,7 @@ var/global/photo_count = 0
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "photo"
 	item_state = "paper"
-	w_class = ITEMSIZE_TINY
+	w_class = WEIGHT_CLASS_TINY
 	var/picture_desc // Who and/or what's in the picture.
 	var/id
 	var/icon/img	//Big photo image
@@ -62,13 +62,18 @@ var/global/photo_count = 0
 	. = ..()
 	if(distance <= 1)
 		show(user)
-		. += "<span class='notice'>[picture_desc]</span>"
+		. += SPAN_NOTICE("[picture_desc]")
 	else
-		. += "<span class='notice'>You are too far away to discern its contents.</span>"
+		. += SPAN_NOTICE("You are too far away to discern its contents.")
 
 /obj/item/photo/proc/show(mob/user as mob)
 	send_rsc(user, img, "tmp_photo_[id].png")
-	user << browse("<html><head><title>[name]</title></head>" + "<body style='overflow:hidden;margin:0;text-align:center'>" + "<img src='tmp_photo_[id].png' width='[64*photo_size]' style='-ms-interpolation-mode:nearest-neighbor' />" + "[scribble ? "<br>Written on the back:<br><i>[scribble]</i>" : ""]" + "</body></html>", "window=book;size=[64*photo_size]x[scribble ? 400 : 64*photo_size]")
+	var/dat = "<html><head><title>[name]</title></head>" \
+		+ "<body style='overflow:hidden;margin:0;text-align:center'>" \
+		+ "<img src='tmp_photo_[id].png' width='[64*photo_size]' style='-ms-interpolation-mode:nearest-neighbor' />" \
+		+ "[scribble ? "<br>Written on the back:<br><i>[scribble]</i>" : ""]" \
+		+ "</body></html>"
+	show_browser(user, dat, "window=book;size=[64*photo_size]x[scribble ? 400 : 64*photo_size]")
 	onclose(user, "[name]")
 	return
 
@@ -108,7 +113,7 @@ var/global/photo_count = 0
 
 	if((istype(usr, /mob/living/carbon/human)))
 		var/mob/M = usr
-		if(!( istype(over_object, /obj/screen) ))
+		if(!( istype(over_object, /atom/movable/screen) ))
 			return ..()
 		playsound(loc, /singleton/sound_category/rustle_sound, 50, 1, -5)
 		if((!( M.restrained() ) && !( M.stat ) && M.back == src))
@@ -137,7 +142,7 @@ var/global/photo_count = 0
 	desc = "A polaroid camera."
 	icon_state = "camera"
 	item_state = "electropack"
-	w_class = ITEMSIZE_SMALL
+	w_class = WEIGHT_CLASS_SMALL
 	obj_flags = OBJ_FLAG_CONDUCTABLE
 	slot_flags = SLOT_BELT
 	matter = list(DEFAULT_WALL_MATERIAL = 2000)
@@ -162,9 +167,9 @@ var/global/photo_count = 0
 	var/nsize = input("Photo Size","Pick a size of resulting photo.") as null|anything in list(1,3,5,7)
 	if(nsize)
 		size = nsize
-		to_chat(usr, "<span class='notice'>Camera will now take [size]x[size] photos.</span>")
+		to_chat(usr, SPAN_NOTICE("Camera will now take [size]x[size] photos."))
 
-/obj/item/device/camera/attack(mob/living/carbon/human/M as mob, mob/user as mob)
+/obj/item/device/camera/attack(mob/living/target_mob, mob/living/user, target_zone)
 	return
 
 /obj/item/device/camera/attack_self(mob/user as mob)
@@ -179,9 +184,9 @@ var/global/photo_count = 0
 /obj/item/device/camera/attackby(obj/item/attacking_item, mob/user)
 	if(istype(attacking_item, /obj/item/device/camera_film))
 		if(pictures_left)
-			to_chat(user, "<span class='notice'>[src] still has some film in it!</span>")
+			to_chat(user, SPAN_NOTICE("[src] still has some film in it!"))
 			return TRUE
-		to_chat(user, "<span class='notice'>You insert [attacking_item] into [src].</span>")
+		to_chat(user, SPAN_NOTICE("You insert [attacking_item] into [src]."))
 		user.drop_from_inventory(attacking_item, get_turf(src))
 		qdel(attacking_item)
 		pictures_left = pictures_max
@@ -217,7 +222,7 @@ var/global/photo_count = 0
 	do_photo_sound()
 
 	pictures_left--
-	to_chat(user, "<span class='notice'>[pictures_left] photos left.</span>")
+	to_chat(user, SPAN_NOTICE("[pictures_left] photos left."))
 	icon_state = icon_off
 	on = 0
 	spawn(64)

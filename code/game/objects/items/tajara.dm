@@ -41,7 +41,7 @@
 	icon_state = "tajcig"
 	drop_sound = 'sound/items/drop/paper.ogg'
 	pickup_sound = 'sound/items/pickup/paper.ogg'
-	w_class = ITEMSIZE_SMALL
+	w_class = WEIGHT_CLASS_SMALL
 	var/list/figures = list("hadii", "tesla", "headmaster", "commissar", "almanq", "yasmin", "andrey", "paratrooper", "scout")
 
 /obj/item/tajcard/Initialize()
@@ -168,7 +168,7 @@
 		var/adhomian_time = real_time
 		if(ISEVEN(current_day))
 			adhomian_time = real_time + 24
-		adhomian_day = FLOOR(current_day / 2)
+		adhomian_day = FLOOR(current_day / 2, 1)
 		to_chat(usr, "You check your [src.name], glancing over at the watch face, reading the time to be '[adhomian_time]'. Today's date is the '[adhomian_day]th day of [adhomian_month], [adhomian_year]'.")
 
 

@@ -53,6 +53,9 @@
 /obj/item/clothing/head/tajaran/raskara
 	name = "raskariim mask"
 	desc = "A face concealing mask worn by the members of the cult of Raskara."
+	desc_extended = "Raskariim, commonly known as The Cult of Raskara are a prolific cult on Adhomai. The religion has been created on Adhomai but with the free commerce, a few human \
+	members have been recorded. While Raskara may seem like a single deity it is in fact split into three aspects, each one leading down a different path and seemingly every path \
+	subverting something S'rendarr and Messa stands for."
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|BLOCKHAIR
 	body_parts_covered = HEAD|FACE|EYES
 	species_restricted = list(BODYTYPE_TAJARA)
@@ -153,8 +156,8 @@
 	item_state = "nka_consularhat"
 
 /obj/item/clothing/head/tajaran/archeologist
-	name = "archaeologist hat"
-	desc = "A well-worn fedora favored by Adhomian explorers and archaeologists. Not very protective but still very stylish."
+	name = "archeologist hat"
+	desc = "A well-worn fedora favored by Adhomian explorers and archeologists. Not very protective but still very stylish."
 	icon_state = "explorer_hat"
 	item_state = "explorer_hat"
 

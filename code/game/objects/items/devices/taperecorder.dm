@@ -3,9 +3,9 @@
 	desc = "A device that can record up to an hour of dialogue and play it back. It automatically translates the content in playback."
 	icon_state = "taperecorderidle"
 	item_state = "analyzer"
-	w_class = ITEMSIZE_SMALL
+	w_class = WEIGHT_CLASS_SMALL
 
-	matter = list(DEFAULT_WALL_MATERIAL = 60, MATERIAL_GLASS = 30)
+	matter = list(MATERIAL_ALUMINIUM = 60, MATERIAL_GLASS = 30)
 
 	var/emagged = FALSE
 	var/recording = FALSE

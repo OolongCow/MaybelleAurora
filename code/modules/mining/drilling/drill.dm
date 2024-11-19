@@ -32,7 +32,9 @@
 		ORE_GOLD = /obj/item/ore/gold,
 		ORE_DIAMOND = /obj/item/ore/diamond,
 		ORE_PLATINUM = /obj/item/ore/osmium,
-		ORE_HYDROGEN = /obj/item/ore/hydrogen
+		ORE_HYDROGEN = /obj/item/ore/hydrogen,
+		ORE_BAUXITE = /obj/item/ore/aluminium,
+		ORE_GALENA = /obj/item/ore/lead
 	)
 
 	//Upgrades
@@ -88,8 +90,8 @@
 		return
 
 	//Drill through the flooring, if any.
-	if(istype(get_turf(src), /turf/unsimulated/floor/asteroid))
-		var/turf/unsimulated/floor/asteroid/T = get_turf(src)
+	if(istype(get_turf(src), /turf/simulated/floor/exoplanet/asteroid))
+		var/turf/simulated/floor/exoplanet/asteroid/T = get_turf(src)
 		if(!T.dug)
 			T.gets_dug()
 			for(var/obj/item/ore/ore in range(1, src)) // gets_dug causes ore to spawn, this picks that ore up as well
@@ -107,7 +109,7 @@
 					attached_satchel.insert_into_storage(ore)
 	else if(istype(get_turf(src), /turf/simulated/floor))
 		var/turf/simulated/floor/T = get_turf(src)
-		var/turf/below_turf = GetBelow(T)
+		var/turf/below_turf = GET_TURF_BELOW(T)
 		if(below_turf && !istype(below_turf.loc, /area/mine) && !istype(below_turf.loc, /area/exoplanet) && !istype(below_turf.loc, /area/template_noop))
 			system_error("Potential station breach below.")
 			return
@@ -120,7 +122,7 @@
 		while(length(resource_field) && !harvesting.resources)
 			harvesting.has_resources = FALSE
 			harvesting.resources = null
-			harvesting.cut_overlay(harvesting.resource_indicator)
+			harvesting.CutOverlays(harvesting.resource_indicator)
 			QDEL_NULL(harvesting.resource_indicator)
 			resource_field -= harvesting
 			if(length(resource_field))
@@ -167,7 +169,7 @@
 		if(!found_resource)
 			harvesting.has_resources = FALSE
 			harvesting.resources = null
-			harvesting.cut_overlay(harvesting.resource_indicator)
+			harvesting.CutOverlays(harvesting.resource_indicator)
 			QDEL_NULL(harvesting.resource_indicator)
 			resource_field -= harvesting
 	else
@@ -540,7 +542,7 @@
 				connected.system_error("Unexpected user interface error.")
 				return
 
-		playsound(get_turf(src), attacking_item.usesound, 100, 1)
+		attacking_item.play_tool_sound(get_turf(src), 100)
 		to_chat(user, SPAN_NOTICE("You [anchored ? "un" : ""]anchor the brace."))
 
 		anchored = !anchored
@@ -554,7 +556,7 @@
 	return ..()
 
 /obj/machinery/mining/brace/proc/connect()
-	for(var/angle in GLOB.cardinal) // make it face any drill in GLOB.cardinal direction from it
+	for(var/angle in GLOB.cardinals) // make it face any drill in GLOB.cardinals direction from it
 		var/obj/machinery/mining/drill/D = locate() in get_step(src, angle)
 		if(D)
 			src.dir = angle

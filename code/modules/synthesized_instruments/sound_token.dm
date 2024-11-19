@@ -33,7 +33,7 @@
 	listeners = list()
 	listener_status = list()
 
-	GLOB.destroyed_event.register(source, src, /datum/proc/qdel_self)
+	RegisterSignal(source, COMSIG_QDELETING, TYPE_PROC_REF(/datum, qdel_self))
 
 	player.subscribe(src)
 
@@ -44,7 +44,7 @@
 		return sound.environment
 	else
 		var/area/A = get_area(listener)
-		return A && PrivIsValidEnvironment(A.sound_env) ? A.sound_env : sound.environment
+		return A && PrivIsValidEnvironment(A.sound_environment) ? A.sound_environment : sound.environment
 
 /datum/sound_token/instrument/Stop()
 	player.unsubscribe(src)
@@ -52,6 +52,6 @@
 
 /datum/sound_token/instrument/Destroy()
 	. = ..()
-	GLOB.destroyed_event.unregister(source, src, /datum/proc/qdel_self)
+	UnregisterSignal(source, COMSIG_QDELETING)
 	player.unsubscribe(src)
 	player = null

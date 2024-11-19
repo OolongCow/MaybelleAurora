@@ -104,7 +104,7 @@
 
 /obj/vehicle/train/attackby(obj/item/attacking_item, mob/user)
 	if(attacking_item.iswrench())
-		playsound(loc, attacking_item.usesound, 70, FALSE)
+		attacking_item.play_tool_sound(get_turf(src), 70)
 		unattach(user)
 		return
 	return ..()
@@ -177,7 +177,7 @@
 
 		if(dir == T_dir) 	//if car is ahead
 			src.attach_to(T, user)
-		else if(reverse_direction(dir) == T_dir)	//else if car is behind
+		else if(REVERSE_DIR(dir) == T_dir)	//else if car is behind
 			T.attach_to(src, user)
 
 //returns 1 if this is the lead car of the train

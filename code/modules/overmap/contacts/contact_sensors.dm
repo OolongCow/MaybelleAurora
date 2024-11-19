@@ -6,23 +6,6 @@
 	var/list/datalink_contacts = list()		// A list of the datalink contacts we're receiving from the datalinks
 	var/tmp/muted = FALSE
 
-/obj/machinery/computer/ship/sensors/Destroy()
-	objects_in_view.Cut()
-	trackers.Cut()
-
-	for(var/key in contact_datums)
-		var/datum/overmap_contact/record = contact_datums[key]
-		qdel(record)
-	contact_datums.Cut()
-	. = ..()
-
-/obj/machinery/computer/ship/sensors/attempt_hook_up(obj/effect/overmap/visitable/ship/sector)
-	. = ..()
-	if(. && linked && !contact_datums[linked])
-		var/datum/overmap_contact/record = new(src, linked)
-		contact_datums[linked] = record
-		record.marker.alpha = 255
-
 /obj/machinery/computer/ship/sensors/proc/reveal_contacts(var/mob/user)
 	if(user && user.client)
 		for(var/key in contact_datums)
@@ -180,14 +163,14 @@
 
 	if(tracker in trackers)
 		trackers -= tracker
-		GLOB.destroyed_event.unregister(tracker, src, PROC_REF(remove_tracker))
+		UnregisterSignal(tracker, COMSIG_QDELETING)
 		to_chat(user, SPAN_NOTICE("You unlink the tracker in \the [P]'s buffer from \the [src]."))
 		return
 	trackers += tracker
-	GLOB.destroyed_event.register(tracker, src, PROC_REF(remove_tracker))
+	RegisterSignal(tracker, COMSIG_QDELETING, PROC_REF(remove_tracker))
 	to_chat(user, SPAN_NOTICE("You link the tracker in \the [P]'s buffer to \the [src]."))
 
-/obj/machinery/computer/ship/sensors/proc/remove_tracker(var/obj/item/ship_tracker/tracker)
+/obj/machinery/computer/ship/sensors/proc/remove_tracker(obj/item/ship_tracker/tracker)
 	trackers -= tracker
 
 /obj/machinery/computer/ship/sensors/proc/datalink_process()

@@ -501,8 +501,7 @@
 
 // Eridani
 
-/obj/item/reagent_containers/food/snacks/bowl
-	abstract_type = /obj/item/reagent_containers/food/snacks/bowl
+ABSTRACT_TYPE(/obj/item/reagent_containers/food/snacks/bowl)
 	name = "a bowl of item"
 	desc = "If you're seeing this, something has gone wrong D:"
 	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
@@ -565,6 +564,7 @@
 	desc = "These Eridanian dumplings are made from plantains, and while dense, they are not typically supposed to be served on their own, but rather as a side dish for various Eridanian soups."
 	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
 	icon_state = "fufubowl"
+	unitname = "fufu dumpling"
 	filling_color = "#eee0b1"
 	vendingobject = /obj/item/reagent_containers/food/snacks/fufu
 	bitesize = 3
@@ -585,6 +585,35 @@
 	icon_state = "fufuone"
 	bitesize = 2
 	filling_color = "#eee0b1"
+
+/obj/item/reagent_containers/food/snacks/bowl/alfajores
+	name = "alfajores"
+	desc = "A plate of delicious vanilla sandwich cookies filled with dulche de leche and covered in coconut shavings. A sweet South American treat!"
+	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
+	icon_state = "alfajores_full"
+	filling_color = "#c48c4c"
+	unitname = "alfajor"
+	vendingobject = /obj/item/reagent_containers/food/snacks/alfajor
+	trash = /obj/item/trash/plate
+	reagents_to_add = list(/singleton/reagent/nutriment = 12)
+	bitesize = 2
+	reagent_data = list(/singleton/reagent/nutriment = list("dulce de leche" = 5, "vanilla cookie" = 5, "coconut" = 2))
+
+/obj/item/reagent_containers/food/snacks/bowl/alfajores/update_icon()
+	switch(reagents.total_volume)
+		if(1 to 3)
+			icon_state = "alfajores_one"
+		if(4 to 6)
+			icon_state = "alfajores_half"
+		if(7 to INFINITY)
+			icon_state = "alfajores_full"
+
+/obj/item/reagent_containers/food/snacks/alfajor
+	name = "alfajor"
+	desc = "A plump south american sandwich cookie made out of two crumbly vanilla cookies, dulche de leche filling, and a coating of coconut shavings."
+	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
+	icon_state = "alfajor"
+	filling_color = "#dab166"
 
 //Silversun
 
@@ -629,6 +658,7 @@
 	bitesize = 2
 	reagent_data = list(/singleton/reagent/nutriment = list("dough" = 5, "chickpeas" = 3, "onion" = 3, "tomato" = 3))
 
+
 /obj/item/reagent_containers/food/snacks/pazillo/update_icon()
 	var/percent_pazillo = round((reagents.total_volume / 8) * 100)
 	switch(percent_pazillo)
@@ -638,3 +668,171 @@
 			icon_state = "pazillo_bitten"
 		if(96 to INFINITY)
 			icon_state = "pazillo"
+
+//Luna
+
+/obj/item/reagent_containers/food/snacks/traumwurst
+	name = "traumwurst"
+	desc = "Hearty pork sausages slathered with creamy eggplant sauce and served with a side of fried mushrooms, Traumwurst is served in many fine dining experiences across Luna, and one of very few dishes that can really be called Lunarian in origin. It was originally called Weltraumwurst (Space Sausage), but it was soon shortened to Traumwurst (Dream Sausage)."
+	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
+	icon_state = "traumwurst"
+	trash = /obj/item/trash/plate
+	reagents_to_add = list(/singleton/reagent/nutriment/protein = 7, /singleton/reagent/nutriment = 4)
+	reagent_data = list(/singleton/reagent/nutriment/protein = list("pork" = 5), /singleton/reagent/nutriment = list("eggplant sauce" = 5, "fried mushrooms" = 4))
+	bitesize = 3
+	filling_color = "#daad84"
+
+/obj/item/reagent_containers/food/snacks/traumwurst/update_icon()
+	var/percent_traumwurst = round((reagents.total_volume / 10) * 100)
+	switch(percent_traumwurst)
+		if(0 to 49)
+			icon_state = "traumwurst_half"
+		if(50 to INFINITY)
+			icon_state = "traumwurst"
+
+// Xanu Prime
+/obj/item/reagent_containers/food/snacks/steakxanu
+	name = "steak xanu"
+	desc = "The official dish of the city of Nouvelle-Rochelle, capital of the All-Xanu Republic. A piece of steak, marinated in a warm broth mixture before being pan-fried in ghee and spices and topped with a rich cream sauce."
+	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
+	icon_state = "steakxanu"
+	filling_color = "#dacb47"
+	reagents_to_add = list(/singleton/reagent/nutriment = 4, /singleton/reagent/nutriment/protein = 4, /singleton/reagent/spacespice = 2)
+	bitesize = 3
+	reagent_data = list(/singleton/reagent/nutriment = list("creamy sauce" = 2, "savory spices" = 2), /singleton/reagent/nutriment/protein = list("tender steak" = 6))
+
+/obj/item/reagent_containers/food/snacks/xanu_curry
+	name = "pataliputra curried rice"
+	desc = "Xanu Prime's most enduring cultural export. A rice-and-peanut curry, made from a thick buttermilk-spice sauce, typically served with some sort of meat or seafood. The official dish of Pataliputra, though every cook has their own take on the true 'best' recipe for this particular curry."
+	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
+	icon_state = "xanucurry"
+	filling_color = "#dacb47"
+	reagents_to_add = list(/singleton/reagent/nutriment = 8, /singleton/reagent/spacespice = 2)
+	bitesize = 4
+	reagent_data = list(/singleton/reagent/nutriment = list("rice" = 4, "rich spices" = 4))
+
+/obj/item/reagent_containers/food/snacks/bunkerbuster
+	name = "bunker buster sandwich"
+	desc = "A renowned All-Xanu street food, the bunker buster is an open-faced egg sandwich with mustard, garam masala, mayo, and shredded cheese, served over naan bread. Born of necessity, it earned its name from the workers responsible for rebuilding Xanu Prime after the Interstellar War, who often bunked together in the underground complexes of Kshatragarh."
+	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
+	icon_state = "bunkerbuster"
+	filling_color = "#dacb47"
+	reagents_to_add = list(/singleton/reagent/nutriment = 6, /singleton/reagent/nutriment/protein/egg = 2, /singleton/reagent/spacespice = 2)
+	bitesize = 3
+	reagent_data = list(/singleton/reagent/nutriment = list("dijon mustard" = 2, "cheese" = 2, "fluffy bread" = 2))
+
+/obj/item/reagent_containers/food/snacks/crozets
+	name = "naya khyber crozets"
+	desc = "The official dish of the Xanan city of Foy-Nijlen, this is typically a sort of buckwheat pasta served in a spicy tomato-basil sauce alongside the city's usual seafoods, like penguin or shellfish. Tradition dictates this to be served in a stoneware bowl, but it is often an accepted casualty of interstellar travel."
+	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
+	icon_state = "crozets"
+	bitesize = 2
+	reagents_to_add = list(/singleton/reagent/nutriment = 6, /singleton/reagent/nutriment/protein/seafood = 2, /singleton/reagent/spacespice = 2, )
+	reagent_data = list(/singleton/reagent/nutriment = list("buckwheat pasta" = 3, "spicy tomato bisque" = 3))
+
+/obj/item/reagent_containers/food/snacks/seafoodplatter
+	name = "north sixty sea platter"
+	desc = "While it lacks a traditional 'recipe', the North Sixty Sea Platter is a Xanan seafood platter focused on fresh, local seafood- fried, grilled, stewed, or raw- caught north of sixty degrees latitude. While there is no ocean on the Horizon, a faithful recreation of the famous side sauce can help adhere a few, more alien ingredients."
+	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
+	icon_state = "seafoodplatter"
+	reagents_to_add = list(/singleton/reagent/nutriment = 2, /singleton/reagent/nutriment/protein/seafood = 4, /singleton/reagent/nutriment/protein/seafood/mollusc = 4)
+	bitesize = 2
+	reagent_data = list(/singleton/reagent/nutriment = list("malted vinegar" = 1, "creamy garlic sauce" = 1))
+
+/obj/item/reagent_containers/food/snacks/xanuvindaloo
+	name = "paaskraan vindaloo"
+	desc = "Traditionally made with the meat of the Paaskraan, a waterfowl native to Xanu Prime, this version uses chicken, instead. Unlike a typical vindaloo, paaskraani vindaloo only adds the meat at the end, after pan-frying it to a crunchy crisp in a sweet vanilla sauce. Served over rice, this is the official dish of Paastad."
+	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
+	icon_state = "xanuvindaloo"
+	bitesize = 2
+	reagents_to_add = list(/singleton/reagent/nutriment = 4, /singleton/reagent/nutriment/protein = 4, /singleton/reagent/spacespice = 2, )
+	reagent_data = list(/singleton/reagent/nutriment = list("vanilla" = 2, "fresh herbs" = 2), /singleton/reagent/nutriment/protein = list("sweet-and-savory chicken" = 4))
+
+// Himeo
+
+/obj/item/reagent_containers/food/snacks/minerpie
+	name = "miner's pie"
+	desc = "A Himean traditional recipe, consisting mainly of mushrooms, meat, and gravy, served inside a crisp pastry crust. Could feed you for a thousand years."
+	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
+	icon_state = "minerpie"
+	center_of_mass = list("x"=16, "y"=11)
+	reagents_to_add = list(/singleton/reagent/nutriment = 6, /singleton/reagent/nutriment/protein = 4)
+	bitesize = 3
+	reagent_data = list(/singleton/reagent/nutriment = list("savory gravy" = 2, "vegetables" = 2, "pastry" = 2))
+
+/obj/item/reagent_containers/food/snacks/hakhmaparm
+	name = "hakhma parm hero"
+	desc = "A fried hakhma cutlet, served on a toasted hoagie roll with cheese and tomato sauce. The unofficial sandwich of Horner Station."
+	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
+	icon_state = "parmsandwich"
+	filling_color = "#d47d2b"
+	center_of_mass = list("x"=16, "y"=16)
+	reagents_to_add = list(/singleton/reagent/nutriment = 6, /singleton/reagent/nutriment/protein = 4)
+	bitesize = 3
+	reagent_data = list(/singleton/reagent/nutriment = list("cheese" = 3, "tomato sauce" = 3), /singleton/reagent/nutriment/protein = list("chicken" = 4))
+
+/obj/item/reagent_containers/food/snacks/steelworkersandwich
+	name = "steelworker's sandwich"
+	desc = "Popular in the foundries of Rautakaivos Kaupunki, this is a helping of grilled meat buried under coleslaw, french fries, deli mustard, and pickled tomatoes, typically served on a mushroom roll."
+	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
+	icon_state = "steelworkersandwich"
+	filling_color = "#d47d2b"
+	center_of_mass = list("x"=16, "y"=16)
+	reagents_to_add = list(/singleton/reagent/nutriment = 6, /singleton/reagent/nutriment/protein = 4)
+	bitesize = 3
+	reagent_data = list(/singleton/reagent/nutriment = list("mustard" = 2, "french fries" = 2, "coleslaw" = 2))
+
+//Gadpathur
+
+/obj/item/reagent_containers/food/snacks/paneer_gadpathur //Made to commemorate the most amazing dish from a place that closed down, RIP Captain Curry!
+	name = "paneer gadpathur"
+	desc = "A moderately spicy Gadpathurian curry made with large cubes of Paneer cheese, rice, sour cream, lentil daal and spicy sauces. Unlike Indian Paneer cheese, Gadpathurian Paneer is chewy, having an almost chicken-like texture. Traditionally the dish was made with a local plant called agnadi gola, but as it was rendered nearly extinct in the devestation from the interstellar war, the dish is now more commonly made with a mixture of hot peppers, tomato sauce and turmeric."
+	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
+	icon_state = "paneer"
+	trash = /obj/item/trash/snack_bowl
+	filling_color = "#d47d2b"
+	reagents_to_add = list(/singleton/reagent/nutriment = 10)
+	bitesize = 2
+	reagent_data = list(/singleton/reagent/nutriment = list("paneer cheese" = 5, "rice" = 5, "spices" = 5, "sour cream" = 3))
+
+/obj/item/reagent_containers/food/snacks/paneer_gadpathur/update_icon()
+	var/percent_lasagna_meat_slice = round((reagents.total_volume / 10) * 100)
+	switch(percent_lasagna_meat_slice)
+		if(0 to 69)
+			icon_state = "paneer_half"
+		if(70 to INFINITY)
+			icon_state = "paneer"
+
+//Galatea
+
+/obj/item/reagent_containers/food/snacks/baked_golden_apple
+	name = "baked golden apple"
+	desc = "Shiny and glamorous, this genetically modified golden apple is stuffed with raisins, nuts, brown sugar, cinnamon, and topped with whipped cream. It is a shining star of Galatean cuisine and of hoity toity rich people around the spur. Contains real gold! Don't eat the cinnamon sticks they're there as a garnish."
+	icon = 'icons/obj/item/reagent_containers/food/baked.dmi'
+	icon_state = "baked_gold_apple"
+	trash = /obj/item/trash/plate
+	reagents_to_add = list(/singleton/reagent/nutriment = 3, /singleton/reagent/gold = 5, /singleton/reagent/nutriment/glucose = 3)
+	reagent_data = list(/singleton/reagent/nutriment = list("fancyness" = 5, "apple" = 5, "raisins" = 3, "nuts" = 3))
+	filling_color = "#ffba25"
+
+/obj/item/reagent_containers/food/snacks/fire_loaf
+	name = "fire loaf"
+	desc = "A very spicy Galatean dish, traditionally made with synthmeat marinated in a special kelotane-infused mixture to give the dish it's strong color and help balance out the spicyness of the dish, as well as the chili peppers it is served with. Most cultures would just use dairy products to balance out a dish's spicyness. But most cultures aren't Galatea." //Does Kelotane even affect spicyness? Probably not. But it's good marketing.
+	icon = 'icons/obj/item/reagent_containers/food/cultural/human.dmi'
+	icon_state = "fireloaf"
+	trash = /obj/item/trash/plate
+	bitesize = 2
+	filling_color = "#8f2106"
+	reagents_to_add = list(/singleton/reagent/nutriment/protein = 5, /singleton/reagent/kelotane = 3, /singleton/reagent/capsaicin = 5)
+	reagent_data = list(/singleton/reagent/nutriment/protein = list("spicy meat" = 5, "chili" = 4, "onion" = 3, "unusual flavoring" = 3))
+
+/obj/item/reagent_containers/food/snacks/fire_loaf/update_icon()
+	var/expected_initial_reagent_volume
+	for(var/k in src.reagents_to_add)
+		expected_initial_reagent_volume += reagents_to_add[k]
+	var/percent_fire_loaf = round((reagents.total_volume / expected_initial_reagent_volume) * 100)
+	switch(percent_fire_loaf)
+		if(0 to 49)
+			icon_state = "fireloaf_half"
+		if(50 to INFINITY)
+			icon_state = "fireloaf"

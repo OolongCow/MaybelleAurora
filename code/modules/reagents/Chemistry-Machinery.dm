@@ -17,7 +17,7 @@
 	icon_state = "mixer0"
 	use_power = POWER_USE_IDLE
 	idle_power_usage = 20
-	layer = 2.9
+	layer = BELOW_OBJ_LAYER
 	clicksound = /singleton/sound_category/button_sound
 
 	var/obj/item/reagent_containers/glass/beaker = null
@@ -95,9 +95,10 @@
 	else if(attacking_item.iswrench())
 		anchored = !anchored
 		to_chat(user, "You [anchored ? "attach" : "detach"] the [src] [anchored ? "to" : "from"] the ground")
-		playsound(src.loc, attacking_item.usesound, 75, 1)
+		attacking_item.play_tool_sound(get_turf(src), 75)
 
-	ui = SStgui.try_update_ui(user, src, ui)
+	if(ui?.user)
+		ui = SStgui.try_update_ui(user, src, ui)
 
 
 /obj/machinery/chem_master/ui_interact(mob/user, datum/tgui/ui)
@@ -214,14 +215,14 @@
 		else if(action == "add")
 			if(params["amount"])
 				var/rtype = text2path(params["add"])
-				var/amount = Clamp((text2num(params["amount"])), 0, 200)
+				var/amount = clamp((text2num(params["amount"])), 0, 200)
 				beaker.reagents.trans_type_to(src, rtype, amount)
 			return TRUE
 
 		else if (action == "remove")
 			if(params["amount"])
 				var/rtype = text2path(params["remove"])
-				var/amount = Clamp((text2num(params["amount"])), 0, 200)
+				var/amount = clamp((text2num(params["amount"])), 0, 200)
 				if(mode)
 					reagents.trans_type_to(beaker, rtype, amount)
 				else
@@ -262,7 +263,7 @@
 
 		if (action == "createpill_multiple")
 			count = tgui_input_number(usr, "Select the number of pills to make.", src.name, pillamount, max_pill_count, 1)
-			count = Clamp(count, 1, max_pill_count)
+			count = clamp(count, 1, max_pill_count)
 
 		if(reagents.total_volume/count < 1) //Sanity checking.
 			return TRUE
@@ -298,6 +299,11 @@
 		return TRUE
 	return TRUE
 
+/obj/machinery/chem_master/ui_status(mob/user, datum/ui_state/state)
+	if(!operable())
+		return UI_DISABLED
+
+	. = ..()
 
 
 /obj/machinery/chem_master/Topic(href, href_list)
@@ -311,7 +317,7 @@
 	return src.attack_hand(user)
 
 /obj/machinery/chem_master/attack_hand(mob/user as mob)
-	if(inoperable())
+	if(!operable())
 		return
 	user.set_machine(src)
 	ui_interact(user)
@@ -327,7 +333,7 @@
 	name = "All-In-One Grinder"
 	icon = 'icons/obj/machinery/cooking_machines.dmi'
 	icon_state = "juicer1"
-	layer = 2.99
+	layer = BELOW_OBJ_LAYER
 	density = 0
 	anchored = 0
 	use_power = POWER_USE_IDLE
@@ -427,7 +433,7 @@
 	interact(user)
 
 /obj/machinery/reagentgrinder/interact(mob/user as mob) // The microwave Menu
-	if(inoperable())
+	if(!operable())
 		return
 	user.set_machine(src)
 	var/is_chamber_empty = 0
@@ -461,11 +467,11 @@
 	[beaker_contents]<hr>
 	"}
 		if (is_beaker_ready && !is_chamber_empty && !(stat & (NOPOWER|BROKEN)))
-			dat += "<A href='?src=\ref[src];action=grind'>Process the reagents</a><BR>"
+			dat += "<A href='?src=[REF(src)];action=grind'>Process the reagents</a><BR>"
 		if(holdingitems && holdingitems.len > 0)
-			dat += "<A href='?src=\ref[src];action=eject'>Eject the reagents</a><BR>"
+			dat += "<A href='?src=[REF(src)];action=eject'>Eject the reagents</a><BR>"
 		if (beaker)
-			dat += "<A href='?src=\ref[src];action=detach'>Detach the beaker</a><BR>"
+			dat += "<A href='?src=[REF(src)];action=detach'>Detach the beaker</a><BR>"
 	else
 		dat += "Please wait..."
 
@@ -578,25 +584,28 @@
 		return
 	if(target == user)
 		if(target.h_style == "Floorlength Braid" || target.h_style == "Very Long Hair")
-			user.visible_message("<span class='notice'>[user] looks like they're about to feed their own hair into the [src], but think better of it.</span>", "<span class='notice'>You grasp your hair and are about to feed it into the [src], but stop and come to your sense.</span>")
+			user.visible_message(SPAN_NOTICE("[user] looks like they're about to feed their own hair into the [src], but think better of it."),
+									SPAN_NOTICE("You grasp your hair and are about to feed it into the [src], but stop and come to your sense."))
 			return
 	src.add_fingerprint(user)
 	var/target_loc = target.loc
 	if(target != user && !user.restrained() && !user.stat && !user.weakened && !user.stunned && !user.paralysis)
 		if(target.h_style != "Cut Hair" || target.h_style != "Short Hair" || target.h_style != "Skinhead" || target.h_style != "Buzzcut" || target.h_style != "Crewcut" || target.h_style != "Bald" || target.h_style != "Balding Hair")
-			user.visible_message("<span class='warning'>[user] starts feeding [target]'s hair into the [src]!</span>", "<span class='warning'>You start feeding [target]'s hair into the [src]!</span>")
+			user.visible_message(SPAN_WARNING("[user] starts feeding [target]'s hair into the [src]!"),
+									SPAN_WARNING("You start feeding [target]'s hair into the [src]!"))
 		if(!do_after(usr, 50))
 			return
 		if(target_loc != target.loc)
 			return
 		if(target != user && !user.restrained() && !user.stat && !user.weakened && !user.stunned && !user.paralysis)
-			user.visible_message("<span class='warning'>[user] feeds the [target]'s hair into the [src] and flicks it on!</span>", "<span class='warning'>You turn the [src] on!</span>")
+			user.visible_message(SPAN_WARNING("[user] feeds the [target]'s hair into the [src] and flicks it on!"),
+									SPAN_WARNING("You turn the [src] on!"))
 			target.apply_damage(30, DAMAGE_BRUTE, BP_HEAD)
 			target.apply_damage(25, DAMAGE_PAIN)
 			target.say("*scream")
 
-			user.attack_log += text("\[[time_stamp()]\] <span class='warning'>Has fed [target.name]'s ([target.ckey]) hair into a [src].</span>")
-			target.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has had their hair fed into [src] by [user.name] ([user.ckey])</font>")
+			user.attack_log += "\[[time_stamp()]\] <span class='warning'>Has fed [target.name]'s ([target.ckey]) hair into a [src].</span>"
+			target.attack_log += "\[[time_stamp()]\] <font color='orange'>Has had their hair fed into [src] by [user.name] ([user.ckey])</font>"
 			msg_admin_attack("[key_name_admin(user)] fed [key_name_admin(target)] in a [src]. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)",ckey=key_name(user),ckey_target=key_name(target))
 		else
 			return
@@ -605,12 +614,14 @@
 		if(target_loc != target.loc)
 			return
 		if(target != user && !user.restrained() && !user.stat && !user.weakened && !user.stunned && !user.paralysis)
-			user.visible_message("<span class='warning'>[user] starts tugging on [target]'s head as the [src] keeps running!</span>", "<span class='warning'>You start tugging on [target]'s head!</span>")
+			user.visible_message(SPAN_WARNING("[user] starts tugging on [target]'s head as the [src] keeps running!"),
+									SPAN_WARNING("You start tugging on [target]'s head!"))
 			target.apply_damage(25, DAMAGE_BRUTE, BP_HEAD)
 			target.apply_damage(10, DAMAGE_PAIN)
 			target.say("*scream")
 			spawn(10)
-			user.visible_message("<span class='warning'>[user] stops the [src] and leaves [target] resting as they are.</span>", "<span class='warning'>You turn the [src] off and let go of [target].</span>")
+			user.visible_message(SPAN_WARNING("[user] stops the [src] and leaves [target] resting as they are."),
+									SPAN_WARNING("You turn the [src] off and let go of [target]."))
 
 /obj/machinery/reagentgrinder/verb/Eject()
 	set src in oview(1)
@@ -620,7 +631,7 @@
 	if(use_check_and_message(usr))
 		return
 	usr.visible_message(
-	"<span class='notice'>[usr] opens [src] and has removed [english_list(holdingitems)].</span>"
+	SPAN_NOTICE("[usr] opens [src] and has removed [english_list(holdingitems)].")
 		)
 
 	eject()

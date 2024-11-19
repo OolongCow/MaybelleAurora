@@ -75,16 +75,16 @@
 
 	if(screen == 1)
 		dat += "Select an event to trigger:<ul>"
-		dat += "<li><A href='?src=\ref[src];triggerevent=Red alert'>Red alert</A></li>"
+		dat += "<li><A href='?src=[REF(src)];triggerevent=Red alert'>Red alert</A></li>"
 		if(!GLOB.config.ert_admin_call_only)
-			dat += "<li><A href='?src=\ref[src];triggerevent=Distress Beacon'>Broadcast Distress Beacon</A></li>"
-		dat += "<li><A href='?src=\ref[src];triggerevent=Unlock Leviathan Safeties'><font color='red'>Unlock Leviathan Safeties</font></A></li>"
-		dat += "<li><A href='?src=\ref[src];triggerevent=Emergency Evacuation'>Emergency Evacuation</A></li>"
+			dat += "<li><A href='?src=[REF(src)];triggerevent=Distress Beacon'>Broadcast Distress Beacon</A></li>"
+		dat += "<li><A href='?src=[REF(src)];triggerevent=Unlock Leviathan Safeties'><font color='red'>Unlock Leviathan Safeties</font></A></li>"
+		dat += "<li><A href='?src=[REF(src)];triggerevent=Emergency Evacuation'>Emergency Evacuation</A></li>"
 
 		dat += "</ul>"
 	if(screen == 2)
 		dat += "Please swipe your card to authorize the following event: <b>[event]</b>"
-		dat += "<p><A href='?src=\ref[src];reset=1'>Back</A>"
+		dat += "<p><A href='?src=[REF(src)];reset=1'>Back</A>"
 
 
 	user << browse(dat, "window=keycard_auth;size=500x350")
@@ -148,7 +148,7 @@
 	if(confirmed)
 		confirmed = 0
 		trigger_event(event, recorded_message, user)
-		log_game("[key_name(event_triggered_by)] triggered and [key_name(event_confirmed_by)] confirmed event [event]",ckey=key_name(event_triggered_by),ckey_target=key_name(event_confirmed_by))
+		log_game("[key_name(event_triggered_by)] triggered and [key_name(event_confirmed_by)] confirmed event [event]")
 		message_admins("[key_name_admin(event_triggered_by)] triggered and [key_name_admin(event_confirmed_by)] confirmed event [event]", 1)
 	reset()
 
@@ -174,7 +174,7 @@
 			feedback_inc("alert_keycard_auth_red",1)
 		if("Distress Beacon")
 			if(is_ert_blocked())
-				to_chat(usr, "<span class='warning'>The distress beacon is disabled!</span>")
+				to_chat(usr, SPAN_WARNING("The distress beacon is disabled!"))
 				return
 			if(linked)
 				if(linked.has_called_distress_beacon)
@@ -213,11 +213,14 @@ var/global/maint_all_access = 0
 	security_announcement.Announce("The maintenance access requirement has been readded on all maintenance airlocks.","Attention!")
 
 /obj/machinery/door/airlock/allowed(mob/M)
+	if(locked)
+		return 0
+
 	var/obj/item/I = M.GetIdCard()
 	if(!I)
 		return ..(M)
 	var/list/A = I.GetAccess()
-	var/maint_sec_access = ((security_level > SEC_LEVEL_GREEN) && has_access(ACCESS_SECURITY, accesses = A))
+	var/maint_sec_access = ((GLOB.security_level > SEC_LEVEL_GREEN) && has_access(ACCESS_SECURITY, accesses = A))
 	var/exceptional_circumstances = maint_all_access || maint_sec_access
 	if(exceptional_circumstances && src.check_access_list(list(ACCESS_MAINT_TUNNELS)))
 		return 1

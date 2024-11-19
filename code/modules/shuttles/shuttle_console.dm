@@ -2,6 +2,7 @@
 	name = "shuttle control console"
 	icon_screen = "shuttle"
 	icon_keyboard = "cyan_key"
+	icon_keyboard_emis = "cyan_key_mask"
 	light_color = LIGHT_COLOR_CYAN
 
 	var/shuttle_tag      // Used to coordinate data in shuttle controller.
@@ -18,6 +19,8 @@
 		shuttle.shuttle_computers += src
 	else
 		SSshuttle.lonely_shuttle_computers += src
+
+	RegisterSignal(src, COMSIG_ATOM_PRE_BULLET_ACT, PROC_REF(handle_bullet_act))
 
 /obj/machinery/computer/shuttle_control/Destroy()
 	SSshuttle.lonely_shuttle_computers -= src
@@ -159,9 +162,6 @@
 		to_chat(user, "You short out the console's ID checking system. It's now available to everyone!")
 		return TRUE
 
-/obj/machinery/computer/shuttle_control/bullet_act(var/obj/item/projectile/Proj)
-	visible_message("\The [Proj] ricochets off \the [src]!")
-
 /obj/machinery/computer/shuttle_control/ex_act()
 	return
 
@@ -169,3 +169,9 @@
 	. = ..()
 
 	return
+
+/obj/machinery/computer/shuttle_control/proc/handle_bullet_act(datum/source, obj/projectile/projectile)
+	SIGNAL_HANDLER
+
+	visible_message("\The [projectile] ricochets off \the [src]!")
+	return COMPONENT_BULLET_BLOCKED
